@@ -27,18 +27,18 @@ on the conflict you can't use RETURNING since there is nothing to return from do
 	  id
 	  ----
 	  (0 rows)
-	
+
 	  INSERT 0 0
 
 But if you perform a NULL update you can get your id column back.
 
 
 	  INSERT into test_null_upsert(c2) values ('ABC') ON CONFLICT ON CONSTRAINT unique_c2_upsert
-	  DO UPDATE SET c2 = test_null_upsert.c2 WHERE test_null_upsert.c2 = 'ABC' RETURNING id;
-	
+	  DO UPDATE SET c2 = test_null_upsert.c2 RETURNING id;
+
 	  id
 	  ----
 	  1
 	  (1 rows)
-	
+
 	  INSERT 0 0
