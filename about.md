@@ -11,6 +11,11 @@ a handful of other things thrown in along the way. Good enough
 knowledge of relational databases to actually write something that
 was patent-worthy in that field at some point. I enjoy working with Postgresql currently.
 
+I'm always looking for new things to learn in programming - both in low-level
+details and in how to get teams of people to work cooperatively to produce
+great software. My current exploration is the Elixir language and Phoenix web
+framework.
+
 ### More Information
 
 More importantly, I'm a husband and father. Besides programming
