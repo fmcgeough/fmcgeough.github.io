@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Programming Elixir'
+title: 'ElixirConf2016 and Ecto'
 categories:
 - Elixir
 tags: []
