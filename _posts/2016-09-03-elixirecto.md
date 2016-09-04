@@ -31,7 +31,7 @@ including :
     has_many :tracks, Track
     many_to_many :genres, Genre, join_through: "albums_genres"
 
-Its worth checking out if you are new to Ecto. Its in github at https://github.com/darinwilson/music_db.
+Its worth checking out if you are new to Ecto. Its in github at [music_db github repo] (https://github.com/darinwilson/music_db).
 
 The actual database access is provided by an Adapter that implements
 a set of callbacks and a driver that implements the database communication
@@ -47,4 +47,4 @@ for standard database models. Again, there are decent examples in Darin's sample
 project.
 
 Will be spending a few hours trying to wrap my head around using Ecto for a work
-model of Users, Roles, Accounts, etc. 
+model of Users, Roles, Accounts, etc.
