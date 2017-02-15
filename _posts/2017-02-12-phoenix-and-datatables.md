@@ -18,7 +18,7 @@ The rundown on what is used for this project is :
 * Phoenix "1.2.1"
 * Ecto "2.1.3"
 
-All of the code is on github.com at https://github.com/fmcgeough/datatables
+All of the code is on github.com at [https://github.com/fmcgeough/datatables](https://github.com/fmcgeough/datatables)
 
 Datatables has the ability to do server-side paging via AJAX calls. There is enough
 information on the web to be able to puzzle out how to do this but I didn't see any Elixir/Phoenix examples
