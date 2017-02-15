@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Elixir and Ruby's expand_path'
+title: 'Elixir and Ruby expand_path'
 categories:
 - Elixir
 tags: []
