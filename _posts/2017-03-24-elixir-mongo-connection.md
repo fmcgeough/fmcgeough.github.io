@@ -128,7 +128,7 @@ parts of the protocol's implementation). Here's what I found :
 That looks like it. Although there is a handle_execute_close: 4 function defined as well. This
 doesn't appear to be used.
 
-The Mongo.Protocol doesn't any moduledoc nor doc on any of the functions within it. This is
+The Mongo.Protocol doesn't have any moduledoc nor doc on any of the functions within it. This is
 something that needs contribution. Contrast it with the DBConnection module which has extensive
 documentation on both the module and function level. Of course, DBConnection was defining a
 behavior and it stands to reason that it needed to be fairly well documented to be accepted
