@@ -96,7 +96,7 @@ Its available at https://github.com/devongovett/zipcode. The file consists of
 the following fields : zipcode, city, state_abbreviation. Not very interesting
 but its fine to demonstrate the idea.
 
-Lets just create a migration for our table we'll use for the baseball players.
+Lets just create a migration for our table we'll use for the zipcodes.
 
     ▶ mix ecto.gen.migration create_zips
     * creating priv/repo/migrations
