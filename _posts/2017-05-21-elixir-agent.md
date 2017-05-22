@@ -32,8 +32,8 @@ and [Agent](http://elixir-lang.org/getting-started/mix-otp/agent.html) I was abl
 put together a few pages of the most common configuration issues.
 
 A GenServer worked ideally for my background task to check on configuration
-issues. To implement this GenServer I implemented start_link, init and handle_info.
-On init I immediately started the work of checking customer's configuration info
+issues. To create this GenServer I implemented start_link, init and handle_info.
+On init I immediately start the work of checking customer's configuration info
 and once that work is done I setup a scheduled call to perform the work again
 periodically. This ended up looking something like this:
 
@@ -61,9 +61,9 @@ Although I could have stored the issues found when scanning inside the
 GenServer itself it made more sense to me to store the data separately in
 an Agent. This means that if the GenServer crashes for some reason the data
 will be maintained. Since the Agent's only responsibility is to store and
-provide access to the information. Its much less likely to run into
-issues. The wrapper around Agent functionality required very little. Like
-so little that after I finished typing in what I thought I needed I was
+provide access to the information, it's much less likely to run into
+issues. It required very little coding to implement the Agent functionality
+I needed. Like so little that after I finished typing in what I thought I needed I was
 not sure at first whether I'd missed something or not. Here is the complete
 implementation.
 
@@ -97,11 +97,12 @@ timestamp that the information was added. This allows the web page to display th
 time that the data was last updated.
 
 There is no storage of this data across restarts of the web app. This was not that
-important since the information is refreshed every 10 minutes anyway. There is no
+important since the information is refreshed every 10 minutes anyway. There is also no
 queue of work with more than one GenServer since currently the work completely fairly
 rapidly and there was no need to introduce that small amount of additional complexity.
 
-A typical controller is almost no code as well:
+A web page (controller, template, view) per problem area is associated with each of the
+problems that this background task finds. A typical controller is almost no code as well:
 
     def index(conn, _params_) do
       args = BackgroundStorage.get(:abandoned_devices) |> build_args()
