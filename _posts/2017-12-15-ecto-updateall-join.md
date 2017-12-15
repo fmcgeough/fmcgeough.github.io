@@ -9,7 +9,7 @@ When I first began using Ecto it was only to directly issue SQL since the Postgr
 that I was working on was so far outside the norm (tables stored in different schemas, different
 naming conventions on primary keys, character fields being used to store foreign keys that pointed
 at multiple tables). The second project that I worked on was a database that I controlled so
-I got to use the more general features of the Ecto query language. The way queries is constructed
+I got to use the more general features of the Ecto query language. The way queries are constructed
 is - for the most part - easy to grasp but there are definitely some cases that are harder to understand
 and that could benefit from more examples. The Ecto update_all is one of those.
 
