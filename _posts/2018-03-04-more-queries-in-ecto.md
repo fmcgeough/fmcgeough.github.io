@@ -128,21 +128,25 @@ This generates the following SQL:
 
 <pre>
   <code class="sql">
-SELECT l0."id", l0."previous_state",
-l0."current_state", lo."percent_reported",
-l0."email", l0."inserted_at",
-l0."updated_at", l0."limit_check_threshold_id"
+SELECT l0."id", l0."previous_state", l0."current_state",
+l0."email", l0."percent_reported", l0."inserted_at",
+l0."updated_at", l0."limit_check_threshold_id", l2."id",
+l2."warning_percent_threshold", l2."critical_percent_threshold",
+l2."emails", l2."service", l2."resource",
+l2."inserted_at", l2."updated_at", l2."account_id"
 FROM "limit_check_threshold_emails" AS l0
 INNER JOIN (SELECT max(l0."inserted_at") AS "max_inserted_at",
-l0."limit_check_threshold_id" AS "limit_check_threshold_id",
-l0."email" AS "email"
-FROM "limit_check_threshold_emails" AS l0
-WHERE (l0."inserted_at" > now() - interval '24 hours')
-GROUP BY l0."limit_check_threshold_id",
-l0."email") AS s1
-ON ((s1."max_inserted_at" = l0."inserted_at")
-AND (s1."email" = l0."email"))
-AND (s1."limit_check_threshold_id" = l0."limit_check_threshold_id")
+ l0."limit_check_threshold_id" AS "limit_check_threshold_id",
+ l0."email" AS "email"
+ FROM "limit_check_threshold_emails" AS l0
+ WHERE (l0."inserted_at" > now() - interval '24 hours')
+ GROUP BY l0."limit_check_threshold_id", l0."email") AS s1
+ ON ((s1."max_inserted_at" = l0."inserted_at")
+ AND (s1."email" = l0."email"))
+ AND (s1."limit_check_threshold_id" = l0."limit_check_threshold_id")
+ INNER JOIN "limit_check_thresholds" AS l2
+ ON l2."id" = l0."limit_check_threshold_id"
+ WHERE (l0."inserted_at" > now() - interval '1 day')
   </code>
 </pre>
 
