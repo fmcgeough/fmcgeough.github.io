@@ -83,14 +83,16 @@ build it up. So, lets express the query above in Ecto.
 <pre>
   <code class="elixir">
 def recent_email_group do
-  from(
-    e in LimitCheckThresholdEmail,
-    select: %{max_inserted_at: max(e.inserted_at),
-    limit_check_threshold_id: e.limit_check_threshold_id,
-    email: e.email},
-    group_by: [e.limit_check_threshold_id, e.email],
-    where: e.inserted_at > fragment("now() - interval '24 hours'"))
-  )
+    from(
+      e in LimitCheckThresholdEmail,
+      select: %{
+        max_inserted_at: max(e.inserted_at),
+        limit_check_threshold_id: e.limit_check_threshold_id,
+        email: e.email
+      },
+      group_by: [e.limit_check_threshold_id, e.email],
+      where: e.inserted_at > fragment("now() - interval '24 hours'")
+    )
 end
   </code>
 </pre>
