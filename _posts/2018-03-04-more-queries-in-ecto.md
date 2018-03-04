@@ -109,13 +109,19 @@ we'll need to join.
 
 <pre>
   <code class="elixir">
-from(
-  e in LimitCheckThresholdEmail,
-  join: s in subquery(recent_email_group),
-  on: s.max_inserted_at == e.inserted_at and
-      s.email == e.email and
-      s.limit_check_threshold_id == e.limit_check_threshold_id)
-)
+  def list_recent_threshold_emails do
+    from(
+      e in LimitCheckThresholdEmail,
+      join: s in subquery(recent_email_group()),
+      on:
+        s.max_inserted_at == e.inserted_at and s.email == e.email and
+          s.limit_check_threshold_id == e.limit_check_threshold_id,
+      join: t in assoc(e, :limit_check_threshold),
+      preload: [limit_check_threshold: t],
+      where: e.inserted_at > fragment("now() - interval '1 day'")
+    )
+    |> Repo.all()
+  end
   </code>
 </pre>
 This generates the following SQL:
