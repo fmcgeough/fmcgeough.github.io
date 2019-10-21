@@ -9,7 +9,7 @@ I was working remotely for Weedmaps up until recently writing Elixir with a grou
 coworkers. Unfortunately, Weedmaps laid off 25% of its workforce and I was let go, along with some
 other really great productive people - if you need devs, qa, project managers please ask me. I know
 a bunch that I really enjoyed working with. I figured while I search for a new position I'd use some
-of the time to blog a bit some about Elixir. This will be a bit rambling since I'm writing in-between
+of the time to blog a bit about Elixir. This will be a bit rambling since I'm writing in-between
 phone calls and interviews.
 
 Elixir is a relatively young language but has a great community of developers that contribute
