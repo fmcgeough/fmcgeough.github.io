@@ -32,7 +32,9 @@ the first subarray) and then a subarray of 0..n ascending elements again (where 
 lowest number of the last subarray is > the highest number in the descending subarray).
 
 In the example, `[-1, 5, 4, 3, 2, 8]` the subarrays that need to be identified are
-`[-1]` and `[5, 4, 3, 2]` and `[8]`.
+`[-1]` and `[5, 4, 3, 2]` and `[8]`. Since -1 is < 2 (the last - lowest - element in
+subarray2) and since 5 is < 8 (5 is the highest element in subarray 2) then the function
+should respond "true".
 
 Okay, its hopefully clear that those are the 3 subarrays for this input but what questions
 do we need to answer to figure out whether reversing that 2nd subarray will leave the
@@ -49,9 +51,9 @@ subarray we "know" that this array can be sorted by reversing that descending su
 
 The data that it appears that we need to proceed thru the list and make a determination
 is: 1) what's the current status (:leading_ascending, :descending, :trailing_ascending);
-2) what's the maximum number in max_subarray1 (this allows us to check for whether any
-number in the 2nd subarray is less than max_subarray1); 3) what's the maximum number in
-max_subarray2 (this allows us to check for whether the number that starts the 3rd ascending
+2) what's the maximum (last) number in subarray1 (this allows us to check for whether any
+number in the 2nd subarray is less than max_subarray1); 3) what's the maximum (first) number in
+subarray2 (this allows us to check for whether the number that starts the 3rd ascending
 subarray is less than max_subarray2). Since we may or may not have an initial ascending
 section the value of max_subarray1 can be nil.
 
