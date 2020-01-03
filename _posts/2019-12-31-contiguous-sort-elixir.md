@@ -25,11 +25,12 @@ exists that can be reversed to provide sorted array) or false (no such subarray 
 Additional constraints are that if there are any duplicates in the input then
 the function should return false.
 
-If you take a step back from the problem then you realize that the input has to
-consist of a subarray of 0..n ascending elements, then a subarray of 0..n descending
-elements (where the lowest number of the subarray is > then the highest number of
-the first subarray) and then a subarray of 0..n ascending elements again (where the
-lowest number of the last subarray is > the highest number in the descending subarray).
+If you take a step back from the problem then you realize that in order for the function
+to return true the input has to consist of a subarray of 0..n ascending elements, then
+a subarray of 0..n descending elements (where the lowest number of the subarray is > then
+the highest number of the first subarray) and then a subarray of 0..n ascending elements
+again (where the lowest number of the last subarray is > the highest number in the descending
+subarray).
 
 In the example, `[-1, 5, 4, 3, 2, 8]` the subarrays that need to be identified are
 `[-1]` and `[5, 4, 3, 2]` and `[8]`. Since -1 is < 2 (the last - lowest - element in
@@ -79,7 +80,13 @@ defmodule ContiguousSubArray do
 end
 ```
 
-Our ReverseSortState is:
+The ContiguousSubArray creates a new ReverseSortState and then calls into the function
+`reverse_to_sort/3`. In that function we call `ReverseSortState.advance/3` and pass the
+current state of our analysis of the input, the value in the array we're currently on,
+and the previous value in the array. If the `advance` function returns a state then all
+is still good and we move forward one position by calling reverse_to_sort/3 recursively.
+If `advance' returns false then the input didn't meet our expectations and we return false
+to the caller. Our ReverseSortState is:
 
 ```
 defmodule ReverseSortState do
