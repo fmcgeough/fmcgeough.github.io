@@ -7,13 +7,13 @@ tags: []
 ---
 There are a number of programming puzzle sites that are worthwhile tools for learning
 a language, brushing up on your skills or just exploring how other people might solve
-problems differently than you. I think this is all good. One of the interesting things
-about trying to solve some of these puzzles with a language like Elixir is that you have
-to work through the problem in a different way then you would in a language like "C"
-or Java. Arrays and sorting are common problems where you'd index into an Array with
-those languages but you want to avoid that in Elixir since you're dealing with Lists and
-iterating into a List gets expensive. Here's an example of a problem where I solved it
-a different way.
+problems differently than you. I think this is all good. I've found it especially helpful
+in learning a new language. One of the interesting things about trying to solve some of
+these puzzles with a language like Elixir is that you have to work through the problem
+in a different way then you would in a language like "C" or Java. Arrays and sorting are
+common problems where you'd index into an Array with those languages but you want to avoid
+that in Elixir since you're dealing with Lists and iterating into a List gets expensive.
+Here's an example of a problem where I solved it a different way.
 
 Say you're given the problem of determining if it's possible to sort an array of
 integers by reversing one of the array's contiguous subarrays. So, for example,
