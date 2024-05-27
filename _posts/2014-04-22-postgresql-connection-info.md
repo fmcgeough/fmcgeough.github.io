@@ -6,6 +6,7 @@ description: Who is connected to my Postgres database?
 tags: postgresql
 categories: database
 ---
+
 Some days you just want to know who is connecting up to your database. The following SQL works for 9.3 Postgresql.
 
     SELECT COUNT(1) as num_connections,

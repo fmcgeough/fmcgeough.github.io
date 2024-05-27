@@ -6,6 +6,7 @@ description: SQL Optimization with Postgresql
 categories: SQL postgresql
 tags: SQL postgresql
 ---
+
 In a standard smallish Postgresql installation its actually fairly straightforward to figure out what indexes to create to eliminate sequential scans and improve your performance. But in a larger system where there are thousands of different queries, perhaps written by dozens of different engineers, the problem of addressing performance issues gets a bit more difficult. However, the same techniques can be used on both systems. I'll describe what I use and perhaps it will be useful for someone else.
 
 ## pgbadger
@@ -170,6 +171,5 @@ Now you can diff the two captured rows by :
     AND tablename NOT LIKE 'public.history_of_pg_stat'
     AND current_live_tup > 5000
     ORDER BY 5 DESC;
-
 
 I hope some of this sketched out advice helps someone else in tracking down performance problems or better administer their system. Happy hunting!
