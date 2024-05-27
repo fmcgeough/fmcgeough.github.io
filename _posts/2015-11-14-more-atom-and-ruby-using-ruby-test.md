@@ -3,8 +3,8 @@ layout: post
 title: More Atom and Ruby - Using ruby-test
 date: 2015-01-14 08:53:13
 description: Using Ruby with the Atom editor
-tags: Ruby
-categories: Ruby
+tags: ruby
+categories: ruby
 ---
 
 I continue to try and get [Atom](https://atom.io/) setup in the most productive
