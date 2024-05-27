@@ -24,9 +24,7 @@ apm install ruby-test
 After installing the ruby-test package restart Atom by using `atom` from the
 command line and then configure the testing package by going to
 Atom/Preferences/Packages and then searching for ruby-test. You'll want to set
-your "Test Framework" as explained in the configuration panel :
-
-![Ruby-test config]({{site_url}}/images/2015-11-14-ruby-test.png)
+your "Test Framework" as explained in the configuration panel.
 
 The tool worked seamlessly for me after doing this.
 
