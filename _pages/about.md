@@ -38,5 +38,5 @@ cooking, and reading. I'm apt to write blog posts about any of those.
 
 ### Contact me
 
-- [Linkedin](https://www.linkedin.com/in/fmcgeough)
+- I am on linkedin as fmcgeough
 - [Github](https://github.com/fmcgeough)
