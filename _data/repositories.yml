@@ -1,12 +1,15 @@
 github_users:
-  - torvalds
-  - alshedivat
+  - josevalim
+  - chrismccord
+  - mtrudel
+  - ericmj
 
 github_repos:
-  - alshedivat/al-folio
-  - twbs/bootstrap
-  - jekyll/jekyll
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - jpswalsh/academicons
-  - mathjax/MathJax
+  - elixir-lang/elixir
+  - phoenixframework/phoenix
+  - mtrudel/bandit
+  - hexpm/hex
+  - elixir-ecto/ecto
+  - elixir-ecto/ecto_sql
+  - livebook-dev/livebook
+  - mirego/elixir-security-advisories
