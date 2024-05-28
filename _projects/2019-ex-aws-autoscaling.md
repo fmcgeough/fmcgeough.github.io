@@ -4,7 +4,7 @@ title: Elixir and AWS autoscaling
 description: An Elixir library for the AWS EC2 Auto Scaling API as plug-in for the ex_aws system
 img:
 importance: 1
-category: work
+category: published
 related_publications: false
 ---
 

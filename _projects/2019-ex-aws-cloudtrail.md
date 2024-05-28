@@ -4,7 +4,7 @@ title: Elixir and AWS CloudTrail
 description: An Elixir library for the AWS CloudTrail API that plugs into the ex_aws system
 img:
 importance: 1
-category: work
+category: published
 related_publications: false
 ---
 

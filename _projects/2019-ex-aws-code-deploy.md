@@ -4,7 +4,7 @@ title: Elixir and AWS Code Deploy
 description: An Elixir library for the AWS Code Deploy API that plugs into the ex_aws system
 img:
 importance: 1
-category: work
+category: published
 related_publications: false
 ---
 

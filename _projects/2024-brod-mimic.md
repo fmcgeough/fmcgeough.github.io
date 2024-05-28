@@ -4,7 +4,7 @@ title: brod-mimic
 description: Elixir code exploration of the Erlang brod Kafka library
 img:
 importance: 1
-category: work
+category: educational
 related_publications: false
 ---
 
