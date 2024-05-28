@@ -1,0 +1,343 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Elixir, Parameter Validation with Ecto | Frank McGeough </title> <meta name="author" content="Frank McGeough"> <meta name="description" content="Using the Ecto library to validate API Parameters"> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://fmcgeough.github.io/blog/2023/parameter-validation-with-ecto/"> <script src="/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>initTheme();</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Frank</span> McGeough </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/repositories/">repositories </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item "> <a class="nav-link" href="/teaching/">teaching </a> </li> <li class="nav-item "> <a class="nav-link" href="/people/">people </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Elixir, Parameter Validation with Ecto</h1> <p class="post-meta"> Created in July 31, 2023 </p> <p class="post-tags"> <a href="/blog/2023"> <i class="fa-solid fa-calendar fa-sm"></i> 2023 </a>   ·   <a href="/blog/tag/elixir"> <i class="fa-solid fa-hashtag fa-sm"></i> Elixir</a>     ·   <a href="/blog/category/elixir"> <i class="fa-solid fa-tag fa-sm"></i> Elixir</a>   </p> </header> <article class="post-content"> <div id="markdown-content"> <p>Elixir is a language that first appeared in 2012. There is a web framework called Phoenix that is what is primarily used to develop web-based software in Elixir. The Ecto library is used in Elixir to interact with relational databases. However, Ecto can also be used to validate parameters passed to API endpoints. This is a quick example to help you understand how this is done. It assumes you are already at least somewhat familiar with Elixir and the Phoenix framework. The example is just that, an example. It’s not complete. It’s not meant to be an example of production-level code. You can think of this as an intro and getting started type of thing. It’s got enough complexity to get you past some initial hurdles.</p> <h2 id="prerequisites">Prerequisites</h2> <p>The sample code is in a Phoenix framework app generated with:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix phx.new --no-assets  --no-dashboard --no-ecto --no-html --no-live --no-mailer --no-tailwind paramz
+</code></pre></div></div> <p>Then the Ecto dependency was added to the mix.exs file:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{:ecto, "~&gt; 3.10"}
+</code></pre></div></div> <p>It is not necessary to add a dependency on <code class="language-plaintext highlighter-rouge">ecto_sql</code> nor <code class="language-plaintext highlighter-rouge">db_connection</code>. In an actual application where you have a dependency on <code class="language-plaintext highlighter-rouge">ecto_sql</code> it is not necessary to add a dependency on <code class="language-plaintext highlighter-rouge">ecto</code>. The dependency on <code class="language-plaintext highlighter-rouge">ecto_sql</code> brings in the <code class="language-plaintext highlighter-rouge">ecto</code> library.</p> <h2 id="router">Router</h2> <p>For the example code we have a router with two endpoints:</p> <ul> <li>a simple endpoint with parameters in the path</li> <li>a more complex endpoint with parameters in path, a JSON body containing a nested object and a query string.</li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ParamzWeb.Router do
+  use ParamzWeb, :router
+
+  pipeline :api do
+    plug(:accepts, ["json"])
+  end
+
+  scope "/api", ParamzWeb do
+    pipe_through(:api)
+
+    # Simple request with parameters in path
+    get("/:account_id/:user_id/simple", ParamCheckController, :simple)
+
+    # More complex request with parameter in path, a body containing
+    # data and allows a query string
+    post("/:account_id/complex", ParamCheckController, :complex)
+  end
+end
+</code></pre></div></div> <h2 id="controller-functions">Controller Functions</h2> <p>For both our controller functions the example code just validates the parameters and then sends back 200 and the validated parameters (which have conversions done). If the parameters are invalid the code returns a 400 status code with the error info on the parameters supplied.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ParamzWeb.ParamCheckController do
+  use ParamzWeb, :controller
+
+  import ParamzWeb.Params
+
+  alias ParamzWeb.Params.{Complex, Simple}
+
+  def simple(conn, params) do
+    params
+    |&gt; Simple.validate()
+    |&gt; handle_validation_result()
+    |&gt; case do
+      {:ok, validated_params} -&gt;
+        IO.inspect(validated_params, label: "after Params call")
+        conn |&gt; put_status(200) |&gt; json(Map.from_struct(validated_params))
+
+      {:error, :invalid_input, error_msg} -&gt;
+        conn |&gt; put_status(400) |&gt; json(%{error: "Invalid parameter input. #{error_msg}"})
+    end
+  end
+
+  def complex(conn, params) do
+    params
+    |&gt; Complex.validate()
+    |&gt; handle_validation_result()
+    |&gt; case do
+      {:ok, validated_params} -&gt;
+        IO.inspect(validated_params, label: "after Params call")
+        conn |&gt; put_status(200) |&gt; json(validated_params)
+
+      {:error, :invalid_input, error_msg} -&gt;
+        conn |&gt; put_status(400) |&gt; json(%{error: "Invalid parameter input. #{error_msg}"})
+    end
+  end
+end
+</code></pre></div></div> <h2 id="parameter-validation-code">Parameter Validation Code</h2> <h3 id="general-utility">General Utility</h3> <p>A simple module to convert a changeset into either {:ok, map()} or {:error, :invalid_input, String.t()}</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Paramz.Utils.LogHelp do
+  @moduledoc """
+  Utility functions related to logging errors
+  """
+
+  alias Ecto.Changeset
+
+  @doc """
+  If our app code gets back an error tuple from Ecto where the second
+  element is an Ecto.Changeset this function can convert that value
+  into a String for logging
+  """
+  @spec ecto_error(Ecto.Changeset.t()) :: String.t()
+  def ecto_error(%Ecto.Changeset{} = changeset) do
+    IO.inspect(changeset, label: "changeset errors")
+
+    Changeset.traverse_errors(changeset, fn {msg, opts} -&gt;
+      Enum.reduce(opts, msg, fn {key, value}, acc -&gt;
+        String.replace(acc, "%{#{key}}", _to_string(value))
+      end)
+    end)
+    |&gt; Enum.reverse()
+    |&gt; Enum.map_join(", ", fn {k, msgs} -&gt;
+      "#{k}: #{_to_string(msgs)}"
+    end)
+  end
+
+  def ecto_error(changeset) do
+    raise ArgumentError, "unsupported argument: #{inspect(changeset)}"
+  end
+
+  defp _to_string(msgs) when is_list(msgs) do
+    msgs |&gt; Enum.map_join(", ", &amp;_to_string(&amp;1))
+  end
+
+  defp _to_string(msg) when is_binary(msg) do
+    String.replace(msg, "\\n", " ")
+  end
+
+  defp _to_string(msg) do
+    "#{inspect(msg)}"
+  end
+end
+</code></pre></div></div> <h3 id="validation-for-the-simple-endpoint">Validation for the simple endpoint</h3> <p>This endpoint has two parameters in the path. One is the account id which is an integer. The other is the user id which is also an integer.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ParamzWeb.Params.Simple do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @max_int32 (:math.pow(2, 31) - 1) |&gt; round()
+
+  @primary_key false
+  embedded_schema do
+    field(:account_id, :integer)
+    field(:user_id, :integer)
+  end
+
+  def validate(attrs) do
+    changeset(%__MODULE__{}, attrs)
+  end
+
+  def changeset(%__MODULE__{} = struct, attrs \\ %{}) do
+    struct
+    |&gt; cast(attrs, [:account_id, :user_id])
+    |&gt; validate_required([:account_id, :user_id])
+    |&gt; validate_number(:account_id, greater_than: 0, less_than_or_equal_to: @max_int32)
+    |&gt; validate_number(:user_id, greater_than: 0, less_than_or_equal_to: @max_int32)
+  end
+end
+</code></pre></div></div> <h2 id="doing-validation-for-complex-endpoint">Doing validation for complex endpoint</h2> <p>In this endpoint there’s a parameter in the path - the account id - a body containing JSON with a nested object - and a query parameter.</p> <p>In order to handle nested objects in Ecto validation you can use the embeds_one syntax. This means that every nested object needs its own Ecto.Schema defined and has its own separate changeset functionality.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ParamzWeb.Params.License do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @max_int32 (:math.pow(2, 31) - 1) |&gt; round()
+
+  @primary_key false
+  embedded_schema do
+    field(:id, :integer)
+    field(:type, :string)
+  end
+
+  def changeset(struct, attrs) do
+    struct
+    |&gt; cast(attrs, [:id, :type])
+    |&gt; validate_required([:id, :type])
+    |&gt; validate_number(:id, greater_than: 0, less_than_or_equal_to: @max_int32)
+  end
+end
+
+defmodule ParamzWeb.Params.License do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @max_int32 (:math.pow(2, 31) - 1) |&gt; round()
+
+  @primary_key false
+  embedded_schema do
+    field(:id, :integer)
+    field(:type, :string)
+  end
+
+  def changeset(struct, attrs) do
+    struct
+    |&gt; cast(attrs, [:id, :type])
+    |&gt; validate_required([:id, :type])
+    |&gt; validate_number(:id, greater_than: 0, less_than_or_equal_to: @max_int32)
+  end
+end
+
+defmodule ParamzWeb.Params.Complex do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  alias ParamzWeb.Params.License
+
+  @max_int32 (:math.pow(2, 31) - 1) |&gt; round()
+  @allowed_includes ["posts", "pictures"]
+  @allowed_includes_str Enum.join(@allowed_includes, ", ")
+  @invalid_include_value "invalid include values. Allowed values:"
+  @invalid_include_format "invalid include value. Must be list"
+
+  @primary_key false
+  embedded_schema do
+    field(:account_id, :integer)
+    field(:name, :string)
+    field(:email, :string)
+    field(:include, {:array, :string})
+    embeds_one(:license, License)
+  end
+
+  def validate(attrs) do
+    changeset(%__MODULE__{}, attrs)
+  end
+
+  def changeset(struct, attrs) do
+    struct
+    |&gt; cast(attrs, [:name, :email, :account_id, :include])
+    |&gt; cast_embed(:license)
+    |&gt; validate_required([:name, :email, :account_id])
+    |&gt; validate_number(:account_id, greater_than: 0, less_than_or_equal_to: @max_int32)
+    |&gt; validate_include()
+  end
+
+  def validate_include(changeset) do
+    changeset
+    |&gt; get_field(:include)
+    |&gt; validate_include_value(changeset)
+  end
+
+  defp validate_include_value(nil, changeset), do: changeset
+
+  defp validate_include_value(includes, changeset) when is_list(includes) do
+    if Enum.all?(includes, &amp;(&amp;1 in @allowed_includes)) do
+      changeset
+    else
+      add_error(changeset, :include, "#{@invalid_include_value} #{@allowed_includes_str}")
+    end
+  end
+
+  defp validate_include_value(_includes, changeset) do
+    add_error(changeset, :include, @invalid_include_format)
+  end
+end
+
+defimpl Jason.Encoder, for: ParamzWeb.Params.License do
+  def encode(value, opts) do
+    value
+    |&gt; Map.take([[:id, :type]])
+    |&gt; Jason.Encode.map(opts)
+  end
+end
+
+defimpl Jason.Encoder, for: ParamzWeb.Params.Complex do
+  def encode(value, opts) do
+    current_value = Map.take(value, [:account_id, :name, :email, :include])
+
+    if value.license do
+      Map.put(current_value, :license, Map.take(value.license, [:id, :type]))
+    else
+      current_value
+    end
+    |&gt; Jason.Encode.map(opts)
+  end
+end
+</code></pre></div></div> <h2 id="changeset-errors">Changeset Errors</h2> <p>Here’s some simple code to convert changeset errors to a String.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Paramz.Utils.LogHelp do
+  @moduledoc """
+  Utility functions related to logging errors
+  """
+
+  @doc """
+  If our app code gets back an error tuple from Ecto where the second
+  element is an Ecto.Changeset this function can convert that value
+  into a String for logging
+  """
+  @spec ecto_error(Ecto.Changeset.t()) :: String.t()
+  def ecto_error(%Ecto.Changeset{} = changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} -&gt;
+      Enum.reduce(opts, msg, fn {key, value}, acc -&gt;
+        String.replace(acc, "%{#{key}}", _to_string(value))
+      end)
+    end)
+    |&gt; Enum.reduce("", fn {k, v}, acc -&gt;
+      joined_errors = Enum.join(v, "; ")
+      "#{acc} #{k}: #{joined_errors}"
+    end)
+  end
+
+  def ecto_error(changeset) do
+    raise ArgumentError, "unsupported argument: #{inspect(changeset)}"
+  end
+
+  defp _to_string(val) when is_list(val) do
+    Enum.join(val, ",")
+  end
+
+  defp _to_string(val), do: to_string(val)
+end
+</code></pre></div></div> <h2 id="testing">Testing</h2> <h3 id="simple-endpoint---success">Simple Endpoint - Success</h3> <h4 id="client-side">Client side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -s http://localhost:4000/api/1234/90023377/simple
+
+{"account_id":1234,"user_id":90023377}%
+</code></pre></div></div> <h4 id="server-side">Server side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[info] GET /api/1234/90023377/simple
+[debug] Processing with ParamzWeb.ParamCheckController.simple/2
+  Parameters: %{"account_id" =&gt; "1234", "user_id" =&gt; "90023377"}
+  Pipelines: [:api]
+after Params call: %ParamzWeb.Params.Simple{account_id: 1234, user_id: 90023377}
+[info] Sent 200 in 1ms
+</code></pre></div></div> <h3 id="simple-endpoint---bad-parameters-failure">Simple Endpoint - Bad Parameters, Failure</h3> <h4 id="client-side-1">Client side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -s http://localhost:4000/api/1234/90abcdE77/simple
+
+{"error":"Invalid parameter input.  user_id: is invalid"}%
+</code></pre></div></div> <h4 id="server-side-1">Server side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[info] GET /api/1234/90abcdE77/simple
+[debug] Processing with ParamzWeb.ParamCheckController.simple/2
+  Parameters: %{"account_id" =&gt; "1234", "user_id" =&gt; "90abcdE77"}
+  Pipelines: [:api]
+[info] Sent 400 in 1ms
+</code></pre></div></div> <h3 id="complex-endpoint---success">Complex Endpoint - Success</h3> <h4 id="client-side-2">Client Side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -s -H "Content-Type: application/json" -X POST -d '{
+"name": "testing",
+"email": "testing@google.com",
+"license": {
+  "id": "95055",
+  "type": "license_reference"
+}
+}' http://localhost:4000/api/1234/complex\?include\[\]\=posts
+
+{"account_id":1234,"email":"testing@google.com","include":["teams"],"license":{"id":95055,"type":"license_reference"},"name":"testing"}%
+</code></pre></div></div> <h4 id="server-side-logging">Server side logging</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[info] POST /api/1234/complex
+debug] Processing with ParamzWeb.ParamCheckController.complex/2
+Parameters: %{"account_id" =&gt; "1234", "email" =&gt; "testing@google.com", "include" =&gt; ["posts"], "license" =&gt; %{"id" =&gt; "95055", "type" =&gt; "license_reference"}, "name" =&gt; "testing"}
+Pipelines: [:api]
+after Params call: %ParamzWeb.Params.Complex{
+account_id: 1234,
+name: "testing",
+email: "testing@google.com",
+include: ["posts"],
+license: %ParamzWeb.Params.License{id: 95055, type: "license_reference"}
+}
+[info] Sent 200 in 2ms
+</code></pre></div></div> <h3 id="complex-endpoint---bad-parameters-failure">Complex Endpoint - Bad Parameters, Failure</h3> <h4 id="client-side-3">Client Side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -s -H "Content-Type: application/json" -X POST -d '{
+"name": "testing",
+"email": "testing@google.com",
+"license": {
+  "type": "license_reference"
+}
+}' http://localhost:4000/api/1234/complex\?include\[\]\=posts
+
+{"error": "Invalid parameter input. license: %{id: [\"can't be blank\"]}"}
+</code></pre></div></div> <h4 id="server-side-2">Server Side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex(1)&gt; [info] POST /api/1234/complex
+changeset errors: #Ecto.Changeset&lt;
+  action: nil,
+  changes: %{
+    account_id: 1234,
+    email: "testing@google.com",
+    include: ["posts"],
+    license: #Ecto.Changeset&lt;
+      action: :insert,
+      changes: %{type: "license_reference"},
+      errors: [id: {"can't be blank", [validation: :required]}],
+      data: #ParamzWeb.Params.License&lt;&gt;,
+      valid?: false
+    &gt;,
+    name: "testing"
+  },
+  errors: [],
+  data: #ParamzWeb.Params.Complex&lt;&gt;,
+  valid?: false
+&gt;
+[debug] Processing with ParamzWeb.ParamCheckController.complex/2
+  Parameters: %{"account_id" =&gt; "1234", "email" =&gt; "testing@google.com", "include" =&gt; ["posts"], "license" =&gt; %{"type" =&gt; "license_reference"}, "name" =&gt; "testing"}
+  Pipelines: [:api]
+[info] Sent 400 in 2ms
+</code></pre></div></div> <h2 id="the-params-library">The params library</h2> <p>There is a <a href="https://hex.pm/packages/params" rel="external nofollow noopener" target="_blank">params library</a> that wraps Ecto validation. It attempts to reduce boiler-plate code. However, that comes at a cost in giving up control you might need. In addition, there is no active maintainer for the library at the moment. I’d recommend not using this library at the moment.</p> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2019/contiguous-sort-elixir/">Elixir, Programming Puzzles and Sorting Arrays</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2014/postgresql-optimizing-sql-performance/">Postgresql - Optimizing SQL Performance</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/four-thouand-weeks/">Four Thousand Weeks</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2016/programming-elixir/">Programming Elixir</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2015/using-git-from-inside-atom/">Using Git From Inside Atom</a> </li> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2024 Frank McGeough. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?b7816bd189846d29eded8745f9c4cf77"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script type="text/javascript">window.MathJax={tex:{tags:"ams"}};</script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.min.js" integrity="sha256-rjmgmaB99riUNcdlrDtcAiwtLIojSxNyUFdl+Qh+rB4=" crossorigin="anonymous"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script type="text/javascript">function progressBarSetup(){"max"in document.createElement("progress")?(initializeProgressElement(),$(document).on("scroll",function(){progressBar.attr({value:getCurrentScrollPosition()})}),$(window).on("resize",initializeProgressElement)):(resizeProgressBar(),$(document).on("scroll",resizeProgressBar),$(window).on("resize",resizeProgressBar))}function getCurrentScrollPosition(){return $(window).scrollTop()}function initializeProgressElement(){let e=$("#navbar").outerHeight(!0);$("body").css({"padding-top":e}),$("progress-container").css({"padding-top":e}),progressBar.css({top:e}),progressBar.attr({max:getDistanceToScroll(),value:getCurrentScrollPosition()})}function getDistanceToScroll(){return $(document).height()-$(window).height()}function resizeProgressBar(){progressBar.css({width:getWidthPercentage()+"%"})}function getWidthPercentage(){return getCurrentScrollPosition()/getDistanceToScroll()*100}const progressBar=$("#progress");window.onload=function(){setTimeout(progressBarSetup,50)};</script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>addBackToTop();</script> <script type="module" src="/assets/js/search/ninja-keys.min.js?601a2d3465e2a52bec38b600518d5f70"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script>let theme=determineComputedTheme();const ninjaKeys=document.querySelector("ninja-keys");"dark"===theme?ninjaKeys.classList.add("dark"):ninjaKeys.classList.remove("dark");const openSearchModal=()=>{const e=document.querySelector(".navbar-collapse");e.classList.contains("show")&&e.classList.remove("show"),ninjaKeys.open()};</script> <script>const ninja=document.querySelector("ninja-keys");ninja.data=[{id:"nav-about",title:"about",section:"Navigation",handler:()=>{window.location.href="/"}},{id:"nav-blog",title:"blog",description:"",section:"Navigation",handler:()=>{window.location.href="/blog/"}},{id:"nav-publications",title:"publications",description:"publications by categories in reversed chronological order.",section:"Navigation",handler:()=>{window.location.href="/publications/"}},{id:"nav-projects",title:"projects",description:"A growing collection of your cool projects.",section:"Navigation",handler:()=>{window.location.href="/projects/"}},{id:"nav-repositories",title:"repositories",description:"Some Github users and repos that I think are worth following",section:"Navigation",handler:()=>{window.location.href="/repositories/"}},{id:"nav-cv",title:"cv",description:"Work history",section:"Navigation",handler:()=>{window.location.href="/cv/"}},{id:"nav-teaching",title:"teaching",description:"Helping people learn makes me happy",section:"Navigation",handler:()=>{window.location.href="/teaching/"}},{id:"nav-people",title:"people",description:"people to follow and learn from",section:"Navigation",handler:()=>{window.location.href="/people/"}},{id:"post-elixir-parameter-validation-with-ecto",title:"Elixir, Parameter Validation with Ecto",description:"Using the Ecto library to validate API Parameters",section:"Posts",handler:()=>{window.location.href="/blog/2023/parameter-validation-with-ecto/"}},{id:"post-four-thousand-weeks",title:"Four Thousand Weeks",description:"Notes on the book Four Thousand Weeks, Time Management for Mortals",section:"Posts",handler:()=>{window.location.href="/blog/2023/four-thouand-weeks/"}},{id:"post-elixir-programming-puzzles-and-sorting-arrays",title:"Elixir, Programming Puzzles and Sorting Arrays",description:"Elixir puzzles",section:"Posts",handler:()=>{window.location.href="/blog/2019/contiguous-sort-elixir/"}},{id:"post-programming-elixir",title:"Programming Elixir",description:"Learning Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2016/programming-elixir/"}},{id:"post-learning-elixir-and-phoenix",title:"Learning Elixir and Phoenix",description:"Learning Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2016/elixir-phoenix-ecto/"}},{id:"post-practice-a-new-language-with-exercism",title:"Practice a new language with exercism",description:"Learning a language with online courses",section:"Posts",handler:()=>{window.location.href="/blog/2016/exercism-web-site/"}},{id:"post-upgrade-to-9-5-postgresql-on-os-x",title:"Upgrade to 9.5 Postgresql on OS X",description:"Postgresql install tutorial",section:"Posts",handler:()=>{window.location.href="/blog/2016/upgrade_osx_postgres/"}},{id:"post-ruby-resources",title:"Ruby Resources",description:"Information on Ruby Resources",section:"Posts",handler:()=>{window.location.href="/blog/2016/ruby-resources/"}},{id:"post-using-git-from-inside-atom",title:"Using Git From Inside Atom",description:"Information on using git in the Atom editor",section:"Posts",handler:()=>{window.location.href="/blog/2015/using-git-from-inside-atom/"}},{id:"post-simple-error-in-atom-with-rubocop",title:"Simple Error in Atom with Rubocop",description:"Information on running rubocop in the Atom editor",section:"Posts",handler:()=>{window.location.href="/blog/2015/simple-error-in-atom-with-rubocop/"}},{id:"post-using-rubocop-in-atom",title:"Using Rubocop in Atom",description:"Information on running rubocop in the Atom editor",section:"Posts",handler:()=>{window.location.href="/blog/2015/using-rubocop-in-atom/"}},{id:"post-postgresql-lag-and-windowing-function",title:"Postgresql - Lag and Windowing Function",description:"Using Lag and window operations with Postgresql",section:"Posts",handler:()=>{window.location.href="/blog/2015/postgresql-lag-and-windowing-function/"}},{id:"post-more-atom-and-ruby-using-ruby-test",title:"More Atom and Ruby - Using ruby-test",description:"Using Ruby with the Atom editor",section:"Posts",handler:()=>{window.location.href="/blog/2015/more-atom-and-ruby-using-ruby-test/"}},{id:"post-george-washington-and-torture",title:"George Washington and Torture",description:"Historical Quotes",section:"Posts",handler:()=>{window.location.href="/blog/2014/george-washington-and-torture/"}},{id:"post-postgresql-optimizing-sql-performance",title:"Postgresql - Optimizing SQL Performance",description:"SQL Optimization with Postgresql",section:"Posts",handler:()=>{window.location.href="/blog/2014/postgresql-optimizing-sql-performance/"}},{id:"post-postgresql-connection-info",title:"Postgresql Connection Info",description:"Who is connected to my Postgres database?",section:"Posts",handler:()=>{window.location.href="/blog/2014/postgresql-connection-info/"}},{id:"post-moroccan-style-brisket",title:"Moroccan Style Brisket",description:"Brisket Recipe",section:"Posts",handler:()=>{window.location.href="/blog/2014/moroccan-style-brisket/"}},{id:"project-brod-mimic",title:"brod-mimic",description:"Elixir code exploration of the Erlang brod Kafka library",section:"Projects",handler:()=>{window.location.href="/projects/2024-brod-mimic/"}},{id:"socials-email",title:"Send email",section:"Socials",handler:()=>{window.open("mailto:%79%6F%75@%65%78%61%6D%70%6C%65.%63%6F%6D","_blank")}},{id:"socials-google-scholar",title:"Google Scholar",section:"Socials",handler:()=>{window.open("https://scholar.google.com/citations?user=qc6CJjYAAAAJ","_blank")}},{id:"socials-rss",title:"RSS Feed",section:"Socials",handler:()=>{window.open("/feed.xml","_blank")}},{id:"light-theme",title:"Change theme to light",description:"Change the theme of the site to Light",section:"Theme",handler:()=>{setThemeSetting("light")}},{id:"dark-theme",title:"Change theme to dark",description:"Change the theme of the site to Dark",section:"Theme",handler:()=>{setThemeSetting("dark")}},{id:"system-theme",title:"Use system default theme",description:"Change the theme of the site to System Default",section:"Theme",handler:()=>{setThemeSetting("system")}}];</script> </body> </html>

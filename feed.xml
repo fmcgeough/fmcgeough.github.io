@@ -1,4 +1,432 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://fmcgeough.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://fmcgeough.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-05-28T16:59:47+00:00</updated><id>https://fmcgeough.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Programming Elixir</title><link href="https://fmcgeough.github.io/blog/2016/programming-elixir/" rel="alternate" type="text/html" title="Programming Elixir"/><published>2016-07-17T08:53:13+00:00</published><updated>2016-07-17T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2016/programming-elixir</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2016/programming-elixir/"><![CDATA[<p>For learning Elixir I started with the ubiquitous Dave Thomas and “Programming Elixir”. I’m bouncing back and forth between reading through that book and watching the ConFreaks videos of the last two year’s Elixir conferences (and thinking about whether I want to pay to go to this year’s conference which is in Orlando).</p> <p>“Programming Elixir” has been pretty good. The exercises at the end of the chapter cover the concepts discussed. I was stumped for a couple of minutes looking at “define a function head with the defaults”. But after working through the example it made sense and resulted in code that seemed to make sense to me.</p> <p>The thing is in Elixir (and Erlang) the function head (declaration) is a separate entity from the function body. Which is an odd thing to wrap your head around if you come from almost any other language background. In the case of the example with default parameters in the book you can do this :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule DefaultParams1 do
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://fmcgeough.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://fmcgeough.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-05-28T17:05:56+00:00</updated><id>https://fmcgeough.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Elixir, Parameter Validation with Ecto</title><link href="https://fmcgeough.github.io/blog/2023/parameter-validation-with-ecto/" rel="alternate" type="text/html" title="Elixir, Parameter Validation with Ecto"/><published>2023-07-31T08:53:13+00:00</published><updated>2023-07-31T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2023/parameter-validation-with-ecto</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2023/parameter-validation-with-ecto/"><![CDATA[<p>Elixir is a language that first appeared in 2012. There is a web framework called Phoenix that is what is primarily used to develop web-based software in Elixir. The Ecto library is used in Elixir to interact with relational databases. However, Ecto can also be used to validate parameters passed to API endpoints. This is a quick example to help you understand how this is done. It assumes you are already at least somewhat familiar with Elixir and the Phoenix framework. The example is just that, an example. It’s not complete. It’s not meant to be an example of production-level code. You can think of this as an intro and getting started type of thing. It’s got enough complexity to get you past some initial hurdles.</p> <h2 id="prerequisites">Prerequisites</h2> <p>The sample code is in a Phoenix framework app generated with:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix phx.new --no-assets  --no-dashboard --no-ecto --no-html --no-live --no-mailer --no-tailwind paramz
+</code></pre></div></div> <p>Then the Ecto dependency was added to the mix.exs file:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{:ecto, "~&gt; 3.10"}
+</code></pre></div></div> <p>It is not necessary to add a dependency on <code class="language-plaintext highlighter-rouge">ecto_sql</code> nor <code class="language-plaintext highlighter-rouge">db_connection</code>. In an actual application where you have a dependency on <code class="language-plaintext highlighter-rouge">ecto_sql</code> it is not necessary to add a dependency on <code class="language-plaintext highlighter-rouge">ecto</code>. The dependency on <code class="language-plaintext highlighter-rouge">ecto_sql</code> brings in the <code class="language-plaintext highlighter-rouge">ecto</code> library.</p> <h2 id="router">Router</h2> <p>For the example code we have a router with two endpoints:</p> <ul> <li>a simple endpoint with parameters in the path</li> <li>a more complex endpoint with parameters in path, a JSON body containing a nested object and a query string.</li> </ul> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ParamzWeb.Router do
+  use ParamzWeb, :router
+
+  pipeline :api do
+    plug(:accepts, ["json"])
+  end
+
+  scope "/api", ParamzWeb do
+    pipe_through(:api)
+
+    # Simple request with parameters in path
+    get("/:account_id/:user_id/simple", ParamCheckController, :simple)
+
+    # More complex request with parameter in path, a body containing
+    # data and allows a query string
+    post("/:account_id/complex", ParamCheckController, :complex)
+  end
+end
+</code></pre></div></div> <h2 id="controller-functions">Controller Functions</h2> <p>For both our controller functions the example code just validates the parameters and then sends back 200 and the validated parameters (which have conversions done). If the parameters are invalid the code returns a 400 status code with the error info on the parameters supplied.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ParamzWeb.ParamCheckController do
+  use ParamzWeb, :controller
+
+  import ParamzWeb.Params
+
+  alias ParamzWeb.Params.{Complex, Simple}
+
+  def simple(conn, params) do
+    params
+    |&gt; Simple.validate()
+    |&gt; handle_validation_result()
+    |&gt; case do
+      {:ok, validated_params} -&gt;
+        IO.inspect(validated_params, label: "after Params call")
+        conn |&gt; put_status(200) |&gt; json(Map.from_struct(validated_params))
+
+      {:error, :invalid_input, error_msg} -&gt;
+        conn |&gt; put_status(400) |&gt; json(%{error: "Invalid parameter input. #{error_msg}"})
+    end
+  end
+
+  def complex(conn, params) do
+    params
+    |&gt; Complex.validate()
+    |&gt; handle_validation_result()
+    |&gt; case do
+      {:ok, validated_params} -&gt;
+        IO.inspect(validated_params, label: "after Params call")
+        conn |&gt; put_status(200) |&gt; json(validated_params)
+
+      {:error, :invalid_input, error_msg} -&gt;
+        conn |&gt; put_status(400) |&gt; json(%{error: "Invalid parameter input. #{error_msg}"})
+    end
+  end
+end
+</code></pre></div></div> <h2 id="parameter-validation-code">Parameter Validation Code</h2> <h3 id="general-utility">General Utility</h3> <p>A simple module to convert a changeset into either {:ok, map()} or {:error, :invalid_input, String.t()}</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Paramz.Utils.LogHelp do
+  @moduledoc """
+  Utility functions related to logging errors
+  """
+
+  alias Ecto.Changeset
+
+  @doc """
+  If our app code gets back an error tuple from Ecto where the second
+  element is an Ecto.Changeset this function can convert that value
+  into a String for logging
+  """
+  @spec ecto_error(Ecto.Changeset.t()) :: String.t()
+  def ecto_error(%Ecto.Changeset{} = changeset) do
+    IO.inspect(changeset, label: "changeset errors")
+
+    Changeset.traverse_errors(changeset, fn {msg, opts} -&gt;
+      Enum.reduce(opts, msg, fn {key, value}, acc -&gt;
+        String.replace(acc, "%{#{key}}", _to_string(value))
+      end)
+    end)
+    |&gt; Enum.reverse()
+    |&gt; Enum.map_join(", ", fn {k, msgs} -&gt;
+      "#{k}: #{_to_string(msgs)}"
+    end)
+  end
+
+  def ecto_error(changeset) do
+    raise ArgumentError, "unsupported argument: #{inspect(changeset)}"
+  end
+
+  defp _to_string(msgs) when is_list(msgs) do
+    msgs |&gt; Enum.map_join(", ", &amp;_to_string(&amp;1))
+  end
+
+  defp _to_string(msg) when is_binary(msg) do
+    String.replace(msg, "\\n", " ")
+  end
+
+  defp _to_string(msg) do
+    "#{inspect(msg)}"
+  end
+end
+</code></pre></div></div> <h3 id="validation-for-the-simple-endpoint">Validation for the simple endpoint</h3> <p>This endpoint has two parameters in the path. One is the account id which is an integer. The other is the user id which is also an integer.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ParamzWeb.Params.Simple do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @max_int32 (:math.pow(2, 31) - 1) |&gt; round()
+
+  @primary_key false
+  embedded_schema do
+    field(:account_id, :integer)
+    field(:user_id, :integer)
+  end
+
+  def validate(attrs) do
+    changeset(%__MODULE__{}, attrs)
+  end
+
+  def changeset(%__MODULE__{} = struct, attrs \\ %{}) do
+    struct
+    |&gt; cast(attrs, [:account_id, :user_id])
+    |&gt; validate_required([:account_id, :user_id])
+    |&gt; validate_number(:account_id, greater_than: 0, less_than_or_equal_to: @max_int32)
+    |&gt; validate_number(:user_id, greater_than: 0, less_than_or_equal_to: @max_int32)
+  end
+end
+</code></pre></div></div> <h2 id="doing-validation-for-complex-endpoint">Doing validation for complex endpoint</h2> <p>In this endpoint there’s a parameter in the path - the account id - a body containing JSON with a nested object - and a query parameter.</p> <p>In order to handle nested objects in Ecto validation you can use the embeds_one syntax. This means that every nested object needs its own Ecto.Schema defined and has its own separate changeset functionality.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ParamzWeb.Params.License do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @max_int32 (:math.pow(2, 31) - 1) |&gt; round()
+
+  @primary_key false
+  embedded_schema do
+    field(:id, :integer)
+    field(:type, :string)
+  end
+
+  def changeset(struct, attrs) do
+    struct
+    |&gt; cast(attrs, [:id, :type])
+    |&gt; validate_required([:id, :type])
+    |&gt; validate_number(:id, greater_than: 0, less_than_or_equal_to: @max_int32)
+  end
+end
+
+defmodule ParamzWeb.Params.License do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @max_int32 (:math.pow(2, 31) - 1) |&gt; round()
+
+  @primary_key false
+  embedded_schema do
+    field(:id, :integer)
+    field(:type, :string)
+  end
+
+  def changeset(struct, attrs) do
+    struct
+    |&gt; cast(attrs, [:id, :type])
+    |&gt; validate_required([:id, :type])
+    |&gt; validate_number(:id, greater_than: 0, less_than_or_equal_to: @max_int32)
+  end
+end
+
+defmodule ParamzWeb.Params.Complex do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  alias ParamzWeb.Params.License
+
+  @max_int32 (:math.pow(2, 31) - 1) |&gt; round()
+  @allowed_includes ["posts", "pictures"]
+  @allowed_includes_str Enum.join(@allowed_includes, ", ")
+  @invalid_include_value "invalid include values. Allowed values:"
+  @invalid_include_format "invalid include value. Must be list"
+
+  @primary_key false
+  embedded_schema do
+    field(:account_id, :integer)
+    field(:name, :string)
+    field(:email, :string)
+    field(:include, {:array, :string})
+    embeds_one(:license, License)
+  end
+
+  def validate(attrs) do
+    changeset(%__MODULE__{}, attrs)
+  end
+
+  def changeset(struct, attrs) do
+    struct
+    |&gt; cast(attrs, [:name, :email, :account_id, :include])
+    |&gt; cast_embed(:license)
+    |&gt; validate_required([:name, :email, :account_id])
+    |&gt; validate_number(:account_id, greater_than: 0, less_than_or_equal_to: @max_int32)
+    |&gt; validate_include()
+  end
+
+  def validate_include(changeset) do
+    changeset
+    |&gt; get_field(:include)
+    |&gt; validate_include_value(changeset)
+  end
+
+  defp validate_include_value(nil, changeset), do: changeset
+
+  defp validate_include_value(includes, changeset) when is_list(includes) do
+    if Enum.all?(includes, &amp;(&amp;1 in @allowed_includes)) do
+      changeset
+    else
+      add_error(changeset, :include, "#{@invalid_include_value} #{@allowed_includes_str}")
+    end
+  end
+
+  defp validate_include_value(_includes, changeset) do
+    add_error(changeset, :include, @invalid_include_format)
+  end
+end
+
+defimpl Jason.Encoder, for: ParamzWeb.Params.License do
+  def encode(value, opts) do
+    value
+    |&gt; Map.take([[:id, :type]])
+    |&gt; Jason.Encode.map(opts)
+  end
+end
+
+defimpl Jason.Encoder, for: ParamzWeb.Params.Complex do
+  def encode(value, opts) do
+    current_value = Map.take(value, [:account_id, :name, :email, :include])
+
+    if value.license do
+      Map.put(current_value, :license, Map.take(value.license, [:id, :type]))
+    else
+      current_value
+    end
+    |&gt; Jason.Encode.map(opts)
+  end
+end
+</code></pre></div></div> <h2 id="changeset-errors">Changeset Errors</h2> <p>Here’s some simple code to convert changeset errors to a String.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Paramz.Utils.LogHelp do
+  @moduledoc """
+  Utility functions related to logging errors
+  """
+
+  @doc """
+  If our app code gets back an error tuple from Ecto where the second
+  element is an Ecto.Changeset this function can convert that value
+  into a String for logging
+  """
+  @spec ecto_error(Ecto.Changeset.t()) :: String.t()
+  def ecto_error(%Ecto.Changeset{} = changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} -&gt;
+      Enum.reduce(opts, msg, fn {key, value}, acc -&gt;
+        String.replace(acc, "%{#{key}}", _to_string(value))
+      end)
+    end)
+    |&gt; Enum.reduce("", fn {k, v}, acc -&gt;
+      joined_errors = Enum.join(v, "; ")
+      "#{acc} #{k}: #{joined_errors}"
+    end)
+  end
+
+  def ecto_error(changeset) do
+    raise ArgumentError, "unsupported argument: #{inspect(changeset)}"
+  end
+
+  defp _to_string(val) when is_list(val) do
+    Enum.join(val, ",")
+  end
+
+  defp _to_string(val), do: to_string(val)
+end
+</code></pre></div></div> <h2 id="testing">Testing</h2> <h3 id="simple-endpoint---success">Simple Endpoint - Success</h3> <h4 id="client-side">Client side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -s http://localhost:4000/api/1234/90023377/simple
+
+{"account_id":1234,"user_id":90023377}%
+</code></pre></div></div> <h4 id="server-side">Server side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[info] GET /api/1234/90023377/simple
+[debug] Processing with ParamzWeb.ParamCheckController.simple/2
+  Parameters: %{"account_id" =&gt; "1234", "user_id" =&gt; "90023377"}
+  Pipelines: [:api]
+after Params call: %ParamzWeb.Params.Simple{account_id: 1234, user_id: 90023377}
+[info] Sent 200 in 1ms
+</code></pre></div></div> <h3 id="simple-endpoint---bad-parameters-failure">Simple Endpoint - Bad Parameters, Failure</h3> <h4 id="client-side-1">Client side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -s http://localhost:4000/api/1234/90abcdE77/simple
+
+{"error":"Invalid parameter input.  user_id: is invalid"}%
+</code></pre></div></div> <h4 id="server-side-1">Server side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[info] GET /api/1234/90abcdE77/simple
+[debug] Processing with ParamzWeb.ParamCheckController.simple/2
+  Parameters: %{"account_id" =&gt; "1234", "user_id" =&gt; "90abcdE77"}
+  Pipelines: [:api]
+[info] Sent 400 in 1ms
+</code></pre></div></div> <h3 id="complex-endpoint---success">Complex Endpoint - Success</h3> <h4 id="client-side-2">Client Side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ curl -s -H "Content-Type: application/json" -X POST -d '{
+"name": "testing",
+"email": "testing@google.com",
+"license": {
+  "id": "95055",
+  "type": "license_reference"
+}
+}' http://localhost:4000/api/1234/complex\?include\[\]\=posts
+
+{"account_id":1234,"email":"testing@google.com","include":["teams"],"license":{"id":95055,"type":"license_reference"},"name":"testing"}%
+</code></pre></div></div> <h4 id="server-side-logging">Server side logging</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[info] POST /api/1234/complex
+debug] Processing with ParamzWeb.ParamCheckController.complex/2
+Parameters: %{"account_id" =&gt; "1234", "email" =&gt; "testing@google.com", "include" =&gt; ["posts"], "license" =&gt; %{"id" =&gt; "95055", "type" =&gt; "license_reference"}, "name" =&gt; "testing"}
+Pipelines: [:api]
+after Params call: %ParamzWeb.Params.Complex{
+account_id: 1234,
+name: "testing",
+email: "testing@google.com",
+include: ["posts"],
+license: %ParamzWeb.Params.License{id: 95055, type: "license_reference"}
+}
+[info] Sent 200 in 2ms
+</code></pre></div></div> <h3 id="complex-endpoint---bad-parameters-failure">Complex Endpoint - Bad Parameters, Failure</h3> <h4 id="client-side-3">Client Side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -s -H "Content-Type: application/json" -X POST -d '{
+"name": "testing",
+"email": "testing@google.com",
+"license": {
+  "type": "license_reference"
+}
+}' http://localhost:4000/api/1234/complex\?include\[\]\=posts
+
+{"error": "Invalid parameter input. license: %{id: [\"can't be blank\"]}"}
+</code></pre></div></div> <h4 id="server-side-2">Server Side</h4> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex(1)&gt; [info] POST /api/1234/complex
+changeset errors: #Ecto.Changeset&lt;
+  action: nil,
+  changes: %{
+    account_id: 1234,
+    email: "testing@google.com",
+    include: ["posts"],
+    license: #Ecto.Changeset&lt;
+      action: :insert,
+      changes: %{type: "license_reference"},
+      errors: [id: {"can't be blank", [validation: :required]}],
+      data: #ParamzWeb.Params.License&lt;&gt;,
+      valid?: false
+    &gt;,
+    name: "testing"
+  },
+  errors: [],
+  data: #ParamzWeb.Params.Complex&lt;&gt;,
+  valid?: false
+&gt;
+[debug] Processing with ParamzWeb.ParamCheckController.complex/2
+  Parameters: %{"account_id" =&gt; "1234", "email" =&gt; "testing@google.com", "include" =&gt; ["posts"], "license" =&gt; %{"type" =&gt; "license_reference"}, "name" =&gt; "testing"}
+  Pipelines: [:api]
+[info] Sent 400 in 2ms
+</code></pre></div></div> <h2 id="the-params-library">The params library</h2> <p>There is a <a href="https://hex.pm/packages/params">params library</a> that wraps Ecto validation. It attempts to reduce boiler-plate code. However, that comes at a cost in giving up control you might need. In addition, there is no active maintainer for the library at the moment. I’d recommend not using this library at the moment.</p>]]></content><author><name></name></author><category term="Elixir"/><category term="Elixir"/><summary type="html"><![CDATA[Using the Ecto library to validate API Parameters]]></summary></entry><entry><title type="html">Four Thousand Weeks</title><link href="https://fmcgeough.github.io/blog/2023/four-thouand-weeks/" rel="alternate" type="text/html" title="Four Thousand Weeks"/><published>2023-07-31T07:53:13+00:00</published><updated>2023-07-31T07:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2023/four-thouand-weeks</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2023/four-thouand-weeks/"><![CDATA[<p>Notes on the book <a href="https://us.macmillan.com/books/9780374159122/fourthousandweeks">“Four Thousand Weeks: Time Management for Mortals”</a> by Oliver Burkeman. I enjoyed the book. I think it’s worth reading. It’s not your typical time management book (such as Getting Things Done). It’s not focused on making you more efficient at getting through your day. It wants the reader to think about what it is that they actually want to accomplish in the limited lifetime that each of us is gifted.</p> <h2 id="highlights">Highlights</h2> <p>I’ll take notes when I’m reading. If its a Kindle (or the like) then I can highlight as I go. If its a library book then I’ll usually write a couple notes after I finish a large enough portion of a book. I’ll do this with books I buy too. I don’t generally highlight physical books.</p> <p>I don’t like “keeping” books. When I was younger I built up a fairly large collection of books. As it turns out, books are heavy. It’s a pain to move them. So I began giving away my books - either to friends, charity organizations or our local library. There’s a wonderful service called <a href="https://littlefreelibrary.org/">Free Little Library</a>. We have a couple of them in our surrounding neighborhoods and one was done by a woman that is in a bookclub I belong to.</p> <p>The list below is extracted from my book highlights. They may not be direct quotes. Any errors that you find are almost certainly my fault and not the author’s.</p> <ul> <li>The real problem isn’t our limited time. The real problem - or so I hope to convince you - is that we’ve unwittingly inherited, and feel pressured to live by, a troublesome set of ideas about how to use our limited time, all of which are pretty much guaranteed to make things worse.</li> <li>Traditional time management has long held out the implicit promise of “getting on top of everything”, of becoming the master of one’s time. The yearning for this feeling of control over the unfolding hours and days is an old one: back in 1908, in a short book entitled <a href="https://www.gutenberg.org/ebooks/2274">How to Live on 24 Hours a Day - Project Gutenberg link</a>, the English journalist and novelist Arnold Bennett offered scheduling tips to “that innumerable band of souls who are haunted, more or less painfully, by the feeling that the years slip by, and slip by, and slip by, and they have not yet been able to get their lives into proper working order.”</li> <li>Historians call this way of living (in the Middle Ages) “task orientation,” because the rhythms of life emerge organically from the tasks themselves, rather than being lined up against an abstract timeline, the approach that has become second nature to us today.</li> <li>once “time” and “life” had been separated in most people’s minds, time became a thing that you used - and it’s this shift that serves as a precondition for all the uniquely modern ways in which we struggle with time today.</li> <li>(time) stops being the water in which you swim and turns into something you feel you need to dominate or control</li> <li>“One of my teachers told me, “If I think a thought five times, and I’m not learning anything new from it, I don’t think it anymore.”</li> <li>Mumford wrote “Eternity ceased gradually to serve as the measure and focus of human actions.” In its place came the dictatorship of the clock, the schedule, and the Google calendar alert.</li> <li>instead of clearing the decks, declining to clear the decks, focusing instead on what’s truly of greatest consequence while tolerating the discomfort of knowing that, as you do so, the decks will be filling up further, with emails and errands and other to-dos, many of which you may never get around to at all.</li> <li>smoothness, as it turns out, is a dubious virtue, since it’s often the unsmoothed textures of life that make it liveable, helping nurture the relationships that are crucial for mental and physical health, and for reslience of our communities.</li> <li>when you render the process more convenient, you drain it of its meaning</li> <li>the original Latin word for decide, decidere, means “to cut off”, as in slicing away alternatives; it’s a close cousin of words like “homicide” and “suicide”</li> <li>Become a Better Procrastinator</li> <li>By the end of your life, you’ll have gotten around to doing virtually none of the things you theoretically could have done</li> <li>The real measure of any time management technique is whether or not it helps you neglect the right things</li> <li>pay yourself first when it comes to time. <a href="https://jessicaabel.com/">Creative Career Building for Artists &amp; Writers - Jessica Abel</a></li> <li>the only way to be sure (anything) will happen is to do some of it today, no matter how little, and no matter how many other things may be begging for your attention.</li> <li>limit your work in progress</li> <li>resist the allure of middling priorities - make a list of the top 25 things you want out of life and order them from most important to least. Then organize your time around the top 5. Actively avoid every other item on the list.</li> <li>“you need to learn how to say no to things you do want to do, with the recognition that you have only one life” – Elizabeth Gilbert</li> <li>“We invariably prefer indecision over committing ourselves to a single path” - Henri Bergson</li> <li>psychologist Timothy Wilson “we’re capable of consciously attending to about 0.0004 percent of the information bombarding our brains at any given moment”. In 11 studies, we found that participants typically did not enjoy spending 6 to 15 minutes in a room by themselves with nothing to do but think, that they enjoyed doing mundane external activities much more, and that many preferred to administer electric shocks to themselves instead of being left alone with their thoughts.</li> <li>“Attention is the beginning of devotion” - poet Mary Oliver</li> <li>“We are distracted from distraction by distraction” - T S Eliot</li> </ul> <h2 id="recommendations-from-book">Recommendations From Book</h2> <p>These were books or web articles referenced in the book. I found all of them interesting.</p> <ul> <li><a href="https://dekalb.polarislibrary.com/polaris/view.aspx?cn=301506">Meditation for fidgety skeptics : a 10% happier how-to book</a></li> <li><a href="https://www.robertfritz.com/wp/the-path-of-least-resistance/">The Path of Least Resistance - Robert Fritz</a></li> <li><a href="https://shoutout.wix.com/so/acNOetBUR/c?w=q2gEOTj7GCC6NCtoUGBFLw8kctnFcPKbG4COvb4ouRw.eyJ1IjoiaHR0cHM6Ly9qdWxpYWNhbWVyb25saXZlLmNvbS9ib29rcy1ieS1qdWxpYS90aGUtbWlyYWNsZS1vZi1tb3JuaW5nLXBhZ2VzLyIsInIiOiJhMDhkYThhZC05ZDE5LTRlMmEtNjk3YS0xODgzMGVjYTNiZDgiLCJtIjoibHAifQ">The Miracle of Morning Pages - Julia Cameron</a></li> <li><a href="https://www.joantollifson.com/book-death-the-end-of-self-improvement.html">Death: The End of Self-Improvement - Joan Tollifson</a></li> <li><a href="https://us.macmillan.com/books/9781250097316/thegivennessofthings">Marilynne Robinson’s “joyless urgency” (The Givenness of Things)</a></li> <li><a href="https://kanbantool.com/kanban-guide/personal-kanban">Personal Kanban by Jim Benson and Tonianne DeMaria Barry</a></li> </ul> <h2 id="links">Links</h2> <ul> <li><a href="https://www.ted.com/talks/tim_urban_inside_the_mind_of_a_master_procrastinator">Inside the mind of a master procrastinator</a></li> <li><a href="https://www.tenpercent.com/podcast-episode/oliver-burkeman-456">#456. Time Management for Mortals | Oliver Burkeman — Ten Percent Happier</a></li> </ul>]]></content><author><name></name></author><category term="reading"/><category term="reading"/><summary type="html"><![CDATA[Notes on the book Four Thousand Weeks, Time Management for Mortals]]></summary></entry><entry><title type="html">Elixir, Programming Puzzles and Sorting Arrays</title><link href="https://fmcgeough.github.io/blog/2019/contiguous-sort-elixir/" rel="alternate" type="text/html" title="Elixir, Programming Puzzles and Sorting Arrays"/><published>2019-12-31T07:53:13+00:00</published><updated>2019-12-31T07:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2019/contiguous-sort-elixir</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2019/contiguous-sort-elixir/"><![CDATA[<p>There are a number of programming puzzle sites that are worthwhile tools for learning a language, brushing up on your skills or just exploring how other people might solve problems differently than you. I think this is all good. I’ve found it especially helpful in learning a new language. One of the interesting things about trying to solve some of these puzzles with a language like Elixir is that you have to work through the problem in a different way then you would in a language like “C” or Java. Arrays and sorting are common problems where you’d index into an Array with those languages but you want to avoid that in Elixir since you’re dealing with Lists and iterating into a List gets expensive. Here’s an example of a problem where I solved it a different way.</p> <p>Say you’re given the problem of determining if it’s possible to sort an array of integers by reversing one of the array’s contiguous subarrays. So, for example, if you are given the input: <code class="language-plaintext highlighter-rouge">[-1, 5, 4, 3, 2, 8]</code> you can reverse the subarray <code class="language-plaintext highlighter-rouge">[5, 4, 3, 2]</code> and the entire array would end up sorted. But, for the input <code class="language-plaintext highlighter-rouge">[-1, 5, 4, 3, 2, -5]</code> there is no subarray that can be reversed and end up with a sorted array. The output from your function should just be true (a subarray exists that can be reversed to provide sorted array) or false (no such subarray exists). Additional constraints are that if there are any duplicates in the input then the function should return false.</p> <p>If you take a step back from the problem then you realize that in order for the function to return true the input has to consist of a subarray of 0..n ascending elements, then a subarray of 0..n descending elements (where the lowest number of the subarray is &gt; then the highest number of the first subarray) and then a subarray of 0..n ascending elements again (where the lowest number of the last subarray is &gt; the highest number in the descending subarray).</p> <p>In the example, <code class="language-plaintext highlighter-rouge">[-1, 5, 4, 3, 2, 8]</code> the subarrays that need to be identified are <code class="language-plaintext highlighter-rouge">[-1]</code> and <code class="language-plaintext highlighter-rouge">[5, 4, 3, 2]</code> and <code class="language-plaintext highlighter-rouge">[8]</code>. Since -1 is &lt; 2 (the last - lowest - element in subarray2) and since 5 is &lt; 8 (5 is the highest element in subarray 2) then the function should respond “true”.</p> <p>Okay, its hopefully clear that those are the 3 subarrays for this input but what questions do we need to answer to figure out whether reversing that 2nd subarray will leave the array sorted? Starting from the first couple elements of the list [-1, 5] we know that 5 &gt; -1 so 1) we know that we have an ascending subarray consisting of at least -1 and possibly 5. But whether 5 is part of the ascending subarray depends on the next element. Since the next element is 4 it means that 5 is the first element in our descending subarray. We’d keep traversing elements in the list after 4 until we find one that is greater than the element that proceeded it. That’s how we get to [8] as the last subarray.</p> <p>Now, since the 2nd subarray was in descending order and since the 3rd subarray ascends (and stops in this case) with 8 and 8 is greater than our first element in the descending subarray we “know” that this array can be sorted by reversing that descending subarray.</p> <p>The data that it appears that we need to proceed thru the list and make a determination is: 1) what’s the current status (:leading_ascending, :descending, :trailing_ascending); 2) what’s the maximum (last) number in subarray1 (this allows us to check for whether any number in the 2nd subarray is less than max_subarray1); 3) what’s the maximum (first) number in subarray2 (this allows us to check for whether the number that starts the 3rd ascending subarray is less than max_subarray2). Since we may or may not have an initial ascending section the value of max_subarray1 can be nil.</p> <p>If we put all the logic into our state module then the driver to determine true/false becomes pretty simple:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ContiguousSubArray do
+  def reverse_to_sort([num | t]) do
+    reverse_to_sort(t, num, ReverseSortState.new(num))
+  end
+
+  def reverse_to_sort([num | t], prev, state) do
+    IO.puts("#{inspect(state)}")
+
+    case ReverseSortState.advance(state, num, prev) do
+      false -&gt; false
+      new_state -&gt; reverse_to_sort(t, num, new_state)
+    end
+  end
+
+  def reverse_to_sort([], _, _state), do: true
+end
+</code></pre></div></div> <p>The ContiguousSubArray creates a new ReverseSortState and then calls into the function <code class="language-plaintext highlighter-rouge">reverse_to_sort/3</code>. In that function we call <code class="language-plaintext highlighter-rouge">ReverseSortState.advance/3</code> and pass the current state of our analysis of the input, the value in the array we’re currently on, and the previous value in the array. If the <code class="language-plaintext highlighter-rouge">advance</code> function returns a state then all is still good and we move forward one position by calling reverse_to_sort/3 recursively. If `advance’ returns false then the input didn’t meet our expectations and we return false to the caller. Our ReverseSortState is:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ReverseSortState do
+  defstruct [:max_subarray2, :max_subarray1, :status]
+
+  def new(num) do
+    %__MODULE__{
+      max_subarray2: num,
+      max_subarray1: nil,
+      status: :leading_ascending
+    }
+  end
+
+  def advance(%{status: status} = state, num, prev) when status == :leading_ascending do
+    cond do
+      num &gt; prev -&gt;
+        %{state | max_subarray2: num, max_subarray1: prev}
+
+      num == prev -&gt;
+        false
+
+      num &lt; prev and num_greater_than_max_subarray1?(state, num) -&gt;
+        %{state | status: :descending}
+
+      true -&gt;
+        false
+    end
+  end
+
+  def advance(%{status: status} = state, num, prev) when status == :descending do
+    cond do
+      num &lt; prev and num &lt; state.max_subarray2 and num_greater_than_max_subarray1?(state, num) -&gt;
+        state
+
+      num == prev -&gt;
+        false
+
+      num &gt; prev and num_greater_than_max_subarray1?(state, num) and num &gt; state.max_subarray2 -&gt;
+        %{state | status: :trailing_ascending}
+
+      true -&gt;
+        false
+    end
+  end
+
+  def advance(%{status: status} = state, num, prev) when status == :trailing_ascending do
+    case num &gt; prev do
+      true -&gt; state
+      false -&gt; false
+    end
+  end
+
+  defp num_greater_than_max_subarray1?(state, num) do
+    is_nil(state.max_subarray1) or num &gt; state.max_subarray1
+  end
+end
+</code></pre></div></div> <p>We can run this code thru some unit tests with:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule ContiguousSubArrayTest do
+  @inputs [
+    {[-1, 5, 4, 3, 2, 8], true},
+    {[1, 3, 2, 5, 4, 6], false},
+    {[2, 3, 2, 4], false},
+    {[19, 32, 23], true},
+    {[5, 4, 3, 2, 1], true}
+  ]
+
+  def test do
+    @inputs
+    |&gt; Enum.map(fn {input, result} -&gt;
+      ContiguousSubArray.reverse_to_sort(input) == result
+    end)
+  end
+end
+</code></pre></div></div> <p>On puzzles in general, there are a number of companies that use puzzles from these sites (or some developed internally) as filters for hiring. This is a bit frustrating if you are applying for a job working on what amounts to a CRUD app but are asked to solve puzzles that would never come up in the actual work for the job. But its not uncommon. If you know the company you’d like to work at will throw these type of puzzles at you then I’d recommend spending some time on one or more of the programming puzzle sites and work thru some puzzles. If you can find out which site the company uses then practice on that since each has their own UI and idiosyncrasies and you want to be familiar with it before you start working on puzzles as part of interview (ordinarily as a timed exercise).</p> <p>Sites to check out that have Elixir support:</p> <ul> <li><a href="https://codesignal.com/">https://codesignal.com/</a></li> <li><a href="https://exercism.io/">https://exercism.io/</a></li> </ul>]]></content><author><name></name></author><category term="Elixir"/><category term="Elixir"/><summary type="html"><![CDATA[Elixir puzzles]]></summary></entry><entry><title type="html">Programming Elixir</title><link href="https://fmcgeough.github.io/blog/2016/programming-elixir/" rel="alternate" type="text/html" title="Programming Elixir"/><published>2016-07-17T08:53:13+00:00</published><updated>2016-07-17T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2016/programming-elixir</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2016/programming-elixir/"><![CDATA[<p>For learning Elixir I started with the ubiquitous Dave Thomas and “Programming Elixir”. I’m bouncing back and forth between reading through that book and watching the ConFreaks videos of the last two year’s Elixir conferences (and thinking about whether I want to pay to go to this year’s conference which is in Orlando).</p> <p>“Programming Elixir” has been pretty good. The exercises at the end of the chapter cover the concepts discussed. I was stumped for a couple of minutes looking at “define a function head with the defaults”. But after working through the example it made sense and resulted in code that seemed to make sense to me.</p> <p>The thing is in Elixir (and Erlang) the function head (declaration) is a separate entity from the function body. Which is an odd thing to wrap your head around if you come from almost any other language background. In the case of the example with default parameters in the book you can do this :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule DefaultParams1 do
       def func(p1, p2 \\ 123)
 
       def func(p1, 99) do
@@ -11,28 +439,4 @@
     end
 </code></pre></div></div> <p>If you call DefaultParams1.func(1) then the match will be on that first func without a body. The second parameter is added as a default and the search for a match continues. Obviously a contrived example for the book but I do like the approach of separating the definition of what we might want to supply as defaults from the rest of the code.</p> <p>Just beginning the journey into Elixir but its very interesting so far.</p>]]></content><author><name></name></author><category term="Elixir"/><category term="Elixir"/><summary type="html"><![CDATA[Learning Elixir]]></summary></entry><entry><title type="html">Learning Elixir and Phoenix</title><link href="https://fmcgeough.github.io/blog/2016/elixir-phoenix-ecto/" rel="alternate" type="text/html" title="Learning Elixir and Phoenix"/><published>2016-07-16T08:53:13+00:00</published><updated>2016-07-16T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2016/elixir-phoenix-ecto</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2016/elixir-phoenix-ecto/"><![CDATA[<p>Wow. This is the first time in a while that I’ve been excited about a new programming language. Where learning the language wasn’t just a chore to stay employed. Going through the documentation, code examples and a couple of recent books. Such a fundamentally different way of looking at solving problems. Using <a href="http://confreaks.tv/events/elixirconf2014">Confreaks.tv</a>, <a href="http://safaribooksonline.com">Safari Books online</a>, and the excellent documentation. Can’t wait to build something for real!</p>]]></content><author><name></name></author><category term="Elixir"/><category term="Elixir"/><summary type="html"><![CDATA[Learning Elixir]]></summary></entry><entry><title type="html">Practice a new language with exercism</title><link href="https://fmcgeough.github.io/blog/2016/exercism-web-site/" rel="alternate" type="text/html" title="Practice a new language with exercism"/><published>2016-05-18T08:53:13+00:00</published><updated>2016-05-18T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2016/exercism-web-site</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2016/exercism-web-site/"><![CDATA[<p>After a long day programming do you look forward to more programming? OK then. You might want to check out <a href="http://exercism.io/">http://exercism.io/</a> (You might want to also seek help. Go outside once in a while for crying out loud). It has problems in a wide variety of languages. You sign up with your github account and pick a language to work on (Java, Javascript, Scala, Python, Ruby are among the choices). You code up a solution to the problem and submit it. You can discuss your solution and others approaches and iterate on your design to improve it.</p> <p>Each problem is large enough to be interesting but not so large as to demand a good portion of your time. It seems like an hour or two at most.</p> <p>I found this a good way to expand my knowledge of languages I wanted to learn.</p>]]></content><author><name></name></author><category term="programming"/><category term="programming"/><summary type="html"><![CDATA[Learning a language with online courses]]></summary></entry><entry><title type="html">Upgrade to 9.5 Postgresql on OS X</title><link href="https://fmcgeough.github.io/blog/2016/upgrade_osx_postgres/" rel="alternate" type="text/html" title="Upgrade to 9.5 Postgresql on OS X"/><published>2016-05-17T08:53:13+00:00</published><updated>2016-05-17T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2016/upgrade_osx_postgres</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2016/upgrade_osx_postgres/"><![CDATA[<p>There is a really nice tutorial on upgrading your local Postgresql on OS X at <a href="https://kkob.us/2016/01/09/homebrew-and-postgresql-9-5/">Keita’s Blog</a>. Uses brew. Straightforward.</p>]]></content><author><name></name></author><category term="postgresq1"/><category term="postgresq1"/><category term="osx"/><summary type="html"><![CDATA[Postgresql install tutorial]]></summary></entry><entry><title type="html">Ruby Resources</title><link href="https://fmcgeough.github.io/blog/2016/ruby-resources/" rel="alternate" type="text/html" title="Ruby Resources"/><published>2016-02-01T08:53:13+00:00</published><updated>2016-02-01T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2016/ruby-resources</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2016/ruby-resources/"><![CDATA[<p>One of the amazing things about Ruby is the Ruby community and the spirit of sharing that I encounter over and over again when interacting with people in the Ruby community. There are many fine books that can help you learn Ruby but there are also great online resources.</p> <p>Once you feel like you have a basic understanding of the language I’d recommend checking out some of the following resources.</p> <ul> <li> <p><a href="https:www.rubytapas.com">rubytapas</a> - these are wonderful short screencasts that teach some fundamental feature of Ruby that you probably haven’t encountered before. The explanations are clear. The examples are right on-point. There are a slew of free videos to dive into and its also well worth signing up for $9 a month. A bargain.</p> </li> <li> <p><a href="https://devchat.tv/ruby-rogues/">Ruby Rogues Podcast</a> - a ton of past episodes to go through each containing some nugget of Ruby wisdom that will serve you well. Clear your weekend schedule and go through all of them.</p> </li> <li> <p><a href="http://confreaks.tv/conferences/railsconf">Confreaks.TV and Rails Conference Talks</a> - if you are a Ruby programmer you are going to deal with Rails. Either joyfully or reluctantly but its impossible to avoid. Go to Confreaks.TV. Watch the past Rails Conference talks. Awesome learning experience.</p> </li> <li> <p>The Ruby on Rails podcast (no longer active) - more rails but much more than that. Great discussions. I’m really not clear on how these people do the podcasts. Not my talent at all. But I sure appreciate folks that can do it well and this is a great example of a podcast worth listening to.</p> </li> </ul> <p>The other thing that I’d say is that its really important to attend the Ruby conferences and Rails conferences. There are lots of contacts you can make and new techniques you can learn all packed into 3 days at some very nice locations. Definitely try and swing that after absorbing as much online material as you can find. Good luck!</p>]]></content><author><name></name></author><category term="ruby"/><category term="ruby"/><summary type="html"><![CDATA[Information on Ruby Resources]]></summary></entry><entry><title type="html">Using Git From Inside Atom</title><link href="https://fmcgeough.github.io/blog/2015/using-git-from-inside-atom/" rel="alternate" type="text/html" title="Using Git From Inside Atom"/><published>2015-11-22T08:53:13+00:00</published><updated>2015-11-22T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2015/using-git-from-inside-atom</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2015/using-git-from-inside-atom/"><![CDATA[<p>I continue to use and be impressed with the <a href="https://atom.io/">Atom editor</a> from the lovely people at <a href="https://github.com/">github</a>. A modern text editor with a built-in packaging system to allow adding in, well, add-ins that provide cool and needed functionality. One of the new ones that I’m using a lot is <a href="https://atom.io/packages/git-plus">git-plus</a>.</p> <p>git-plus allows me to work within the text editor and perform git commands without dropping to the command shell. This is a small thing for me. I’m quite comfortable with using git from the command line but it actually does make my flow better while coding in Ruby.</p> <p>My Environment and Install</p> <ul> <li>OS X 10.10.5</li> <li>Atom 1.2.2</li> <li>git-plus 5.6.5</li> </ul> <p>I installed git-plus from the command line using the Atom package manager utility apm.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    apm install git-plus
 </code></pre></div></div> <p>Then I restarted Atom from the command line to use the new package. There were no issues with the package install or initial usage.</p> <p>There are a number of settings in git-plus to allow customization. You can find them under Preferences/Packages in Atom. I didn’t modify any of the defaults but as noted on the Package Settings page you should : “Make sure your gitconfig file is configurated or at least your user.email and user.name variables are initialized”. The web page for the git-plus package has a good description of the available configuration options.</p> <p>To bring up the git-plus functionality you use :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Cmd-Shift-H on MacOS
-</code></pre></div></div> <p>This brings up a searchable list of git commands (with “Add” at the top). As you type the list narrows. Hit Enter to select the git command. On a “Commit” a text panel appears on the right side of the Atom environment. Add your commit message and save it. The panel disappears and a notification pops up to let you know your changes are committed. The notification auto-closes after a couple seconds.</p> <h2 id="why-use-git-from-within-a-tool">Why Use Git from Within a Tool?</h2> <p>I sort of struggle with this myself. I work with a lot of Java engineers who tend to live within their IDE (Eclipse or IntelliJ) and are actually quite at sea when trying to use git from the command line. That’s not a good thing. If you are using git you absolutely need to be familiar with common use cases from the command line. git was developed as a command line program. You need to live in its environment or ultimately bad things will occur and you’ll have no clue how to address them.</p> <p>If I’m programming in Java I appreciate the help that a good IDE can provide for the language - especially in terms of intelligent search and refactoring. However, for Ruby I’ve never really embraced an IDE and have continued to rely on a text editor, and I’ve grown to really like the Atom editor for Ruby.</p> <p>The reason I’ve grown to also like the git-plus package in Atom is that it doesn’t tend to interrupt my flow when I’m working on Ruby code and accompanying unit tests. I can quickly check in work with less of an interruption to my thought processes. I didn’t think this would be so and I was ready to uninstall git-plus before I even installed it for that reason but I was surprised to find that it actually did seem to make me more productive or at least it felt that way.</p> <p>Its another well-done package for the Atom editor and I’d definitely recommend trying it to see if it works well for you.</p>]]></content><author><name></name></author><category term="ruby"/><category term="ruby"/><summary type="html"><![CDATA[Information on using git in the Atom editor]]></summary></entry><entry><title type="html">Simple Error in Atom with Rubocop</title><link href="https://fmcgeough.github.io/blog/2015/simple-error-in-atom-with-rubocop/" rel="alternate" type="text/html" title="Simple Error in Atom with Rubocop"/><published>2015-11-15T08:53:13+00:00</published><updated>2015-11-15T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2015/simple-error-in-atom-with-rubocop</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2015/simple-error-in-atom-with-rubocop/"><![CDATA[<p>If you keep getting popups errors about github in the Atom text editor when using Rubocop then maybe its this issue I just had. While working on a gem complaining about a missing rubocop version or in general giving odd and annoying errors you should try and remove your Gemfile.lock file in the root of your gem folder and run bundle install again. It could be that the Gemfile.lock is pointing at a rubocop you no longer have installed. I was frustrated for several minutes about these errors when I brought up an older gem to test out Rubocop integration with Atom until I realized that I probably had done a bundle install way back when I wrote this gem and created the Gemfile.lock file which the Rubocop was trying to respect.</p>]]></content><author><name></name></author><category term="ruby"/><category term="ruby"/><summary type="html"><![CDATA[Information on running rubocop in the Atom editor]]></summary></entry><entry><title type="html">Using Rubocop in Atom</title><link href="https://fmcgeough.github.io/blog/2015/using-rubocop-in-atom/" rel="alternate" type="text/html" title="Using Rubocop in Atom"/><published>2015-11-14T08:53:13+00:00</published><updated>2015-11-14T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2015/using-rubocop-in-atom</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2015/using-rubocop-in-atom/"><![CDATA[<p>If you haven’t checked out the <a href="https://atom.io">Atom editor</a> from the lovely people at github then its worth your while. A full-featured and more and more popular editor with a growing set of packages that can be added in to provide some cool functionality. Since I’m doing more and more Ruby programming I wanted to install the <a href="https://github.com/bbatsov/rubocop">rubocop</a> lint functionality within the Atom editor. This is provided by the <a href="https://atom.io/packages/linter-rubocop">linter-rubocop</a> Atom package. So this blog post might be interesting if you code in Ruby and are open to trying a new text editor.</p> <h2 id="whats-rubocop">What’s Rubocop?</h2> <p>Rubocop is a static code analysis tool that tries to report on any cases where your code conflicts with the Ruby community style guide. I find it very valuable to try and keep my code clean and easier to maintain. It is a source of tremendous exasperation when you first use it (at least that has been my experience when getting people to use it) because it will spit out dozens (or hundreds) of problems with your code. I find working through these issues is very valuable though and definitely recommend running this tool on your own projects.</p> <h2 id="installation">Installation</h2> <p>Assuming you just went through the standard Atom installer from their web site you now have a command line utility called apm. This allows you to install Atom packages. To get the rubocop to work in Atom you’ll need rubocop, linter (the base lint package that is used by the linter-rubocop package, and linter-rubocop. The following steps should get you working :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install rubocop
-apm install linter
-apm install linter-rubocop
-which rubocop
-</code></pre></div></div> <p>The final command will tell you your path to rubocop. You can paste this into the configuration for linter-rubocop. Now that you have these installed you should start the Atom editor from the command line. Now as you type your Ruby code you’ll see information in the bottom panel of your editor screen (that hopefully says “No Issues”).</p> <h2 id="review">Review</h2> <p>I didn’t have any issues installing the package using the steps above (I did already have rubocop installed). I run the Atom editor on Mac OS X. The versions I used are :</p> <ul> <li>Atom 1.2.0</li> <li>rubocop 0.34.2</li> <li>linter-rubocop 0.4.4</li> <li>linter 1.11.1</li> </ul> <p>I did see an error when starting Atom using Quicksilver :</p> <p>There are a variety of posts about this on the web. It doesn’t appear when starting Atom from the command line (which is how I ordinarily use the tool).</p>]]></content><author><name></name></author><category term="ruby"/><category term="ruby"/><summary type="html"><![CDATA[Information on running rubocop in the Atom editor]]></summary></entry><entry><title type="html">Postgresql - Lag and Windowing Function</title><link href="https://fmcgeough.github.io/blog/2015/postgresql-lag-and-windowing-function/" rel="alternate" type="text/html" title="Postgresql - Lag and Windowing Function"/><published>2015-05-07T22:03:34+00:00</published><updated>2015-05-07T22:03:34+00:00</updated><id>https://fmcgeough.github.io/blog/2015/postgresql-lag-and-windowing-function</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2015/postgresql-lag-and-windowing-function/"><![CDATA[<p>Lag came in handy again.</p> <p>Problem: customer stored their account info in an account_data table and recorded history of the changes to this table in an account_history table along with a new column dt_account_history_updated. Groovy. The way the account_history table was written was :</p> <ul> <li>on insert - write the values to account_history</li> <li>on update - write only the old values to account_history, but only for the column values that changes (using NULLIF function).</li> <li>on delete - write values to account_history. hmmm. so what you are looking at in account_history is the previous values. not the current ones (for update anyway). Got it?</li> </ul> <p>So… each customer has a status associated with it (ACTIVE, CANCELLED, SUSPENDED, etc). The question is how could you report when a customer was in that status if the account_history has only the previous value? Well. actually pretty easy using LAG.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>with set_of_data as
-(
-SELECT ah.account_id, ah.dt_last_history_updated as dt_info, ah.status
-FROM account_history ah
-WHERE ah.status IS NOT NULL
-UNION
-SELECT acct.account_id, now(), acct.status
-FROM account_data acct
-),
-build_data_set as
-(
-SELECT account_id, dt_info, status, LAG(dt_info, 1) OVER (PARTITION BY account_id ORDER BY dt_info ASC) as lag
-FROM set_of_data
-)
-SELECT account_id,
-status,
-timezone('GMT'::text, lag) as dt_status
-FROM build_data_set
-WHERE lag IS NOT NULL
-ORDER BY 1, 3;
-</code></pre></div></div> <p>tada! We get all the data from the history table where status has changed (since we only write on updates when column value changes) and we get current state from live table. Then we select out of this set by use a LAG 1 and order by the dt_info column for each account_id. This ends up putting the previous dt_info column in the row after it historically - which is what tells us exactly when we went to that state.</p> <p>Reference : <a href="http://www.postgresql.org/docs/9.3/static/functions-window.html">Postgresql 9.3 Window Functions</a></p>]]></content><author><name></name></author><category term="SQL"/><summary type="html"><![CDATA[Using Lag and window operations with Postgresql]]></summary></entry><entry><title type="html">More Atom and Ruby - Using ruby-test</title><link href="https://fmcgeough.github.io/blog/2015/more-atom-and-ruby-using-ruby-test/" rel="alternate" type="text/html" title="More Atom and Ruby - Using ruby-test"/><published>2015-01-14T08:53:13+00:00</published><updated>2015-01-14T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2015/more-atom-and-ruby-using-ruby-test</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2015/more-atom-and-ruby-using-ruby-test/"><![CDATA[<p>I continue to try and get <a href="https://atom.io/">Atom</a> setup in the most productive way - especially for Ruby programming. I continue to be impressed with the tool. For unit testing I favor <a href="https://github.com/seattlerb/minitest">MiniTest</a> and I wanted a way to run tests from inside Atom without leaving the editor environment.</p> <p>After trying out of a couple of packages I settled on <a href="https://atom.io/packages/ruby-test">ruby-test</a>.</p> <h2 id="installation">Installation</h2> <p>Installation of ruby-test is straightforward. I used the command line Atom install tool <code class="language-plaintext highlighter-rouge">apm</code>. The following worked for me :</p> <p>apm install ruby-test</p> <p>After installing the ruby-test package restart Atom by using <code class="language-plaintext highlighter-rouge">atom</code> from the command line and then configure the testing package by going to Atom/Preferences/Packages and then searching for ruby-test. You’ll want to set your “Test Framework” as explained in the configuration panel.</p> <p>The tool worked seamlessly for me after doing this.</p> <h2 id="review">Review</h2> <p>Install was straightforward and the tool within <a href="https://atom.io/">Atom</a> worked seamlessly for me. My environment is :</p> <ul> <li>OS X 10.10.5 (Yosemite)</li> <li>Atom 1.2.0</li> <li>ruby-test 0.9.16</li> </ul> <p>The tool pops up a panel when running tests and shows the MiniTest output just like you’d see from the command line. The panel has a close button (unlike some of the other unit test packages I tried out in Atom) so you can close the unit test info when you no longer need it or want additional screen real estate. The panel that pops up includes a link in the left hand corner to “Settings” that brings up you to the ruby-test Settings page.</p> <p>I generally run a single test after I finish writing it by placing my cursor on the test and hitting command-control-R and then run all the tests in a Ruby test file by hitting command-control-T. Both of these approaches worked without issue.</p>]]></content><author><name></name></author><category term="ruby"/><category term="ruby"/><summary type="html"><![CDATA[Using Ruby with the Atom editor]]></summary></entry></feed>
+</code></pre></div></div> <p>This brings up a searchable list of git commands (with “Add” at the top). As you type the list narrows. Hit Enter to select the git command. On a “Commit” a text panel appears on the right side of the Atom environment. Add your commit message and save it. The panel disappears and a notification pops up to let you know your changes are committed. The notification auto-closes after a couple seconds.</p> <h2 id="why-use-git-from-within-a-tool">Why Use Git from Within a Tool?</h2> <p>I sort of struggle with this myself. I work with a lot of Java engineers who tend to live within their IDE (Eclipse or IntelliJ) and are actually quite at sea when trying to use git from the command line. That’s not a good thing. If you are using git you absolutely need to be familiar with common use cases from the command line. git was developed as a command line program. You need to live in its environment or ultimately bad things will occur and you’ll have no clue how to address them.</p> <p>If I’m programming in Java I appreciate the help that a good IDE can provide for the language - especially in terms of intelligent search and refactoring. However, for Ruby I’ve never really embraced an IDE and have continued to rely on a text editor, and I’ve grown to really like the Atom editor for Ruby.</p> <p>The reason I’ve grown to also like the git-plus package in Atom is that it doesn’t tend to interrupt my flow when I’m working on Ruby code and accompanying unit tests. I can quickly check in work with less of an interruption to my thought processes. I didn’t think this would be so and I was ready to uninstall git-plus before I even installed it for that reason but I was surprised to find that it actually did seem to make me more productive or at least it felt that way.</p> <p>Its another well-done package for the Atom editor and I’d definitely recommend trying it to see if it works well for you.</p>]]></content><author><name></name></author><category term="ruby"/><category term="ruby"/><summary type="html"><![CDATA[Information on using git in the Atom editor]]></summary></entry><entry><title type="html">Simple Error in Atom with Rubocop</title><link href="https://fmcgeough.github.io/blog/2015/simple-error-in-atom-with-rubocop/" rel="alternate" type="text/html" title="Simple Error in Atom with Rubocop"/><published>2015-11-15T08:53:13+00:00</published><updated>2015-11-15T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2015/simple-error-in-atom-with-rubocop</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2015/simple-error-in-atom-with-rubocop/"><![CDATA[<p>If you keep getting popups errors about github in the Atom text editor when using Rubocop then maybe its this issue I just had. While working on a gem complaining about a missing rubocop version or in general giving odd and annoying errors you should try and remove your Gemfile.lock file in the root of your gem folder and run bundle install again. It could be that the Gemfile.lock is pointing at a rubocop you no longer have installed. I was frustrated for several minutes about these errors when I brought up an older gem to test out Rubocop integration with Atom until I realized that I probably had done a bundle install way back when I wrote this gem and created the Gemfile.lock file which the Rubocop was trying to respect.</p>]]></content><author><name></name></author><category term="ruby"/><category term="ruby"/><summary type="html"><![CDATA[Information on running rubocop in the Atom editor]]></summary></entry></feed>
