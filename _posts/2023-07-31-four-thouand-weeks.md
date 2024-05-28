@@ -107,18 +107,13 @@ Any errors that you find are almost certainly my fault and not the author's.
 These were books or web articles referenced in the book. I found all of them
 interesting.
 
-- [Meditation for fidgety skeptics : a 10% happier how-to
-  book](https://dekalb.polarislibrary.com/polaris/view.aspx?cn=301506)
-- [The Path of Least Resistance - Robert
-  Fritz](https://www.robertfritz.com/wp/the-path-of-least-resistance/)
-- [The Miracle of Morning Pages - Julia
-  Cameron](https://shoutout.wix.com/so/acNOetBUR/c?w=q2gEOTj7GCC6NCtoUGBFLw8kctnFcPKbG4COvb4ouRw.eyJ1IjoiaHR0cHM6Ly9qdWxpYWNhbWVyb25saXZlLmNvbS9ib29rcy1ieS1qdWxpYS90aGUtbWlyYWNsZS1vZi1tb3JuaW5nLXBhZ2VzLyIsInIiOiJhMDhkYThhZC05ZDE5LTRlMmEtNjk3YS0xODgzMGVjYTNiZDgiLCJtIjoibHAifQ)
-- [Death: The End of Self-Improvement - Joan
-  Tollifson](https://www.joantollifson.com/book-death-the-end-of-self-improvement.html)
-- [Marilynne Robinson's "joyless urgency" (The Givenness of
-  Things)](https://us.macmillan.com/books/9781250097316/thegivennessofthings)
-- [Personal Kanban by Jim Benson and Tonianne DeMaria
-  Barry](https://kanbantool.com/kanban-guide/personal-kanban)
+- Meditation for fidgety skeptics : a 10% happier how-to
+  book
+- The Path of Least Resistance - Robert Fritz]
+- The Miracle of Morning Pages - Julia Cameron]
+- Death: The End of Self-Improvement - Joan Tollifson]
+- Marilynne Robinson's "joyless urgency" (The Givenness of Things)
+- Personal Kanban by Jim Benson and Tonianne DeMaria Barry
 
 ## Links
 
