@@ -31,7 +31,7 @@ Note: By default the SHOW commands will include the header and use the
 '|' character as a delimiter. You can override this behavior in psql using
 the "-F" option and the "--no-align" option. The show commands do
 not allow the use of criteria or joins. You can work around this if you
-use a [foreign data wrapper](http://peter.eisentraut.org/blog/2015/03/25/retrieving-pgbouncer-statistics-via-dblink/).
+use a foreign data wrapper.
 
 If you want to connect to the pgbouncer you use:
 
