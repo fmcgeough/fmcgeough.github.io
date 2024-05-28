@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Elixir, Ecto, Subqueries, GROUP BY
-date: 2024-05-04 08:53:13
+date: 2018-03-04 08:53:13
 description: Exploring subqueries and group by with Elixir's ecto library
 categories: Elixir
 tags: Elixir
