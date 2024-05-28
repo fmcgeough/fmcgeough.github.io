@@ -25,6 +25,7 @@
       "endDate": "",
       "summary": "Developed backend services in Elixir using the Phoenix framework",
       "highlights": [
+        "Wrote numerous blog posts to level-up developers in using Elixir",
         "Designed and built a new system managing user creation and assignment to licensed products",
         "Introduced team to Open Policy Agent as an approach to solving issues related to authorization"
       ]
@@ -36,7 +37,7 @@
       "startDate": "2019-04-01",
       "endDate": "2020-01-01",
       "summary": "Developed backend services in Elixir using the Phoenix framework",
-      "highlights": []
+      "highlights": ["Developed a permission system in Elixir using DynamoDB and Open Policy Agent"]
     },
     {
       "name": "Vonage, Inc",
@@ -44,8 +45,13 @@
       "url": "https://www.vonage.com/",
       "startDate": "2010-11-01",
       "endDate": "2019-04-01",
-      "summary": "I joined Vocalocity (an Atlanta startup) and worked across teams on a number of problems with a concentration on relational database performance problems and billing issues at first. Developed a number of tools to assist the company with growth and helped educate Vonage developers after company was acquired. Became interested in the Elixir language and Erlang ecosystem and independently developed some web apps that became widely used internally by QA, Dev and Support personnel.",
-      "highlights": []
+      "summary": "Worked in various roles as company moved from a startup to an acquisition by Vonage",
+      "highlights": [
+        "Company acquired by Vonage",
+        "Discovered the Elixir language and used it to build a number of tools that became the initial basis for the SRE team",
+        "Became the de-facto DBA and helped company with addressing performance issues",
+        "Joined small PBX startup Vocalocity in Atlanta"
+      ]
     }
   ],
   "volunteer": [],
