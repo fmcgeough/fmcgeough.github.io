@@ -92,7 +92,7 @@ Hex is a package manager for the BEAM ecosystem; any language that compiles to
 run on the BEAM VM, such as Elixir and Erlang, can be used to build Hex
 packages.
 
-Hex is an open-source [project](<(https://github.com/hexpm/hex)>) initiated in
+Hex is an open-source [project](https://github.com/hexpm/hex) initiated in
 early 2014, and continues to evolve under the stewardship of Six Colors AB which
 was founded in 2018 by Hex's creator, Eric Meadows-Jönsson. The project provides
 tasks that integrate with the Elixir mix tool.
