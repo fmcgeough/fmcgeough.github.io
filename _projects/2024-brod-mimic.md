@@ -1,6 +1,6 @@
 ---
 layout: page
-title: brod-mimic
+title: Elixir exploration of the Erlang brod library
 description: Elixir code exploration of the Erlang brod Kafka library
 img:
 importance: 1
