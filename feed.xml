@@ -1,4 +1,397 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://fmcgeough.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://fmcgeough.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-05-28T18:36:23+00:00</updated><id>https://fmcgeough.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Elixir and Dependencies</title><link href="https://fmcgeough.github.io/blog/2024/updating-elixir-dependencies/" rel="alternate" type="text/html" title="Elixir and Dependencies"/><published>2024-02-21T08:53:13+00:00</published><updated>2024-02-21T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2024/updating-elixir-dependencies</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2024/updating-elixir-dependencies/"><![CDATA[<p>One of the ongoing tasks for a development team is to keep the dependencies of apps up to date. The following information are aspects of that work for Elixir language projects. It doesn’t attempt to explain the language itself and assumes you are at least minimally familiar with it. If you are coming to the language for the first time then the <a href="https://elixir-lang.org/">Elixir website</a> has excellent material to learn the basics of the language.</p> <h2 id="elixir-versioning">Elixir Versioning</h2> <p>Each Elixir library or application has a <code class="language-plaintext highlighter-rouge">mix.exs</code> file. This file is used to configure the project. A sample of this is:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Demo.MixProject do
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://fmcgeough.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://fmcgeough.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-05-28T18:38:51+00:00</updated><id>https://fmcgeough.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Elixir/OTP Supervision</title><link href="https://fmcgeough.github.io/blog/2024/supervision/" rel="alternate" type="text/html" title="Elixir/OTP Supervision"/><published>2024-05-04T08:53:13+00:00</published><updated>2024-05-04T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2024/supervision</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2024/supervision/"><![CDATA[<p>I’ve gotten questions over time about process supervision in Elixir. There’s a lack of clarity for some developers. This is especially true for companies that adopt Elixir. There are probably a few people (if you’re lucky) who know Elixir to some level. But the majority of developers that are onboarded will not know anything about the language.</p> <p>One of the things that I’ve found is the most confusing and usually misused relates to supervision of processes. There are actually plenty of resources available to learn from. I provided some links in the References at the end of this post. A lot of them are probably more insightful than this post. However, I decided it might help some developers new to Elixir if I created some sample code to accompany the description of what’s going on. The idea was that new developers could use this as a basis to play around with the concepts.</p> <p>The code for this blog post is in a github repo at <a href="https://github.com/fmcgeough/elixir-supervision">https://github.com/fmcgeough/elixir-supervision</a>. Assuming you have asdf and the Elixir and Erlang plug-ins installed you can install on your system with:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/fmcgeough/elixir-supervision
+$ asdf install
+$ mix deps.get
+$ iex -S mix
+iex&gt;
+</code></pre></div></div> <h2 id="what-is-a-process">What is a Process?</h2> <p>In Elixir (or Erlang) all code runs in a “process”. Processes are isolated from each other. They communicate by sending messages to each other. Elixir’s processes are not O/S processes. Processes in Elixir are extremely lightweight in terms of memory and CPU (even compared to threads as used in many other programming languages). Because of this, it is not uncommon to have tens or even hundreds of thousands of processes running simultaneously.</p> <p>You can read about processes in the <a href="https://hexdocs.pm/elixir/processes.html">Elixir Documentation</a>.</p> <h2 id="some-general-info-about-processes">Some General Info About Processes</h2> <p>Processes are identified by a pid. When you start a process the system returns a pid. For our purposes a pid can be considered an opaque data structure. A pid is like an address. It allows a process to send a message to another process.</p> <p>If you want to know the inner details of a process then you can read more about it, of course. It’s general structure is described in an OTP header file as:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> *  PID layout (internal pids):
+ *
+ *   |3 3 2 2 2 2 2 2|2 2 2 2 1 1 1 1|1 1 1 1 1 1    |               |
+ *   |1 0 9 8 7 6 5 4|3 2 1 0 9 8 7 6|5 4 3 2 1 0 9 8|7 6 5 4 3 2 1 0|
+ *   |               |               |               |               |
+ *   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *   |n n n n n n n n n n n n n n n n n n n n n n n n n n n n|0 0|1 1|
+ *   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *
+ *  n : number
+</code></pre></div></div> <p>A process can also be identified in a couple other ways. One of the ways used in the demo code is by name. The name is a unique atom. A module name is an atom and is used in many cases but you can use whatever atom you think makes sense for your application.</p> <p>The test code uses atoms to identify processes. A process name can be converted to a pid by calling: <code class="language-plaintext highlighter-rouge">Process.whereis/1</code>. You can read about that in the <a href="https://hexdocs.pm/elixir/Process.html#whereis/1">Elixir documentation</a>.</p> <h2 id="whats-supervision">What’s Supervision?</h2> <p>A supervisor is a process. It’s job is to be in charge of other processes. These are thought of as its children. A supervisor can start processes. It then uses some facilities built into OTP (linking, monitoring, trapping exits) to allow the supervisor to “know” that something bad happened to one of its children.</p> <p>Any process that isn’t a supervisor falls into the general category “worker”.</p> <p>Supervising workers allows the supervisor to possibly restart the worker if it encounters something unexpected. It ensures that when things are shutdown (whether the entire app or a process tree) that the workers are shutdown in a particular order.</p> <p>Here’s an important quote from “Learn you some Erlang for great good!”</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Supervisors can supervise workers and other supervisors, while workers should never be used
+in any position except under another supervisor
+</code></pre></div></div> <p>Is this always true? Well… no. There are circumstances where you wouldn’t want to follow this rule. But you should only violate it if you have a very good grasp on supervision and a very good well-understood reason for doing so before you violate it.</p> <h2 id="strategies-for-supervision">Strategies for Supervision</h2> <p>A Supervisor can be written to start its children with different strategies. These are:</p> <ul> <li>:one_for_one</li> <li>:one_for_all</li> <li>:rest_for_one</li> </ul> <p>In Erlang there is another option - :simple_one_for_one. This was in older versions of Elixir but it was deprecated. People that used that strategy before moved to DynamicSupervisor in Elixir.</p> <h3 id="options">Options</h3> <h4 id="one_for_one">:one_for_one</h4> <p>The most common strategy you’re likely to run into. The idea is that each worker (process) that is a child of a supervisor is totally independent. If they die the supervisor should restart just the child that died.</p> <p>This means that you can’t have dependencies between the children. They are independent of each other.</p> <h4 id="one_for_all">:one_for_all</h4> <p>This is the strategy to use if all the children are dependent on each other. What we want in that case is that if any one of the processes dies then all the children should be restarted.</p> <h4 id="rest_for_one">:rest_for_one</h4> <p>This strategy maybe a bit harder to understand but it can be quite useful. This is used if you have one child process that is absolutely vital for all the other children. If it dies then all the children must be restarted. This continues in the order that you supply the children. This is harder to explain then it is to demonstrate. Its demonstration is below.</p> <h2 id="testing">Testing</h2> <p>If you followed the instructions above you should have an iex session open for the project. There’s code in the project that will test each strategy.</p> <p>Each module that has the different types of supervision has the following functions available:</p> <ul> <li>test_kill_all(order) - where order is set to :asc or :desc. This kills the 3 child processes of that supervisor one at a time and shows no result of one child being terminated.</li> <li>test_kill_one_process(process_name) - you can use this if you want to kill any of the 3 child processes</li> <li>show_children/0 - outputs the children names and pid.</li> </ul> <p>When the application starts it starts a number of Supervisors. You can look at the supervision tree using a tool called “observer”. You can start observer from iex. Just type <code class="language-plaintext highlighter-rouge">:observer.start</code>. An app starts that has lots of tabs. Click on Applications and you can see the currently running process trees. See https://www.erlang.org/doc/apps/observer/observer_ug.html for more information.</p> <h3 id="one_for_one-1">:one_for_one</h3> <p>Supervise.Strategies.SuperviseOneForOne starts 3 child workers that use these names:</p> <ul> <li>:one_for_one_worker1</li> <li>:one_for_one_worker2</li> <li>:one_for_one_worker3</li> </ul> <p>There’s a simple picture from the online book “Learn you some Erlang for great good!” that explains what we’ll see.</p> <p><img src="https://learnyousomeerlang.com/static/img/restart-one-for-one.png" alt="one_for_one_supervision"/></p> <p>This shows that if there are 3 worker processes and #2 terminates then #1 and #3 are not impacted.</p> <p>If test_kill_all/1 is called the output shows that only the process being killed terminates.</p> <p>iex&gt; SuperviseOneForOne.test_kill_all(:asc)</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; SuperviseOneForOne.test_kill_all(:asc)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START one_for_one_worker1
+------  Show children before stop ------
+Name: one_for_one_worker3, PID: #PID&lt;0.214.0&gt;
+Name: one_for_one_worker2, PID: #PID&lt;0.213.0&gt;
+Name: one_for_one_worker1, PID: #PID&lt;0.212.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.212.0&gt;
+------  Show children after stop ------
+Name: one_for_one_worker3, PID: #PID&lt;0.214.0&gt;
+Name: one_for_one_worker2, PID: #PID&lt;0.213.0&gt;
+Name: one_for_one_worker1, PID: #PID&lt;0.225.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE one_for_one_worker1
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START one_for_one_worker2
+------  Show children before stop ------
+Name: one_for_one_worker3, PID: #PID&lt;0.214.0&gt;
+Name: one_for_one_worker2, PID: #PID&lt;0.213.0&gt;
+Name: one_for_one_worker1, PID: #PID&lt;0.225.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.213.0&gt;
+------  Show children after stop ------
+Name: one_for_one_worker3, PID: #PID&lt;0.214.0&gt;
+Name: one_for_one_worker2, PID: #PID&lt;0.226.0&gt;
+Name: one_for_one_worker1, PID: #PID&lt;0.225.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE one_for_one_worker2
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START one_for_one_worker3
+------  Show children before stop ------
+Name: one_for_one_worker3, PID: #PID&lt;0.214.0&gt;
+Name: one_for_one_worker2, PID: #PID&lt;0.226.0&gt;
+Name: one_for_one_worker1, PID: #PID&lt;0.225.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.214.0&gt;
+------  Show children after stop ------
+Name: one_for_one_worker3, PID: #PID&lt;0.227.0&gt;
+Name: one_for_one_worker2, PID: #PID&lt;0.226.0&gt;
+Name: one_for_one_worker1, PID: #PID&lt;0.225.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE one_for_one_worker3
+</code></pre></div></div> <h3 id="one_for_all-1">:one_for_all</h3> <p>Supervise.Strategies.SuperviseOneForAll starts 3 child workers:</p> <ul> <li>:one_for_all_worker1</li> <li>:one_for_all_worker2</li> <li>:one_for_all_worker3</li> </ul> <p>There’s a simple picture from “Learn you some Erlang for great good!” that explains what we’ll see.</p> <p><img src="https://learnyousomeerlang.com/static/img/restart-one-for-all.png" alt="one_for_all_supervision"/></p> <p>So, in this case, if process #2 terminates then all the child processes are terminated with it. The Supervisor restarts all 3 processes in order: process #1, process #2, and then process #3.</p> <p>If test_kill_all/1 is called the output shows that every child process terminates when any process terminates.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex(1)&gt; SuperviseOneForAll.test_kill_all(:asc)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START one_for_all_worker1
+------  Show children before stop ------
+Name: one_for_all_worker3, PID: #PID&lt;0.233.0&gt;
+Name: one_for_all_worker2, PID: #PID&lt;0.232.0&gt;
+Name: one_for_all_worker1, PID: #PID&lt;0.231.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.231.0&gt;
+Terminating #PID&lt;0.233.0&gt; with reason :shutdown and state "one_for_all_worker3"
+Terminating #PID&lt;0.232.0&gt; with reason :shutdown and state "one_for_all_worker2"
+------  Show children after stop ------
+Name: one_for_all_worker3, PID: #PID&lt;0.238.0&gt;
+Name: one_for_all_worker2, PID: #PID&lt;0.237.0&gt;
+Name: one_for_all_worker1, PID: #PID&lt;0.236.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE one_for_all_worker1
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START one_for_all_worker2
+------  Show children before stop ------
+Name: one_for_all_worker3, PID: #PID&lt;0.238.0&gt;
+Name: one_for_all_worker2, PID: #PID&lt;0.237.0&gt;
+Name: one_for_all_worker1, PID: #PID&lt;0.236.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.237.0&gt;
+Terminating #PID&lt;0.238.0&gt; with reason :shutdown and state "one_for_all_worker3"
+Terminating #PID&lt;0.236.0&gt; with reason :shutdown and state "one_for_all_worker1"
+------  Show children after stop ------
+Name: one_for_all_worker3, PID: #PID&lt;0.241.0&gt;
+Name: one_for_all_worker2, PID: #PID&lt;0.240.0&gt;
+Name: one_for_all_worker1, PID: #PID&lt;0.239.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE one_for_all_worker2
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START one_for_all_worker3
+------  Show children before stop ------
+Name: one_for_all_worker3, PID: #PID&lt;0.241.0&gt;
+Name: one_for_all_worker2, PID: #PID&lt;0.240.0&gt;
+Name: one_for_all_worker1, PID: #PID&lt;0.239.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.241.0&gt;
+Terminating #PID&lt;0.240.0&gt; with reason :shutdown and state "one_for_all_worker2"
+Terminating #PID&lt;0.239.0&gt; with reason :shutdown and state "one_for_all_worker1"
+------  Show children after stop ------
+Name: one_for_all_worker3, PID: #PID&lt;0.244.0&gt;
+Name: one_for_all_worker2, PID: #PID&lt;0.243.0&gt;
+Name: one_for_all_worker1, PID: #PID&lt;0.242.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE one_for_all_worker3
+</code></pre></div></div> <h3 id="rest_for_one-1">:rest_for_one</h3> <p>Supervise.Strategies.SuperviseRestForOne starts 3 child workers:</p> <ul> <li>:rest_for_one_worker1</li> <li>:rest_for_one_worker2</li> <li>:rest_for_one_worker3</li> </ul> <p>There’s a simple picture from “Learn you some Erlang for great good!” that explains what we’ll see.</p> <p><img src="https://learnyousomeerlang.com/static/img/restart-rest-for-one.png" alt="rest_for_one_supervision"/></p> <p>There are 3 processes running under the supervisor. If process #2 terminates then process #3 is terminated since it started after process #2. Then process #2 is restarted followed by process #3.</p> <p>If test_kill_all/1 is called the output shows different results depending on which child is terminated. If the first child, :rest_for_one_worker1 is terminated then the two other child processes terminate as well. This continues in a chain. If rest_for_one_worker2 is terminates it terminates rest_for_one_worker3 but :rest_for_one_worker1 is still running.</p> <p><code class="language-plaintext highlighter-rouge">iex&gt; SuperviseRestForOne.test_kill_all(:asc)</code></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SuperviseRestForOne.test_kill_all(:asc)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START rest_for_one_worker1
+------  Show children before stop ------
+Name: rest_for_one_worker3, PID: #PID&lt;0.229.0&gt;
+Name: rest_for_one_worker2, PID: #PID&lt;0.228.0&gt;
+Name: rest_for_one_worker1, PID: #PID&lt;0.227.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.227.0&gt;
+Terminating #PID&lt;0.229.0&gt; with reason :shutdown and state "rest_for_one_worker3"
+Terminating #PID&lt;0.228.0&gt; with reason :shutdown and state "rest_for_one_worker2"
+------  Show children after stop ------
+Name: rest_for_one_worker3, PID: #PID&lt;0.239.0&gt;
+Name: rest_for_one_worker2, PID: #PID&lt;0.238.0&gt;
+Name: rest_for_one_worker1, PID: #PID&lt;0.237.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE rest_for_one_worker1
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START rest_for_one_worker2
+------  Show children before stop ------
+Name: rest_for_one_worker3, PID: #PID&lt;0.239.0&gt;
+Name: rest_for_one_worker2, PID: #PID&lt;0.238.0&gt;
+Name: rest_for_one_worker1, PID: #PID&lt;0.237.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.238.0&gt;
+Terminating #PID&lt;0.239.0&gt; with reason :shutdown and state "rest_for_one_worker3"
+------  Show children after stop ------
+Name: rest_for_one_worker3, PID: #PID&lt;0.241.0&gt;
+Name: rest_for_one_worker2, PID: #PID&lt;0.240.0&gt;
+Name: rest_for_one_worker1, PID: #PID&lt;0.237.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE rest_for_one_worker2
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START rest_for_one_worker3
+------  Show children before stop ------
+Name: rest_for_one_worker3, PID: #PID&lt;0.241.0&gt;
+Name: rest_for_one_worker2, PID: #PID&lt;0.240.0&gt;
+Name: rest_for_one_worker1, PID: #PID&lt;0.237.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.241.0&gt;
+------  Show children after stop ------
+Name: rest_for_one_worker3, PID: #PID&lt;0.242.0&gt;
+Name: rest_for_one_worker2, PID: #PID&lt;0.240.0&gt;
+Name: rest_for_one_worker1, PID: #PID&lt;0.237.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE rest_for_one_worker3
+</code></pre></div></div> <h3 id="rest_for_one-but-more-interesting">:rest_for_one but more interesting</h3> <p>The :rest_for_one section above showed how workers act if they are children of a Supervisor that uses <code class="language-plaintext highlighter-rouge">:rest_for_one</code> strategy. But you might think that it seemed a bit odd. Would you have a situation where you had 3 workers and the second depended on first and the third depended on second? Maybe.</p> <p>A scenario you might see instead is that a Supervisor has 2 children. The first is a worker and the second is a Supervisor itself. That Supervisor, in turn, would start its own workers.</p> <p>In the tree above Supervise.Strategies.SuperviseLevels is a Supervisor with two children:</p> <ul> <li>:supervise_levels_worker1</li> <li>Supervise.Strategies.SuperviseLevels.ChildSupervisor</li> </ul> <p>Since the rest for one strategy is used by Supervise.Strategies.SuperviseLevels it means that all the child workers under the ChildSupervisor are dependent on :supervise_levels_worker1. If that process terminates the system would terminate the ChildSupervisor which would turn around and terminate all of its workers. Let’s test this manually this time.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; SuperviseLevels.children()
+[
+  {Supervise.Strategies.SuperviseLevels.ChildSupervisor, #PID&lt;0.221.0&gt;,
+   :supervisor, [Supervise.Strategies.SuperviseLevels.ChildSupervisor]},
+  {:supervise_levels_worker1, #PID&lt;0.220.0&gt;, :worker,
+   [Supervise.Workers.SimpleWorker]}
+]
+iex(2)&gt; SuperviseLevels.test_kill_one_process(:supervise_levels_worker1)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START supervise_levels_worker1
+------  Show children before stop ------
+Name: Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor, PID: #PID&lt;0.221.0&gt;
+Name: supervise_levels_worker1, PID: #PID&lt;0.220.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.220.0&gt;
+Terminating #PID&lt;0.224.0&gt; with reason :shutdown and state "child_supervisor_worker3"
+Terminating #PID&lt;0.223.0&gt; with reason :shutdown and state "child_supervisor_worker2"
+Terminating #PID&lt;0.222.0&gt; with reason :shutdown and state "child_supervisor_worker1"
+------  Show children after stop ------
+Name: Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor, PID: #PID&lt;0.229.0&gt;
+Name: supervise_levels_worker1, PID: #PID&lt;0.228.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE supervise_levels_worker1
+</code></pre></div></div> <p>This shows that if the child that was started first terminates then the second child and all of its workers are terminated. You can see that both pids are new by the end. Does the ChildSupervisor restart its workers in this case?</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; ChildSupervisor.children()
+[
+{:child_supervisor_worker3, #PID&lt;0.232.0&gt;, :worker,
+[Supervise.Workers.SimpleWorker]},
+{:child_supervisor_worker2, #PID&lt;0.231.0&gt;, :worker,
+[Supervise.Workers.SimpleWorker]},
+{:child_supervisor_worker1, #PID&lt;0.230.0&gt;, :worker,
+[Supervise.Workers.SimpleWorker]}
+]
+</code></pre></div></div> <p>Yes, it did.</p> <h3 id="dont-kill-a-supervisor">Don’t Kill a Supervisor</h3> <p>Can we kill the ChildSupervisor process. Yeah, of course. But its not a great test. Supervisors don’t have functionality beyond supervising. All of the interesting code lives down in OTP-land. In general, don’t worry about your Supervisor terminating inadvertently.</p> <h2 id="other-supervisor-questions">Other Supervisor Questions</h2> <h3 id="are-restarts-cumulative">Are restarts cumulative?</h3> <p>If a restart occurs for a process that is being supervised does that count as 1 just for itself or is it added to a total for all the processes being supervised? As it turns out, the <code class="language-plaintext highlighter-rouge">max_restarts</code> are cumulative. So if a Supervisor is supervising 4 children and has <code class="language-plaintext highlighter-rouge">max_restarts</code> set to 3 and all 4 children are killed then the Supervisor itself will restart.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; Supervise.MaxRestarts.SuperviseOneForOne.test_kill_all()
+Before kill, Current Supervisor pid #PID&lt;0.250.0&gt;
+Terminating #PID&lt;0.263.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.261.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.262.0&gt; with reason :shutdown and state nil
+Elixir.Supervise.MaxRestarts.SuperviseOneForOne is starting
+After kill, Current Supervisor pid #PID&lt;0.264.0&gt;
+</code></pre></div></div> <p>So because 4 processes restarted in less than 5 seconds the Supervisor was restarted.</p> <h3 id="does-supervisor-restarting-processes-because-of-one_for_all-strategy-count-against-max_restarts">Does Supervisor restarting processes because of one_for_all strategy count against max_restarts?</h3> <p>No. The Supervisor restarting processes because the strategy is set to <code class="language-plaintext highlighter-rouge">:one_for_all</code> doesn’t add up all the children that it restarts and use that to compare against <code class="language-plaintext highlighter-rouge">:max_restarts</code>. The restart count is the child process itself exiting. Not the Supervisor shutting it down because of this.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex(1)&gt; Supervise.MaxRestarts.SuperviseOneForAll.test_kill_one()
+Before kill, Current Supervisor pid #PID&lt;0.255.0&gt;
+Terminating #PID&lt;0.265.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.264.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.263.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.262.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.261.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.260.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.259.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.258.0&gt; with reason :shutdown and state nil
+Terminating #PID&lt;0.257.0&gt; with reason :shutdown and state nil
+After kill, Current Supervisor pid #PID&lt;0.255.0&gt;
+</code></pre></div></div> <h3 id="is-it-greater-than-max_restarts-or-equal-to">Is it greater than max_restarts or equal to?</h3> <p>Greater than. Using the Supervise.MaxRestarts.SuperviseOneForOne which has 4 children we can kill three of its children and the supervisor is not restarted. This is because its max_restarts is set to 3. So 4 children have to be killed for the Supervisor itself to restart.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; Supervise.MaxRestarts.SuperviseOneForOne.test_kill_three()
+Before kill, Current Supervisor pid #PID&lt;0.239.0&gt;
+After kill, Current Supervisor pid #PID&lt;0.239.0&gt;
+</code></pre></div></div> <h3 id="what-about-dynamicsupervisor">What About DynamicSupervisor?</h3> <p>A DynamicSupervisor is a separate variation of supervision in Elixir. With a Supervisor you ordinarily start with static children defined. With a DynamicSupervisor you start with no children and add (or remove) them over time. The only strategy available (at the moment) for DynamicSupervisor is <code class="language-plaintext highlighter-rouge">:one_for_one</code>.</p> <p>You can add children to a Supervisor dynamically as well. So… hmmm… why would there be a DynamicSupervisor? One feature that’s in DynamicSupervisor is that you can specify the max children allowed. There are certain use cases where this is very useful.</p> <p>In a DynamicSupervisor there is no ordering between children. In case of a shutdown the children are shutdown concurrently. This can also be quite useful for some use cases.</p> <h3 id="what-are-those-other-processes">What Are Those Other Processes?</h3> <p>If you run the observer after starting up with iex -S mix then you see a tree (there may be more nodes on it but ignore that for now).</p> <p>The SuperviseOneForAll, etc may look okay to you. But what’s Supervise.Supervisor? If you look in application.ex then you can see that’s how the rest of the tree is filled in.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Supervise.Application do
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
+
+  use Application
+
+  @impl true
+  def start(_type, _args) do
+    IO.puts("#{__MODULE__} is starting")
+
+    children = [
+      Supervise.Restart.StartupWait,
+      Supervise.Strategies.SuperviseOneForOne,
+      Supervise.Strategies.SuperviseRestForOne,
+      Supervise.Strategies.SuperviseOneForAll,
+      Supervise.Strategies.SuperviseLevels,
+      Supervise.Types.SuperviseDynamically,
+      Supervise.RestartTypes.Permanent,
+      Supervise.RestartTypes.Temporary,
+      Supervise.RestartTypes.Transient,
+      Supervise.MaxRestarts.UsingOneForOne,
+      Supervise.MaxRestarts.UsingOneForAll,
+      # Supervise.Timeouts.LazySupervisor,
+      Supervise.Restart.WithWait
+    ]
+
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: Supervise.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end
+</code></pre></div></div> <p>You can see that Application is a Supervisor as well. It’s naming itself and setting a strategy of :one_for_one. You can read about Application in the Elixir documentation.</p> <p>How is Application started? That’s done via the mix.exs file.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def application do
+  [
+    extra_applications: [:logger],
+    mod: {Supervise.Application, []}
+  ]
+end
+</code></pre></div></div> <p>The mod tells the “system” when you boot up run the start/2 function.</p> <p>If you bring up observer you’ll see some root level processes that are not named and don’t correspond to modules in the test project. These processes are OTP level things. You can learn more if you are interested by reading through the code. It’s available at <a href="https://github.com/erlang/otp/blob/master/lib/kernel/src/application_master.erl">application_master.erl</a>.</p> <h2 id="building-a-supervisor">Building a Supervisor</h2> <p>When you write a Supervisor its got to have a few essential elements. The layout tends to be pretty standard. And it’s quite simple (ordinarily). Let’s start with a bare defmodule.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule FirstSupervisor do
+end
+</code></pre></div></div> <h3 id="use-supervisor">Use Supervisor</h3> <p>The first thing that you’ll do is include a use Supervisor line after the defmodule.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule FirstSupervisor do
+  use Supervisor
+
+end
+</code></pre></div></div> <p>The use is an Elixir Macro. It ends up calling the function <strong>using</strong> in the Supervisor module. This declares that this module implements the @behaviour Supervisor. It declares a childspec/1 function, builds a default childspec:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>%{
+  id: __MODULE__,
+  start: {__MODULE__, :start_link, [init_arg]},
+  type: :supervisor
+}
+</code></pre></div></div> <p>and uses the <a href="https://hexdocs.pm/elixir/1.12/Supervisor.html#child_spec/2">Supervisor.childspec/2</a> function to build the childspec for the Supervisor itself.</p> <h3 id="create-a-start_link1-function">Create a start_link/1 function</h3> <p>There is a <code class="language-plaintext highlighter-rouge">start_link/1</code> function that calls <code class="language-plaintext highlighter-rouge">Supervisor.start_link/3</code>. The first parameter is the module that implements the required Supervisor functionality. The second parameter is the init_arg. This is passed to the init/1 callback that the module must implement. The third parameter is a list that allows only one element to give the Supervisor a name. So, you might see something like: <code class="language-plaintext highlighter-rouge">Supervisor.start_link(MODULE, :ok, [{:name, MODULE}])</code>.</p> <p>There’s also a <code class="language-plaintext highlighter-rouge">start_link/2</code> where the list that contains the name isn’t passed in. If you use this you’ll have to identify the supervisor process by its pid.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule FirstSupervisor do
+  use Supervisor
+  def start_link(_opts) do
+    Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
+  end
+end
+</code></pre></div></div> <h3 id="create-the-init1-callback-function">Create the init/1 callback function</h3> <p>The use Supervisor macro declared that the module implements the @behaviour Supervisor. The behaviour has one required callback - <code class="language-plaintext highlighter-rouge">init/1</code>.</p> <p>The init callback must return <code class="language-plaintext highlighter-rouge">{:ok, {:supervisor.sup_flags(), [:supervisor.child_spec()]}}</code> or <code class="language-plaintext highlighter-rouge">:ignore</code>. What you’ll generally see in code is the last line in the <code class="language-plaintext highlighter-rouge">init/1</code> callback is: <code class="language-plaintext highlighter-rouge">Supervisor.init(children, opts)</code>. That function ensures that the correct data is returned.</p> <p>The call to <code class="language-plaintext highlighter-rouge">Supervisor.init/2</code> takes children and opts (a Keyword list). The children are a list of specs for the worker processes. The available options that can be passed in are:</p> <ul> <li><code class="language-plaintext highlighter-rouge">:strategy</code> - <code class="language-plaintext highlighter-rouge">:one_for_one</code>, <code class="language-plaintext highlighter-rouge">:rest_for_one</code>, <code class="language-plaintext highlighter-rouge">:one_for_all</code> (you can set this to simple_one_for_one but you’ll get a warning that the strategy is deprecated and you should be using DynamicSupervisor instead). If you don’t set a strategy then your app won’t start.</li> <li><code class="language-plaintext highlighter-rouge">:max_restarts</code> - this is optional and defaults to 3. It’s the maximum number of restarts allowed for the children in a time frame. You can set it to 3 or higher. If you try to set it lower then the value is ignored.</li> <li><code class="language-plaintext highlighter-rouge">:max_seconds</code> - this is optional and defaults to 5 (seconds). This is the time frame for the :max_restarts option. You can set this to any positive integer value. If you try zero or a negative value then your app won’t start.</li> </ul> <h2 id="time-limits">Time Limits</h2> <ul> <li>How long can start_link/3 run before there is a problem?</li> <li>How long can init/1 run before there is a problem?</li> </ul> <p>There’s two modules in the project to help test this:</p> <ul> <li>Supervise.Timeouts.LazySupervisor - Supervisor started by Application</li> <li>Supervise.Timeouts.Lazy - Supervisor started by Supervise.Timeouts.LazySupervisor</li> </ul> <p>By default the code is setup where LazySupervisor creates two Lazy processes - :lazy_start_link and :lazy_init. The <code class="language-plaintext highlighter-rouge">:lazy_start_link</code> waits 1 second before calling <code class="language-plaintext highlighter-rouge">Supervisor.start_link/3</code>. The <code class="language-plaintext highlighter-rouge">:lazy_init</code> waits 1 second after the <code class="language-plaintext highlighter-rouge">init/1</code> function is called before proceeding with normal init functionality. When you start the app with iex -S mix you’ll see:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Elixir.Supervise.Timeouts.LazySupervisor is starting
+Elixir.Supervise.Timeouts.Lazy.start_link/1 has name lazy_start_link
+Elixir.Supervise.Timeouts.Lazy.start_link/1 will call Supervisor.start_link in 1000 ms
+Elixir.Supervise.Timeouts.Lazy.init/1 will continue in 0 ms
+Elixir.Supervise.Timeouts.Lazy.start_link/1 has name lazy_init
+Elixir.Supervise.Timeouts.Lazy.start_link/1 will call Supervisor.start_link in 0 ms
+Elixir.Supervise.Timeouts.Lazy.init/1 will continue in 1000 ms
+</code></pre></div></div> <p>So this works fine. But how far can this be pushed? Quite a bit, as it turns out. Exit the iex session and edit the lib/supervise/timeouts/lazy_supervisor.ex file and change the children in the <code class="language-plaintext highlighter-rouge">init/1</code> function to:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    children = [
+      lazy_spec(name: :lazy_start_link, start_link_delay: 1000),
+      lazy_spec(name: :lazy_init, init_delay: 60_000)
+    ]
+</code></pre></div></div> <p>and you’ll find that works too. Likewise setting the <code class="language-plaintext highlighter-rouge">:start_link_delay</code> to 60_000 works. It’s odd but something to keep in mind.</p> <h2 id="supervision-when-things-go-wrong">Supervision when things go wrong</h2> <h3 id="too-many-restarts">Too many restarts</h3> <p>A Supervisor defines the maximum number of restarts and the maximum time allowed for that number of restarts. It’s a rolling window. If the maximum time allowed is 5 seconds and a worker process terminates after 5 seconds and then doesn’t terminate again until 30 seconds later then the Supervisor has a count of 1 crash.</p> <p>The ChildSupervisor has a function test_restarts(num_restarts). You pass in the integer value (at least 1). The function ensures that number of child processes restarts. The ChildSupervisor has max_restarts: 3, max_seconds: 1. So we expect that until we pass in a number &gt; 3 the ChildSupervisor simply restarts the terminated worker.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex(1)&gt; ChildSupervisor.test_restarts(1)
+:ok
+iex(2)&gt; ChildSupervisor.test_restarts(2)
+:ok
+iex(3)&gt; ChildSupervisor.test_restarts(3)
+:ok
+iex(4)&gt; ChildSupervisor.test_restarts(4)
+Terminating #PID&lt;0.259.0&gt; with reason :shutdown and state "child_supervisor_worker3"
+Terminating #PID&lt;0.257.0&gt; with reason :shutdown and state "child_supervisor_worker2"
+Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor is starting
+:ok
+iex(5)&gt; ChildSupervisor.show_children()
+Name: child_supervisor_worker3, PID: #PID&lt;0.264.0&gt;
+Name: child_supervisor_worker2, PID: #PID&lt;0.263.0&gt;
+Name: child_supervisor_worker1, PID: #PID&lt;0.262.0&gt;
+</code></pre></div></div> <p>This shows that if the workers associated with the ChildSupervisor terminate frequently enough within a timeframe the ChildSupervisor itself shuts down. Since it has it’s own Supervisor - SuperviseLevels - it is restarted and then the workers are restarted as well.</p> <p>Even though the ChildSupervisor has a strategy of :one_for_one if it shuts down because a child terminated and exceeded the thresholds then any other still running children of ChildSupervisor are shutdown. The ChildSupervisor then terminates and it’s restarted.</p> <p>We can demonstrate too many but over a time period where the max_restarts is never exceeded for that period as well. We’ll terminate 3 children, sleep for 2 seconds, then terminate the 3 children again.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; ChildSupervisor.test_restarts(3); Process.sleep(2_000); ChildSupervisor.test_restarts(3)
+:ok
+</code></pre></div></div> <p>The ChildSupervisor handled that fine. But if the sleep is shortened the ChildSupervisor is restarted.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; ChildSupervisor.test_restarts(3); Process.sleep(500); ChildSupervisor.test_restarts(3)
+Terminating #PID&lt;0.291.0&gt; with reason :shutdown and state "child_supervisor_worker3"
+Terminating #PID&lt;0.289.0&gt; with reason :shutdown and state "child_supervisor_worker2"
+Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor is starting
+</code></pre></div></div> <h3 id="but-what-if-i-did-kill-a-supervisor">But What if I did Kill a Supervisor?</h3> <p>Let’s first do this a smoother way. We can stop a Supervisor with Supervisor.stop/2.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; pid = Process.whereis(ChildSupervisor)
+#PID&lt;0.221.0&gt;
+iex&gt; Supervisor.stop(pid, :normal)
+Terminating #PID&lt;0.224.0&gt; with reason :shutdown and state "child_supervisor_worker3"
+Terminating #PID&lt;0.223.0&gt; with reason :shutdown and state "child_supervisor_worker2"
+Terminating #PID&lt;0.222.0&gt; with reason :shutdown and state "child_supervisor_worker1"
+Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor is starting
+:ok
+</code></pre></div></div> <p>You can see this acts just like the case of the worker restarts exceeding thresholds. In this case the ChildSupervisor stops all 3 workers and then stops. The Supervisor of the ChildSupervisor then restarts it.</p> <p><code class="language-plaintext highlighter-rouge">Process.exit/2</code> is a good deal messier:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pid = Process.whereis(ChildSupervisor)
+#PID&lt;0.229.0&gt;
+iex(5)&gt; Process.exit(pid, :kill)
+Terminating #PID&lt;0.233.0&gt; with reason :killed and state "child_supervisor_worker3"
+Terminating #PID&lt;0.231.0&gt; with reason :killed and state "child_supervisor_worker2"
+Terminating #PID&lt;0.230.0&gt; with reason :killed and state "child_supervisor_worker1"
+Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor is starting
+true
+Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor is starting
+iex(6)&gt; Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor is starting
+Terminating #PID&lt;0.220.0&gt; with reason :shutdown and state "supervise_levels_worker1"
+Elixir.Supervise.Strategies.SuperviseLevels is starting
+Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor is starting
+Terminating #PID&lt;0.242.0&gt; with reason :shutdown and state "supervise_levels_worker1"
+Elixir.Supervise.Strategies.SuperviseLevels is starting
+Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor is starting
+Terminating #PID&lt;0.245.0&gt; with reason :shutdown and state "supervise_levels_worker1"
+Elixir.Supervise.Strategies.SuperviseLevels is starting
+Elixir.Supervise.Strategies.SuperviseLevels.ChildSupervisor is starting
+Terminating #PID&lt;0.248.0&gt; with reason :shutdown and state "supervise_levels_worker1"
+Terminating #PID&lt;0.218.0&gt; with reason :shutdown and state "one_for_all_worker3"
+Terminating #PID&lt;0.217.0&gt; with reason :shutdown and state "one_for_all_worker2"
+Terminating #PID&lt;0.216.0&gt; with reason :shutdown and state "one_for_all_worker1"
+Terminating #PID&lt;0.214.0&gt; with reason :shutdown and state "rest_for_one_worker3"
+Terminating #PID&lt;0.213.0&gt; with reason :shutdown and state "rest_for_one_worker2"
+Terminating #PID&lt;0.212.0&gt; with reason :shutdown and state "rest_for_one_worker1"
+Terminating #PID&lt;0.210.0&gt; with reason :shutdown and state "one_for_one_worker3"
+Terminating #PID&lt;0.209.0&gt; with reason :shutdown and state "one_for_one_worker2"
+Terminating #PID&lt;0.208.0&gt; with reason :shutdown and state "one_for_one_worker1"
+
+12:55:40.521 [notice] Application supervise exited: shutdown
+</code></pre></div></div> <p>And that’s a good reason to not kill a Supervisor process. The entire application was shutdown as the system thrashed a bit. You can see the ChildSupervisor is restarted multiple times. That causes SuperviseLevels to restart multiple times. SuperviseLevels lives under the Application. The bubbling up of these restarts lead to every process in the application being shut down.</p> <h2 id="restart-values">Restart Values</h2> <p>One of the attributes in a child spec is a restart value. There are 3 types and the Supervisor handles them differently:</p> <ul> <li><code class="language-plaintext highlighter-rouge">:permanent</code> - this is the default and it’s what we’ve used to this point for all the workers created. It indicates the Supervisor should always restart this process.</li> <li><code class="language-plaintext highlighter-rouge">:temporary</code> - the child process is never restarted, regardless of the supervision strategy: any termination (even abnormal) is considered successful.</li> <li><code class="language-plaintext highlighter-rouge">:transient</code> - the child process is restarted only if it terminates abnormally, i.e., with an exit reason other than :normal, :shutdown, or {:shutdown, term}.</li> </ul> <h3 id="testing-1">Testing</h3> <h4 id="permanent">:permanent</h4> <p>The tests described above all used permanent so there’s no need to run special tests for this restart value.</p> <h4 id="temporary">:temporary</h4> <p>Running the test_kill_all/1 function for Temporary gives us these results:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; Temporary.test_kill_all
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START restart_temporary_worker1
+------  Show children before stop ------
+Name: restart_temporary_worker3, PID: #PID&lt;0.233.0&gt;
+Name: restart_temporary_worker2, PID: #PID&lt;0.232.0&gt;
+Name: restart_temporary_worker1, PID: #PID&lt;0.231.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.231.0&gt;
+------  Show children after stop ------
+Name: restart_temporary_worker3, PID: #PID&lt;0.233.0&gt;
+Name: restart_temporary_worker2, PID: #PID&lt;0.232.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE restart_temporary_worker1
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START restart_temporary_worker2
+------  Show children before stop ------
+Name: restart_temporary_worker3, PID: #PID&lt;0.233.0&gt;
+Name: restart_temporary_worker2, PID: #PID&lt;0.232.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.232.0&gt;
+------  Show children after stop ------
+Name: restart_temporary_worker3, PID: #PID&lt;0.233.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE restart_temporary_worker2
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START restart_temporary_worker3
+------  Show children before stop ------
+Name: restart_temporary_worker3, PID: #PID&lt;0.233.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.233.0&gt;
+------  Show children after stop ------
+&lt;&lt;&lt;&lt;&lt; DONE restart_temporary_worker3
+</code></pre></div></div> <p>You can see the Temporary Supervisor loses all of its children as the test loops killing each in turn. They do not restart. Does this kill the Supervisor?</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; Process.whereis(Temporary)
+#PID&lt;0.230.0&gt;
+iex&gt; Supervisor.count_children(Temporary)
+%{active: 0, specs: 0, supervisors: 0, workers: 0}
+</code></pre></div></div> <p>Nope its running. But it has no children now. We can re-add a worker to it if we wish.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; Supervisor.start_child(Temporary, SimpleWorker.build_spec(:restart_temporary_worker1, :temporary))
+{:ok, #PID&lt;0.257.0&gt;}
+iex&gt; Supervisor.count_children(Supervise.RestartTypes.Temporary)
+%{active: 1, specs: 1, supervisors: 0, workers: 1}
+</code></pre></div></div> <h4 id="transient">:transient</h4> <p>The Transient Supervisor is going to behave like the Permanent Supervisor in the first test. This is because we are terminating the workers abnormally. Since that is the case the Permanent Supervisor restarts the worker.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Transient.test_kill_all()
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START restart_transient_worker1
+------  Show children before stop ------
+Name: restart_transient_worker3, PID: #PID&lt;0.237.0&gt;
+Name: restart_transient_worker2, PID: #PID&lt;0.236.0&gt;
+Name: restart_transient_worker1, PID: #PID&lt;0.235.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.235.0&gt;
+------  Show children after stop ------
+Name: restart_transient_worker3, PID: #PID&lt;0.237.0&gt;
+Name: restart_transient_worker2, PID: #PID&lt;0.236.0&gt;
+Name: restart_transient_worker1, PID: #PID&lt;0.240.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE restart_transient_worker1
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START restart_transient_worker2
+------  Show children before stop ------
+Name: restart_transient_worker3, PID: #PID&lt;0.237.0&gt;
+Name: restart_transient_worker2, PID: #PID&lt;0.236.0&gt;
+Name: restart_transient_worker1, PID: #PID&lt;0.240.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.236.0&gt;
+------  Show children after stop ------
+Name: restart_transient_worker3, PID: #PID&lt;0.237.0&gt;
+Name: restart_transient_worker2, PID: #PID&lt;0.241.0&gt;
+Name: restart_transient_worker1, PID: #PID&lt;0.240.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE restart_transient_worker2
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; START restart_transient_worker3
+------  Show children before stop ------
+Name: restart_transient_worker3, PID: #PID&lt;0.237.0&gt;
+Name: restart_transient_worker2, PID: #PID&lt;0.241.0&gt;
+Name: restart_transient_worker1, PID: #PID&lt;0.240.0&gt;
+------  Stopping one child ------
+Killing the process #PID&lt;0.237.0&gt;
+------  Show children after stop ------
+Name: restart_transient_worker3, PID: #PID&lt;0.242.0&gt;
+Name: restart_transient_worker2, PID: #PID&lt;0.241.0&gt;
+Name: restart_transient_worker1, PID: #PID&lt;0.240.0&gt;
+&lt;&lt;&lt;&lt;&lt; DONE restart_transient_worker3
+</code></pre></div></div> <p>And the Transient Supervisor remains up and running - with 3 children.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; Process.whereis(Transient)
+#PID&lt;0.234.0&gt;
+iex&gt; Supervisor.count_children(Transient)
+%{active: 3, specs: 3, supervisors: 0, workers: 3}
+</code></pre></div></div> <h2 id="real-problems">Real Problems</h2> <h3 id="why-cant-i-configure-a-delay-when-worker-is-restarted">Why Can’t I Configure a Delay When Worker is Restarted?</h3> <p>This has come up many times. The problem that people run into is that a worker terminates because of a network connection problem. The developer knows this happens occasionally. They know that if they can just wait a few seconds before a restart then the connection is probably okay. However, there’s no options available that lets the developer configure a Supervisor to add in a restart delay. And if the worker is restarted really quickly then its easy for it to exceed the <code class="language-plaintext highlighter-rouge">:max_retries</code> allowed by its Supervisor. Thus crashing the Supervisor and possibly taking the entire application down.</p> <p>There are a couple of approaches to resolving this issue. One approach to create a Delay module.</p> <p>The basic idea is that in the start_link for the process we want to delay we call into the Delay module. It contains state that can identify whether this is the first time starting this process or a restart. If its a restart then it will delay the process startup.</p> <p>Note: The brod Erlang Kafka library includes its own Supervisor implementation. This has some of the delay restart functionality used with :erlang.send_after.</p> <p>The sample project has a demonstration of this in Supervise.Restart.StartupWait. A new GenServer module - <code class="language-plaintext highlighter-rouge">Supervise.Workers.WaitWorker</code> - calls the <code class="language-plaintext highlighter-rouge">register/1</code> function in StartupWait in its <code class="language-plaintext highlighter-rouge">start_link/1</code> function. This will ensure that a delay occurs before the WaitWorker process can be created.</p> <h2 id="references">References</h2> <ul> <li><a href="https://learnyousomeerlang.com/supervisors">Learn you some Erlang for great good! - Who Supervises the Supervisors?</a></li> <li><a href="https://www.youtube.com/watch?v=Iih3Nrce3_U">Saša Jurić talk on Supervision - Parenting Children</a></li> <li><a href="https://youtu.be/FtZBTUvRt0g?t=1652">Mat Trudel talk on Supervision - A Funny Thing Happened on the way to the Phoenix</a></li> <li><a href="https://hexdocs.pm/elixir/Supervisor.html">Supervisor — Elixir Documentation</a></li> <li><a href="https://hexdocs.pm/elixir/DynamicSupervisor.html">DynamicSupervisor — Elixir Documentation</a></li> </ul>]]></content><author><name></name></author><category term="Elixir"/><category term="Elixir"/><summary type="html"><![CDATA[Sample code to demonstrate some aspects of Elixir supervision]]></summary></entry><entry><title type="html">Elixir and Dependencies</title><link href="https://fmcgeough.github.io/blog/2024/updating-elixir-dependencies/" rel="alternate" type="text/html" title="Elixir and Dependencies"/><published>2024-02-21T08:53:13+00:00</published><updated>2024-02-21T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2024/updating-elixir-dependencies</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2024/updating-elixir-dependencies/"><![CDATA[<p>One of the ongoing tasks for a development team is to keep the dependencies of apps up to date. The following information are aspects of that work for Elixir language projects. It doesn’t attempt to explain the language itself and assumes you are at least minimally familiar with it. If you are coming to the language for the first time then the <a href="https://elixir-lang.org/">Elixir website</a> has excellent material to learn the basics of the language.</p> <h2 id="elixir-versioning">Elixir Versioning</h2> <p>Each Elixir library or application has a <code class="language-plaintext highlighter-rouge">mix.exs</code> file. This file is used to configure the project. A sample of this is:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Demo.MixProject do
   use Mix.Project
 
   def project do
@@ -583,4 +976,4 @@ end
       (1 rows)
 
       INSERT 0 0
-</code></pre></div></div>]]></content><author><name></name></author><category term="postgresql"/><category term="postgresql"/><summary type="html"><![CDATA[Returning the primary key id on upsert with Postgresql]]></summary></entry><entry><title type="html">Practice a new language with exercism</title><link href="https://fmcgeough.github.io/blog/2016/exercism-web-site/" rel="alternate" type="text/html" title="Practice a new language with exercism"/><published>2016-05-18T08:53:13+00:00</published><updated>2016-05-18T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2016/exercism-web-site</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2016/exercism-web-site/"><![CDATA[<p>After a long day programming do you look forward to more programming? OK then. You might want to check out <a href="http://exercism.io/">http://exercism.io/</a> (You might want to also seek help. Go outside once in a while for crying out loud). It has problems in a wide variety of languages. You sign up with your github account and pick a language to work on (Java, Javascript, Scala, Python, Ruby are among the choices). You code up a solution to the problem and submit it. You can discuss your solution and others approaches and iterate on your design to improve it.</p> <p>Each problem is large enough to be interesting but not so large as to demand a good portion of your time. It seems like an hour or two at most.</p> <p>I found this a good way to expand my knowledge of languages I wanted to learn.</p>]]></content><author><name></name></author><category term="programming"/><category term="programming"/><summary type="html"><![CDATA[Learning a language with online courses]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name></name></author><category term="postgresql"/><category term="postgresql"/><summary type="html"><![CDATA[Returning the primary key id on upsert with Postgresql]]></summary></entry></feed>
