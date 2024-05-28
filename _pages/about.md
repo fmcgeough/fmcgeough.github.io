@@ -32,11 +32,10 @@ great software.
 
 ### More Information
 
-More importantly, I'm a husband, father, grandfather and hopefully, friend.
+More importantly, I'm a husband, father, grandfather and friend.
 Besides programming I like playing guitar (electric, acoustic, resonator),
 cooking, and reading. I'm apt to write blog posts about any of those.
 
 ### Contact me
 
-- I am on linkedin as fmcgeough
-- [Github](https://github.com/fmcgeough)
+Contact links appear below.
