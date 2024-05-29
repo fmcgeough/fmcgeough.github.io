@@ -35,10 +35,8 @@ great software.
 Helping people learn makes me happy.
 
 I spend time trying to develop Elixir code that can help developers
-learn the language and how best to apply it. There are those that
-think the time is better spent developing libraries. I understand
-the thought process but I think ultimately having someone understand,
-rather than just use, Elixir code is very worthwhile.
+learn the language and some fundamental libraries. Here's a couple of
+examples.
 
 - [brod_mimic](https://github.com/fmcgeough/brod_mimic) - the main means of interacting
   with Kafka for most Elixir developers is the brod library. This library is written in
