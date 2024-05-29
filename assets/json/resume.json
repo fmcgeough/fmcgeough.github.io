@@ -25,7 +25,7 @@
       "endDate": "",
       "summary": "Developed backend services in Elixir using the Phoenix framework",
       "highlights": [
-        "Wrote numerous blog posts to level-up developers in using Elixir",
+        "Wrote numerous blog posts and led many pairing sessions to level-up developers Elixir knowledge",
         "Designed and built a new system managing user creation and assignment to licensed products",
         "Introduced team to Open Policy Agent as an approach to solving issues related to authorization"
       ]
@@ -45,12 +45,26 @@
       "url": "https://www.vonage.com/",
       "startDate": "2010-11-01",
       "endDate": "2019-04-01",
-      "summary": "Worked in various roles as company moved from a startup to an acquisition by Vonage",
+      "summary": "Worked in various roles as company moved from the small business PBX startup I initially joined to an acquisition by Vonage",
       "highlights": [
-        "Company acquired by Vonage",
+        "After Vonage acquisition I helped educate Vonage engineers in the Vocalocity code and database design",
         "Discovered the Elixir language and used it to build a number of tools that became the initial basis for the SRE team",
-        "Became the de-facto DBA and helped company with addressing performance issues",
-        "Joined small PBX startup Vocalocity in Atlanta"
+        "Became the de-facto DBA and helped company with addressing performance issues and generating churn/revenue reports, upgrades to Postgresql",
+        "Joined small PBX startup Vocalocity in Atlanta to evaluate SaaS billing solutions"
+      ]
+    },
+    {
+      "name": "Nokia Corporation",
+      "position": "Architect/Senior Software Engineer",
+      "url": "https://www.nokia.com/",
+      "startDate": "2006-02-01",
+      "endDate": "2010-11-01",
+      "summary": "Nokia acquired my previous company Intellisync. I worked in numerous roles and projects for Nokia",
+      "highlights": [
+        "Wrote Java database layer for Device Management/File Synchronization using Hibernate",
+        "Developed Mac OS X version of Ovi Files (file delivery mechanism for mobile devices",
+        "Developed network layer for social networking applications for Maemo and S60 platforms",
+        "Assisted in technical evaluation of companies for Nokia acquisition group"
       ]
     }
   ],
