@@ -1,0 +1,302 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Elixir, Phoenix Framework and Datatables | Frank McGeough </title> <meta name="author" content="Frank McGeough"> <meta name="description" content="Exploring Features of Elixir"> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://fmcgeough.github.io/blog/2017/phoenix-and-datatables/"> <script src="/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>initTheme();</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Frank</span> McGeough </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/repositories/">repositories </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Elixir, Phoenix Framework and Datatables</h1> <p class="post-meta"> Created in February 12, 2017 </p> <p class="post-tags"> <a href="/blog/2017"> <i class="fa-solid fa-calendar fa-sm"></i> 2017 </a>   ·   <a href="/blog/tag/elixir"> <i class="fa-solid fa-hashtag fa-sm"></i> Elixir</a>     ·   <a href="/blog/category/elixir"> <i class="fa-solid fa-tag fa-sm"></i> Elixir</a>   </p> </header> <article class="post-content"> <div id="markdown-content"> <p>I built an administrative tool for my company that used Phoenix server side templating, bootstrap and datatables.js. This is not because I have an overwhelming preference for bootstrap or datatables.js. I just happened to find these first in the course of building the web app and they were able to solve my problem. Phoenix server-side templates are awesome, powerful and easy-to-use. I did have a bit of trouble with datatables so I figured I’d write up a brief blog post on how I got datatables to work with server-side paging.</p> <p>The rundown on what is used for this project is :</p> <ul> <li>Elixir “1.3.3”</li> <li>Phoenix “1.2.1”</li> <li>Ecto “2.1.3”</li> </ul> <p>All of the code is on github.com at <a href="https://github.com/fmcgeough/datatables" rel="external nofollow noopener" target="_blank">https://github.com/fmcgeough/datatables</a></p> <p>Datatables has the ability to do server-side paging via AJAX calls. There is enough information on the web to be able to puzzle out how to do this but I didn’t see any Elixir/Phoenix examples so I figured I’d do a simple one in case someone else is looking for this information. Its comforting to find an implementation in your language of choice even though its not, strictly speaking, necessary.</p> <p>We’ll start off creating a new Phoenix project :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ▶ mix phoenix.new datatables
+    * creating datatables/config/config.exs
+    * creating datatables/config/dev.exs
+    * creating datatables/config/prod.exs
+    * creating datatables/config/prod.secret.exs
+    * creating datatables/config/test.exs
+    * creating datatables/lib/datatables.ex
+    * creating datatables/lib/datatables/endpoint.ex
+    * creating datatables/test/views/error_view_test.exs
+    * creating datatables/test/support/conn_case.ex
+    * creating datatables/test/support/channel_case.ex
+    * creating datatables/test/test_helper.exs
+    * creating datatables/web/channels/user_socket.ex
+    * creating datatables/web/router.ex
+    * creating datatables/web/views/error_view.ex
+    * creating datatables/web/web.ex
+    * creating datatables/mix.exs
+    * creating datatables/README.md
+    * creating datatables/web/gettext.ex
+    * creating datatables/priv/gettext/errors.pot
+    * creating datatables/priv/gettext/en/LC_MESSAGES/errors.po
+    * creating datatables/web/views/error_helpers.ex
+    * creating datatables/lib/datatables/repo.ex
+    * creating datatables/test/support/model_case.ex
+    * creating datatables/priv/repo/seeds.exs
+    * creating datatables/.gitignore
+    * creating datatables/brunch-config.js
+    * creating datatables/package.json
+    * creating datatables/web/static/css/app.css
+    * creating datatables/web/static/css/phoenix.css
+    * creating datatables/web/static/js/app.js
+    * creating datatables/web/static/js/socket.js
+    * creating datatables/web/static/assets/robots.txt
+    * creating datatables/web/static/assets/images/phoenix.png
+    * creating datatables/web/static/assets/favicon.ico
+    * creating datatables/test/controllers/page_controller_test.exs
+    * creating datatables/test/views/layout_view_test.exs
+    * creating datatables/test/views/page_view_test.exs
+    * creating datatables/web/controllers/page_controller.ex
+    * creating datatables/web/templates/layout/app.html.eex
+    * creating datatables/web/templates/page/index.html.eex
+    * creating datatables/web/views/layout_view.ex
+    * creating datatables/web/views/page_view.ex
+
+    Fetch and install dependencies? [Yn] Y
+    * running mix deps.get
+    * running npm install &amp;&amp; node node_modules/brunch/bin/brunch build
+</code></pre></div></div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>We are all set! Run your Phoenix application:
+</code></pre></div></div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        $ cd datatables
+        $ mix phoenix.server
+</code></pre></div></div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You can also run your app inside IEx (Interactive Elixir) as:
+</code></pre></div></div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        $ iex -S mix phoenix.server
+</code></pre></div></div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Before moving on, configure your database in config/dev.exs and run:
+</code></pre></div></div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        $ mix ecto.create
+</code></pre></div></div> <p>In order to demonstrate server side paging it’s good to have a fairly large dataset. Luckily there are numerous sources of data that can be used. For this example I used zipcodes. I randomly choose one that I found when searching. Its available at https://github.com/devongovett/zipcode. The file consists of the following fields : zipcode, city, state_abbreviation. Not very interesting but its fine to demonstrate the idea.</p> <p>Lets just create a migration for our table we’ll use for the zipcodes.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ▶ mix ecto.gen.migration create_zips
+    * creating priv/repo/migrations
+    * creating priv/repo/migrations/20170212204915_create_zips.exs
+</code></pre></div></div> <p>This created the file 20170212204915_create_zips.exs but left it empty. You have to provide the information (in this case, creating a table). Edit the file to give :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule Datatables.Repo.Migrations.CreateZips do
+      use Ecto.Migration
+
+      def change do
+        create table(:zips) do
+          add :zip_code,     :string
+          add :city,    :string
+          add :state,     :string
+
+          timestamps()
+
+      end
+    end
+</code></pre></div></div> <p>Migrations should provide a way to migrate and a way to rollback. The change method can be used in migrations if Ecto can puzzle out how to do a rollback. If you are doing something more complex than creating a table or index you’ll have to use the up and down methods instead of change. The down method allows you to code your own rollback.</p> <p>We probably should have made zip_code unique but since we’re just using this table to demonstrate server-side paging I’ve left it as-is.</p> <p>The schema object used for interacting with the database is simple.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule Datatables.Zip do
+      use Ecto.Schema
+
+      schema "zips" do
+        field :zip_code,  :string
+        field :city,      :string
+        field :state,     :string
+
+        timestamps
+      end
+    end
+</code></pre></div></div> <p>I cloned the github repo containing the zip_codes.csv file (with no header) then fired up psql with :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    psql datatables_dev
+    datatables_dev=# create table t(zipcode character varying, city character varying, state character varying);
+    datatables_dev=# COPY t FROM 'zip_codes.csv' WITH DELIMITER ',';
+    COPY 42741
+    datatables_dev=# insert into zips SELECT nextval('zips_id_seq'), t.zipcode, t.city, t.state, now(), now() FROM t;
+    INSERT 0 42741
+</code></pre></div></div> <p>So now the data is in the database table.</p> <p>Since datatables relies on jquery we’ll have to update the package.json file to install jQuery and datatables. Modify the “devDependencies” section in package.json to include the following :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    "jquery": "^3.1.1",
+    "datatables.net": "~1.10.12",
+    "datatables.net-bs": "~1.10.12",
+    "bootstrap": "~3.3",
+</code></pre></div></div> <p>And then run :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    npm install
+</code></pre></div></div> <p>A couple of more infrastructure things and we’ll be ready to view the web page. In order to do paging we need to include the Ecto pagination library - Scrivener. We setup our Repo to use Scrivener with :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule Datatables.Repo do
+      use Ecto.Repo, otp_app: :datatables
+      use Scrivener, page_size: 25
+    end
+</code></pre></div></div> <p>and we add :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    {:scrivener_ecto, "~&gt; 1.0"},
+</code></pre></div></div> <p>to our mix.exs and also add :scrivener_ecto to the set of applications in mix.exs.</p> <p>Now we do :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ▶ mix deps.get
+    Running dependency resolution...
+    Dependency resolution completed:
+      scrivener 2.2.1
+      scrivener_ecto 1.1.3
+    * Getting scrivener_ecto (Hex package)
+      Checking package (https://repo.hex.pm/tarballs/scrivener_ecto-1.1.3.tar)
+      Using locally cached package
+    * Getting scrivener (Hex package)
+      Checking package (https://repo.hex.pm/tarballs/scrivener-2.2.1.tar)
+      Using locally cached package
+</code></pre></div></div> <p>Now, before we go further lets see if this works in iex. We’ll try getting a page worth of data but sort it in descending order by city name.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ▶ iex -S mix
+    Erlang/OTP 19 [erts-8.0.2] [source] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+
+    Interactive Elixir (1.3.3) - press Ctrl+C to exit (type h() ENTER for help)
+    iex(1)&gt; alias Datatables.Zip
+    Datatables.Zip
+    iex(2)&gt; import Ecto.Query
+    Ecto.Query
+    iex(3)&gt; query = from z in Zip, order_by: [desc: z.city]
+    #Ecto.Query&lt;from z in Datatables.Zip, order_by: [desc: z.city]&gt;
+    iex(4)&gt; results = Datatables.Repo.paginate(query)
+    [debug] QUERY OK db=400.8ms
+    SELECT count('1') FROM (SELECT z0."id" AS "id", z0."zip_code" AS "zip_code", z0."city" AS "city", z0."state" AS "state", z0."inserted_at" AS "inserted_at", z0."updated_at" AS "updated_at" FROM "zips" AS z0 ORDER BY z0."city" DESC) AS s0 []
+    [debug] QUERY OK source="zips" db=37.7ms decode=2.8ms
+    SELECT z0."id", z0."zip_code", z0."city", z0."state", z0."inserted_at", z0."updated_at" FROM "zips" AS z0 ORDER BY z0."city" DESC LIMIT $1 OFFSET $2 [25, 0]
+    %Scrivener.Page{entries: [%Datatables.Zip{__meta__: #Ecto.Schema.Metadata&lt;:loaded, "zips"&gt;,
+       city: "ZWOLLE", id: 31343, inserted_at: ~N[2017-02-13 13:51:48.185440],
+       state: "LA", updated_at: ~N[2017-02-13 13:51:48.185440], zip_code: "71486"},
+      %Datatables.Zip{__meta__: #Ecto.Schema.Metadata&lt;:loaded, "zips"&gt;,
+</code></pre></div></div> <p>So, yep..it looks like it works. If you inspect the results variable (with “i results”) you’ll see the following information about it.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Data type
+      Scrivener.Page
+    Description
+      This is a struct. Structs are maps with a __struct__ key.
+    Reference modules
+      Scrivener.Page, Map
+</code></pre></div></div> <p>So, its a struct containing some paging information. It contains an entries element that contains the data that we asked for and various paging related elements. The paging elements in the struct are :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    page_number: 1, page_size: 25, total_entries: 42741, total_pages: 1710
+</code></pre></div></div> <p>You can see that although we didn’t pass any information into the paginate call we received the 25 rows specified as a default on our Repo. By default you’ll get the first page of rows.</p> <p>Let’s build a route and a controller now. Datatables.js server-side paging works by presenting a web page and then firing an API call to the server in order to get data to populate the table so we’ll need both a regular “/” (browser) scope and an “api” scope.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    scope "/", Datatables do
+      pipe_through :browser # Use the default browser stack
+      resources "/zips", ZipController, only: [:index]
+
+      get "/", PageController, :index
+    end
+
+    # Other scopes may use custom stacks.
+    scope "/api", Datatables do
+      pipe_through :api
+
+      resources "/zips", ZipApiController, only: [:index]
+    end
+</code></pre></div></div> <p>Now lets create the controllers, the server-side template to get our initial page and the javascript that turns our table into a “datatable”.</p> <p>The ZipController is incredibly simple. We’re not doing any heavy lifting in that code. Simply displaying the page.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule Datatables.ZipController do
+      use Datatables.Web, :controller
+
+      def index(conn, _params) do
+        render(conn, "index.html")
+      end
+    end
+</code></pre></div></div> <p>The ZipApiController has the logic, such as it is. First, we need to consider that datatables.js is what is performing the AJAX request and its going to send parameters in that make sense to it. Its up to the server to interpret this data. For our purposes we’ll have to map these datatables parameters into data that can be understood by Scrivener. So lets write a simple module to help with parsing what datatables sends up :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    # Provide common code for parsing paging parameters
+    defmodule Datatables.DatatablesParamParser do
+      def build_paging_info(params) do
+        page_size = calculate_page_size(params["length"])
+        page_number = calculate_page_number(params["start"], page_size)
+        search_term = params["search"]["value"]
+        draw_number = increment_draw(params["draw"])
+        {page_size, page_number, draw_number, search_term}
+      end
+
+      defp increment_draw(value) when value == nil, do: 1
+      defp increment_draw(value) do
+        {draw_number, _} = Integer.parse(value)
+        draw_number + 1
+      end
+
+      defp calculate_page_number(nil, _), do: 1
+      defp calculate_page_number(value, page_size) do
+        {start_value, _} = Integer.parse(value)
+        round((start_value / page_size) + 1)
+      end
+
+      defp calculate_page_size(nil), do: 25
+      defp calculate_page_size(value) do
+        {page_size, _} = Integer.parse(value)
+        page_size
+      end
+    end
+</code></pre></div></div> <p>The datatables “draw_number” took a bit to figure out. Datatables wants that number to increment each time it gets data so it knows that it doesn’t overwrite new data with old data. The “search_term” in the parameters is the global search for datatables. We’re not going to provide individual search per column. We will just let the global search do a search across zip_code and city.</p> <p>With this in place our ZipApiController becomes :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule Datatables.ZipApiController do
+      use Datatables.Web, :controller
+      alias Datatables.Zip
+      alias Datatables.DatatablesParamParser
+
+      def index(conn, params) do
+        {page_size, page_number, draw_number, search_term} = DatatablesParamParser.build_paging_info(params)
+        zips = retrieve_zips(page_size, page_number, search_term)
+        render(conn, :index,
+               zips: zips,
+               page_number: page_number,
+               draw_number: draw_number)
+      end
+
+      defp retrieve_zips(page_size, page_number, search_term) do
+        query = from z in Zip,
+        select: struct(z, [:zip_code, :city, :state ])
+        query = add_filter(query, search_term)
+        Datatables.Repo.paginate(query, page: page_number, page_size: page_size)
+      end
+
+      defp add_filter(query, search_term) when search_term == nil or search_term == "", do: query
+      defp add_filter(query, original_search_term) do
+        search_term = "#{original_search_term}%"
+        from z in query,
+        where: like(z.zip_code, ^search_term) or like(z.city, ^search_term)
+      end
+    end
+</code></pre></div></div> <p>When the render call is done Phoenix will use the View associated with this route : Datatables.ZipApiView. This module needs to implement an index function that will render the JSON returned to the client.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule Datatables.ZipApiView do
+      use Datatables.Web, :view
+
+      def render("index.json", %{zips: zips, draw_number: draw_number}) do
+        %{ recordsTotal:  zips.total_entries,
+           draw: draw_number,
+           recordsFiltered: zips.total_entries,
+           data: Enum.map(zips, &amp;zip_json/1)
+         }
+      end
+
+      def zip_json(zip) do
+        %{
+          zip_code: zip.zip_code,
+          city: zip.city,
+          state: zip.state
+        }
+      end
+    end
+</code></pre></div></div> <p>Notice that we’re setting the recordsTotal, recordsFiltered, and draw JSON elements. Those are all required by datatables.js. The data element needs to contain the data used to populate the table.</p> <p>Now, all we need is the javascript to tie this altogether. For the javascript I used a technique that I found on a great blog post at <a href="https://blog.diacode.com/page-specific-javascript-in-phoenix-framework-pt-1" rel="external nofollow noopener" target="_blank">https://blog.diacode.com/page-specific-javascript-in-phoenix-framework-pt-1</a>. It describes how to do page specific javascript. Not actually needed for this simple project but I like the idea so much that I’ll use it here too.</p> <p>We’ll first modify our LayoutView as described in the blog post above with :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule Datatables.LayoutView do
+      use Datatables.Web, :view
+
+      @doc """
+      Generates name for the JavaScript view we want to use
+      in this combination of view/template.
+      """
+      def js_view_name(conn, view_template) do
+        [view_name(conn), template_name(view_template)]
+        |&gt; Enum.reverse
+        |&gt; List.insert_at(0, "view")
+        |&gt; Enum.map(&amp;String.capitalize/1)
+        |&gt; Enum.reverse
+        |&gt; Enum.join("")
+      end
+
+      # Takes the resource name of the view module and removes the
+      # the ending *_view* string.
+      defp view_name(conn) do
+        conn
+        |&gt; view_module
+        |&gt; Phoenix.Naming.resource_name
+        |&gt; String.replace("_view", "")
+      end
+
+      # Removes the extension from the template and returns
+      # just the name.
+      defp template_name(template) when is_binary(template) do
+        template
+        |&gt; String.split(".")
+        |&gt; Enum.at(0)
+      end
+    end
+</code></pre></div></div> <p>Now we add to our body tag in app.html.eex</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;body data-js-view-name="&lt;%= js_view_name(@conn, @view_template) %&gt;"&gt;
+</code></pre></div></div> <p>This allows each page to have a name that can be grabbed by Javascript and from there we can direct to the right js file to load for the page. You can check out the Javascript in the github repo and go read the original blog post for insights but what we actually end up with that matters for the datatables is a js file that does the following : 1) gets datatables.net-bs into our scope and binds it with jQuery; 2) sets up our table on that page (identified by its id) as a DataTable with parametere that indicate that its populated with an Ajax call; 3) the js also sets up a debug statement that will show us the JSON returned by the server.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    import MainView from '../main';
+    import $ from "jquery"
+    require( 'datatables.net-bs' )( window, $ );
+
+    export default class View extends MainView {
+      // Called after the view becomes active
+      mount() {
+        super.mount();
+
+        console.log('ZipsIndexView mounted');
+        var table = $('#zips').DataTable(
+          { "processing": true,
+            "serverSide": true,
+            "pageLength": 25,
+            "searching": true,
+            "searchDelay": 1500,
+            "ordering": false,
+            "lengthChange": false,
+            "ajax": {
+               "url": "/api" + window.location.pathname
+            },
+            "columns": [
+                { "data": "zip_code" },
+                { "data": "city" },
+                { "data": "state" }
+            ]
+          });
+          table.on( 'xhr', function ( e, settings, json ) {
+            console.log( 'Ajax event occurred. Returned data: ', json );
+          } );
+      }
+      unmount() {
+        super.unmount();
+
+        // Specific logic here
+        console.log('ZipsIndexView unmounted');
+      }
+    }
+</code></pre></div></div> <p>So, that was a number of moving parts and became a bit long-winded but its a complete example of how to use datatables.js with Phoenix. Hopefully its helpful to someone.</p> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2024/supervision/">Elixir/OTP Supervision</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2019/reading-dynamo-streams/">Elixir, Reading Dynamo Streams and Layoffs</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2017/ecto-embeds-many/">Elixir, Ecto, embeds_many</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/parameter-validation-with-ecto/">Elixir, Parameter Validation with Ecto</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2014/postgresql-optimizing-sql-performance/">Postgresql - Optimizing SQL Performance</a> </li> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2024 Frank McGeough. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?b7816bd189846d29eded8745f9c4cf77"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script type="text/javascript">window.MathJax={tex:{tags:"ams"}};</script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.min.js" integrity="sha256-rjmgmaB99riUNcdlrDtcAiwtLIojSxNyUFdl+Qh+rB4=" crossorigin="anonymous"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script type="text/javascript">function progressBarSetup(){"max"in document.createElement("progress")?(initializeProgressElement(),$(document).on("scroll",function(){progressBar.attr({value:getCurrentScrollPosition()})}),$(window).on("resize",initializeProgressElement)):(resizeProgressBar(),$(document).on("scroll",resizeProgressBar),$(window).on("resize",resizeProgressBar))}function getCurrentScrollPosition(){return $(window).scrollTop()}function initializeProgressElement(){let e=$("#navbar").outerHeight(!0);$("body").css({"padding-top":e}),$("progress-container").css({"padding-top":e}),progressBar.css({top:e}),progressBar.attr({max:getDistanceToScroll(),value:getCurrentScrollPosition()})}function getDistanceToScroll(){return $(document).height()-$(window).height()}function resizeProgressBar(){progressBar.css({width:getWidthPercentage()+"%"})}function getWidthPercentage(){return getCurrentScrollPosition()/getDistanceToScroll()*100}const progressBar=$("#progress");window.onload=function(){setTimeout(progressBarSetup,50)};</script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>addBackToTop();</script> <script type="module" src="/assets/js/search/ninja-keys.min.js?601a2d3465e2a52bec38b600518d5f70"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script>let theme=determineComputedTheme();const ninjaKeys=document.querySelector("ninja-keys");"dark"===theme?ninjaKeys.classList.add("dark"):ninjaKeys.classList.remove("dark");const openSearchModal=()=>{const e=document.querySelector(".navbar-collapse");e.classList.contains("show")&&e.classList.remove("show"),ninjaKeys.open()};</script> <script>const ninja=document.querySelector("ninja-keys");ninja.data=[{id:"nav-about",title:"about",section:"Navigation",handler:()=>{window.location.href="/"}},{id:"nav-blog",title:"blog",description:"",section:"Navigation",handler:()=>{window.location.href="/blog/"}},{id:"nav-projects",title:"projects",description:"Various github projects",section:"Navigation",handler:()=>{window.location.href="/projects/"}},{id:"nav-repositories",title:"repositories",description:"Some Github users and repos that I think are worth following",section:"Navigation",handler:()=>{window.location.href="/repositories/"}},{id:"nav-cv",title:"cv",description:"Work history",section:"Navigation",handler:()=>{window.location.href="/cv/"}},{id:"post-elixir-otp-supervision",title:"Elixir/OTP Supervision",description:"Sample code to demonstrate some aspects of Elixir supervision",section:"Posts",handler:()=>{window.location.href="/blog/2024/supervision/"}},{id:"post-elixir-and-dependencies",title:"Elixir and Dependencies",description:"Keeping Your Elixir Dependencies Up To Date",section:"Posts",handler:()=>{window.location.href="/blog/2024/updating-elixir-dependencies/"}},{id:"post-debugging-elixir-in-production",title:"Debugging Elixir in Production",description:"Some debugging suggestions specific to Elixir production",section:"Posts",handler:()=>{window.location.href="/blog/2024/debug-in-production/"}},{id:"post-elixir-parameter-validation-with-ecto",title:"Elixir, Parameter Validation with Ecto",description:"Using the Ecto library to validate API Parameters",section:"Posts",handler:()=>{window.location.href="/blog/2023/parameter-validation-with-ecto/"}},{id:"post-four-thousand-weeks",title:"Four Thousand Weeks",description:"Notes on the book Four Thousand Weeks, Time Management for Mortals",section:"Posts",handler:()=>{window.location.href="/blog/2023/four-thouand-weeks/"}},{id:"post-elixir-programming-puzzles-and-sorting-arrays",title:"Elixir, Programming Puzzles and Sorting Arrays",description:"Elixir puzzles",section:"Posts",handler:()=>{window.location.href="/blog/2019/contiguous-sort-elixir/"}},{id:"post-elixir-reading-dynamo-streams-part-3",title:"Elixir, Reading Dynamo Streams (Part 3)",description:"How to read from Dynamo stream in Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2019/dynamo-streams-3/"}},{id:"post-elixir-reading-dynamo-streams-part-2",title:"Elixir, Reading Dynamo Streams (Part 2)",description:"How to read from Dynamo stream in Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2019/dynamo-streams-2/"}},{id:"post-elixir-reading-dynamo-streams-and-layoffs",title:"Elixir, Reading Dynamo Streams and Layoffs",description:"How to read from Dynamo stream in Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2019/reading-dynamo-streams/"}},{id:"post-elixirconf2016-and-ecto",title:"ElixirConf2016 and Ecto",description:"Review of Elixir Config 2016",section:"Posts",handler:()=>{window.location.href="/blog/2019/14-00-00-elixirecto/"}},{id:"post-elixir-ecto-subqueries-group-by",title:"Elixir, Ecto, Subqueries, GROUP BY",description:"Exploring subqueries and group by with Elixir&#39;s ecto library",section:"Posts",handler:()=>{window.location.href="/blog/2018/more-queries-in-ecto/"}},{id:"post-elixir-ecto-update-all-with-join",title:"Elixir/Ecto - update_all with join",description:"How to use update_all with join in Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2017/ecto-updateall-join/"}},{id:"post-monitor-postgres-pgbouncer",title:"Monitor Postgres pgbouncer",description:"How to monitor the Postgresql load balancer pgbouncer",section:"Posts",handler:()=>{window.location.href="/blog/2017/monitor-pgbouncer/"}},{id:"post-rename-inserted-at-column-in-elixir-ecto",title:"Rename inserted_at column in Elixir/Ecto",description:"Modifying the name of a built-in column in Elixir/Ecto",section:"Posts",handler:()=>{window.location.href="/blog/2017/ecto-use-created-at-instead-of-inserted-at/"}},{id:"post-elixir-phoenix-and-ecto-fragment-and-similar-to",title:"Elixir, Phoenix and Ecto fragment and SIMILAR TO",description:"Using regex style capabilities in Elixir with Ecto",section:"Posts",handler:()=>{window.location.href="/blog/2017/ecto-similar/"}},{id:"post-using-postgres-copy-with-elixir-ecto",title:"Using Postgres COPY with Elixir/Ecto",description:"Using Postgresql COPY with the Elixir ecto db library",section:"Posts",handler:()=>{window.location.href="/blog/2017/ecto-postgres-copy/"}},{id:"post-elixir-ecto-embeds-many",title:"Elixir, Ecto, embeds_many",description:"Features of Ecto - Elixir&#39;s database library",section:"Posts",handler:()=>{window.location.href="/blog/2017/ecto-embeds-many/"}},{id:"post-elixir-ecto-tables-without-id-in-relationships",title:"Elixir, Ecto, Tables without id in Relationships",description:"Using tables without id primary key in Ecto",section:"Posts",handler:()=>{window.location.href="/blog/2017/elixir-ecto-no-id-tables/"}},{id:"post-elixir-ex-aws-library-temporary-security-tokens",title:"Elixir, ex_aws Library, Temporary Security Tokens",description:"Features of the ex_aws Elixir library",section:"Posts",handler:()=>{window.location.href="/blog/2017/ex-aws-temporary-security/"}},{id:"post-elixir-mongo-no-local-return-oh-my",title:"Elixir, Mongo, No Local Return, Oh My!",description:"Accessing MongoDB with Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2017/elixir-mongo-no-local-return/"}},{id:"post-elixir-mongo-exploring-library-code",title:"Elixir, Mongo, Exploring Library Code",description:"Accessing MongoDB with Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2017/elixir-mongo-connection/"}},{id:"post-elixir-mongo-regex",title:"Elixir, Mongo, Regex",description:"Accessing MongoDB with Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2017/elixir-mongodb/"}},{id:"post-your-data-says-your-code-is-ugly",title:"Your Data Says Your Code Is Ugly",description:"What does your data representation say about your code?",section:"Posts",handler:()=>{window.location.href="/blog/2017/your-data-says-your-code-is-ugly/"}},{id:"post-elixir-phoenix-framework-and-datatables",title:"Elixir, Phoenix Framework and Datatables",description:"Exploring Features of Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2017/phoenix-and-datatables/"}},{id:"post-elixir-and-ruby-expand-path",title:"Elixir and Ruby expand_path",description:"Features of Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2016/relative-paths/"}},{id:"post-elixir-ecto-postgresql-grouping-sets",title:"Elixir/Ecto Postgresql Grouping sets",description:"Exploring Features of Ecto - Elixir&#39;s Database Library",section:"Posts",handler:()=>{window.location.href="/blog/2016/10-13-00-ecto-grouping-sets/"}},{id:"post-elixir-ecto-migrate-and-rollback",title:"Elixir/Ecto migrate and rollback",description:"Exploring Features of Ecto - Elixir&#39;s Database Library",section:"Posts",handler:()=>{window.location.href="/blog/2016/16-42-00-ecto-migrate-rollback/"}},{id:"post-programming-elixir",title:"Programming Elixir",description:"Learning Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2016/programming-elixir/"}},{id:"post-learning-elixir-and-phoenix",title:"Learning Elixir and Phoenix",description:"Learning Elixir",section:"Posts",handler:()=>{window.location.href="/blog/2016/elixir-phoenix-ecto/"}},{id:"post-use-postgresql-9-5-upsert-to-return-existing-id",title:"Use Postgresql 9.5 Upsert to Return Existing id",description:"Returning the primary key id on upsert with Postgresql",section:"Posts",handler:()=>{window.location.href="/blog/2016/postgres-upsert/"}},{id:"post-practice-a-new-language-with-exercism",title:"Practice a new language with exercism",description:"Learning a language with online courses",section:"Posts",handler:()=>{window.location.href="/blog/2016/exercism-web-site/"}},{id:"post-upgrade-to-9-5-postgresql-on-os-x",title:"Upgrade to 9.5 Postgresql on OS X",description:"Postgresql install tutorial",section:"Posts",handler:()=>{window.location.href="/blog/2016/upgrade_osx_postgres/"}},{id:"post-ruby-resources",title:"Ruby Resources",description:"Information on Ruby Resources",section:"Posts",handler:()=>{window.location.href="/blog/2016/ruby-resources/"}},{id:"post-using-git-from-inside-atom",title:"Using Git From Inside Atom",description:"Information on using git in the Atom editor",section:"Posts",handler:()=>{window.location.href="/blog/2015/using-git-from-inside-atom/"}},{id:"post-simple-error-in-atom-with-rubocop",title:"Simple Error in Atom with Rubocop",description:"Information on running rubocop in the Atom editor",section:"Posts",handler:()=>{window.location.href="/blog/2015/simple-error-in-atom-with-rubocop/"}},{id:"post-using-rubocop-in-atom",title:"Using Rubocop in Atom",description:"Information on running rubocop in the Atom editor",section:"Posts",handler:()=>{window.location.href="/blog/2015/using-rubocop-in-atom/"}},{id:"post-postgresql-lag-and-windowing-function",title:"Postgresql - Lag and Windowing Function",description:"Using Lag and window operations with Postgresql",section:"Posts",handler:()=>{window.location.href="/blog/2015/postgresql-lag-and-windowing-function/"}},{id:"post-more-atom-and-ruby-using-ruby-test",title:"More Atom and Ruby - Using ruby-test",description:"Using Ruby with the Atom editor",section:"Posts",handler:()=>{window.location.href="/blog/2015/more-atom-and-ruby-using-ruby-test/"}},{id:"post-george-washington-and-torture",title:"George Washington and Torture",description:"Historical Quotes",section:"Posts",handler:()=>{window.location.href="/blog/2014/george-washington-and-torture/"}},{id:"post-postgresql-optimizing-sql-performance",title:"Postgresql - Optimizing SQL Performance",description:"SQL Optimization with Postgresql",section:"Posts",handler:()=>{window.location.href="/blog/2014/postgresql-optimizing-sql-performance/"}},{id:"post-postgresql-connection-info",title:"Postgresql Connection Info",description:"Who is connected to my Postgres database?",section:"Posts",handler:()=>{window.location.href="/blog/2014/postgresql-connection-info/"}},{id:"post-moroccan-style-brisket",title:"Moroccan Style Brisket",description:"Brisket Recipe",section:"Posts",handler:()=>{window.location.href="/blog/2014/moroccan-style-brisket/"}},{id:"project-elixir-and-aws-autoscaling",title:"Elixir and AWS autoscaling",description:"An Elixir library for the AWS EC2 Auto Scaling API as plug-in for the ex_aws system",section:"Projects",handler:()=>{window.location.href="/projects/2019-ex-aws-autoscaling/"}},{id:"project-elixir-and-aws-cloudtrail",title:"Elixir and AWS CloudTrail",description:"An Elixir library for the AWS CloudTrail API that plugs into the ex_aws system",section:"Projects",handler:()=>{window.location.href="/projects/2019-ex-aws-cloudtrail/"}},{id:"project-elixir-and-aws-code-deploy",title:"Elixir and AWS Code Deploy",description:"An Elixir library for the AWS Code Deploy API that plugs into the ex_aws system",section:"Projects",handler:()=>{window.location.href="/projects/2019-ex-aws-code-deploy/"}},{id:"project-elixir-and-aws-code-pipeline",title:"Elixir and AWS Code Pipeline",description:"An Elixir library for the AWS Code Pipeline API that plugs into the ex_aws system",section:"Projects",handler:()=>{window.location.href="/projects/2019-ex-aws-code-pipeline/"}},{id:"project-elixir-exploration-of-the-erlang-brod-library",title:"Elixir exploration of the Erlang brod library",description:"Elixir code exploration of the Erlang brod Kafka library",section:"Projects",handler:()=>{window.location.href="/projects/2024-brod-mimic/"}},{id:"project-elixir-and-supervision",title:"Elixir and Supervision",description:"Exploration of how supervision works in Elixir",section:"Projects",handler:()=>{window.location.href="/projects/2024-elixir-supervision/"}},{id:"socials-email",title:"Send email",section:"Socials",handler:()=>{window.open("mailto:%66%6D%63%67%65%6F%75%67%68@%67%6D%61%69%6C.%63%6F%6D","_blank")}},{id:"socials-github",title:"GitHub",section:"Socials",handler:()=>{window.open("https://github.com/fmcgeough","_blank")}},{id:"socials-linkedin",title:"LinkedIn",section:"Socials",handler:()=>{window.open("https://www.linkedin.com/in/fmcgeough","_blank")}},{id:"socials-rss",title:"RSS Feed",section:"Socials",handler:()=>{window.open("/feed.xml","_blank")}},{id:"light-theme",title:"Change theme to light",description:"Change the theme of the site to Light",section:"Theme",handler:()=>{setThemeSetting("light")}},{id:"dark-theme",title:"Change theme to dark",description:"Change the theme of the site to Dark",section:"Theme",handler:()=>{setThemeSetting("dark")}},{id:"system-theme",title:"Use system default theme",description:"Change the theme of the site to System Default",section:"Theme",handler:()=>{setThemeSetting("system")}}];</script> </body> </html>
