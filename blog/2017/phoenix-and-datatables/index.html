@@ -227,7 +227,7 @@
         }
       end
     end
-</code></pre></div></div> <p>Notice that we’re setting the recordsTotal, recordsFiltered, and draw JSON elements. Those are all required by datatables.js. The data element needs to contain the data used to populate the table.</p> <p>Now, all we need is the javascript to tie this altogether. For the javascript I used a technique that I found on a great blog post at <a href="https://blog.diacode.com/page-specific-javascript-in-phoenix-framework-pt-1" rel="external nofollow noopener" target="_blank">https://blog.diacode.com/page-specific-javascript-in-phoenix-framework-pt-1</a>. It describes how to do page specific javascript. Not actually needed for this simple project but I like the idea so much that I’ll use it here too.</p> <p>We’ll first modify our LayoutView as described in the blog post above with :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule Datatables.LayoutView do
+</code></pre></div></div> <p>Notice that we’re setting the recordsTotal, recordsFiltered, and draw JSON elements. Those are all required by datatables.js. The data element needs to contain the data used to populate the table.</p> <p>Now, all we need is the javascript to tie this altogether. For the javascript I used a technique for page specific javascript.</p> <p>We’ll first modify our LayoutView with :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    defmodule Datatables.LayoutView do
       use Datatables.Web, :view
 
       @doc """
