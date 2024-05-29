@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Elixir, Ecto, Tables without id in Relationships
-date: 2018-03-04 08:53:13
+date: 2017-04-19 08:53:13
 description: Using tables without id primary key in Ecto
 categories: Elixir
 tags: Elixir
