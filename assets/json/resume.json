@@ -50,7 +50,7 @@
         "After Vonage acquisition I helped educate Vonage engineers in the Vocalocity code and database design",
         "Discovered the Elixir language and used it to build a number of tools that became the initial basis for the SRE team",
         "Became the de-facto DBA and helped company with addressing performance issues and generating churn/revenue reports, upgrades to Postgresql",
-        "Joined small PBX startup Vocalocity in Atlanta to evaluate SaaS billing solutions"
+        "Helped evaluate and select a SaaS billing solution to replace homegrown system"
       ]
     },
     {
@@ -65,6 +65,27 @@
         "Developed Mac OS X version of Ovi Files (file delivery mechanism for mobile devices",
         "Developed network layer for social networking applications for Maemo and S60 platforms",
         "Assisted in technical evaluation of companies for Nokia acquisition group"
+      ]
+    },
+    {
+      "name": "Intellisync",
+      "position": "Senior Software Engineer",
+      "url": "https://en.wikipedia.org/wiki/Intellisync",
+      "startDate": "2003-03-01",
+      "endDate": "2006-02-01",
+      "summary": "Synchrologic was acquired by Intellisync (previously Pumatech) in 2003",
+      "highlights": ["Developed File and Application sync technologies in C++"]
+    },
+    {
+      "name": "Synchrologic",
+      "position": "Founder/Senior Software Engineer",
+      "url": "https://en.wikipedia.org/wiki/Intellisync",
+      "startDate": "1995-09-01",
+      "endDate": "2003-02-01",
+      "summary": "Developed a high-performance heterogeneous database synchronization system",
+      "highlights": [
+        "Developed a patented database synchronization system and method",
+        "Responsible for initial design of the system and hiring of initial team"
       ]
     }
   ],
