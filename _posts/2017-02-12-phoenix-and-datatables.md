@@ -416,11 +416,9 @@ elements. Those are all required by datatables.js. The data element needs to
 contain the data used to populate the table.
 
 Now, all we need is the javascript to tie this altogether. For the javascript I used
-a technique that I found on a great blog post at [https://blog.diacode.com/page-specific-javascript-in-phoenix-framework-pt-1](https://blog.diacode.com/page-specific-javascript-in-phoenix-framework-pt-1).
-It describes how to do page specific javascript. Not actually needed for this
-simple project but I like the idea so much that I'll use it here too.
+a technique for page specific javascript.
 
-We'll first modify our LayoutView as described in the blog post above with :
+We'll first modify our LayoutView with :
 
 ```
     defmodule Datatables.LayoutView do
