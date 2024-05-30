@@ -54,7 +54,7 @@ what you were playing, find problems with it or things you need to work
 on and improve. And you can just toss the recordings since its just
 practice anyway.
 
-This is a snippet from a practice session. The guitar is tuned to Open-G. I'm using a
+These are a couple snippets from a practice session. The guitar is tuned to Open-G. I'm using a
 slide ring made by [Black Mountain](https://blackmountainpicks.com/). They
 make very inventive products for guitar. A normal slide is used on one
 finger and that finger becomes unavailable for playing chords, etc. With
@@ -63,5 +63,8 @@ a slide ring you can use all your standard chord shapes.
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include audio.liquid path="assets/audio/mule_finger_picking_and_slide.mp3" controls=true %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include audio.liquid path="assets/audio/2024-05-pick_and_slide.mp3" controls=true %}
     </div>
 </div>
