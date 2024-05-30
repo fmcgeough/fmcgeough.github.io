@@ -5,6 +5,7 @@ date: 2024-05-29 15:05:00
 description: Sample code to show how to use disconnect_all
 categories: Elixir
 tags: Elixir
+giscus_comments: true
 ---
 
 In Elixir's db_connection library version 2.4.1 and above there is a

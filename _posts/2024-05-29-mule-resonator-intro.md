@@ -5,6 +5,7 @@ date: 2024-05-29 10:25:00
 description: Describes the Mule Resophonic Guitar company and my attempts to learn slide guitar
 tags: guitar audios
 categories: guitar
+giscus_comments: true
 ---
 
 On Jul 31, 2023 I received my Mavis Mule resonator guitar. These guitars

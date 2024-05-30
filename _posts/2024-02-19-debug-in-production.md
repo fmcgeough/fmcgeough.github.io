@@ -5,6 +5,7 @@ date: 2024-02-19 08:53:13
 description: Some debugging suggestions specific to Elixir production
 categories: Elixir
 tags: Elixir
+giscus_comments: true
 ---
 
 Assuming you are making good use of Logging and generating metrics you may still encounter

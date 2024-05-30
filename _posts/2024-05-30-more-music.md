@@ -5,6 +5,7 @@ date: 2024-05-30 10:25:00
 description: A simple recording of a nice Avett Brothers song
 tags: guitar audios
 categories: guitar
+giscus_comments: true
 ---
 
 This was a song I recorded a while ago. I really can't remember when I

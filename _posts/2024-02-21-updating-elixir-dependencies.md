@@ -5,6 +5,7 @@ date: 2024-02-21 08:53:13
 description: Keeping Your Elixir Dependencies Up To Date
 categories: Elixir
 tags: Elixir
+giscus_comments: true
 ---
 
 One of the ongoing tasks for a development team is to keep the dependencies of

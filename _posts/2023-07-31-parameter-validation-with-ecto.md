@@ -5,6 +5,7 @@ date: 2023-07-31 08:53:13
 description: Using the Ecto library to validate API Parameters
 categories: Elixir
 tags: Elixir
+giscus_comments: true
 ---
 
 Elixir is a language that first appeared in 2012. There is a web framework called Phoenix

@@ -5,6 +5,7 @@ date: 2024-05-04 08:53:13
 description: Sample code to demonstrate some aspects of Elixir supervision
 categories: Elixir
 tags: Elixir
+giscus_comments: true
 ---
 
 I’ve gotten questions over time about process supervision in Elixir. There’s a lack of
