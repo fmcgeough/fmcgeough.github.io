@@ -23,13 +23,10 @@ Mavis.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/mavis_mule1.jpg" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid loading="eager" path="assets/img/mavis_mule2.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/mavis_mule2.jpg" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/mavis_mule3.jpg" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid loading="eager" path="assets/img/mavis_mule3.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
 </div>
 <div class="caption">
@@ -37,11 +34,27 @@ Mavis.
   a single humbucking pickup with master volume and tone controls.
 </div>
 
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="assets/img/mavis_mule1.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
+    </div>
+</div>
+<div class="caption">
+  It sure is a beautiful instrument!
+</div>
+
 I've played around with the Mavis immediately (of course). I had to set
 it aside a bit as I dealt with other things but I finally got back to it.
+
 One of the things I wanted to learn more about is slide guitar. I've got
-quite a long way to go to get to where I'd like to be with this. This
-is a small recent sample. The guitar is tuned to Open-G. I'm using a
+quite a long way to go to get to where I'd like to be with this. In order
+to get better I record practice sessions and listen to them later. You
+might think you sound fine when you are playing. Recording lets you review
+what you were playing, find problems with it or things you need to work
+on and improve. And you can just toss the recordings since its just
+practice anyway.
+
+This is a snippet from a practice session. The guitar is tuned to Open-G. I'm using a
 slide ring made by [Black Mountain](https://blackmountainpicks.com/). They
 make very inventive products for guitar. A normal slide is used on one
 finger and that finger becomes unavailable for playing chords, etc. With
