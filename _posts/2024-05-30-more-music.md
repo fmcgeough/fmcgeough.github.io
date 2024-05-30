@@ -9,7 +9,9 @@ categories: guitar
 
 This was a song I recorded a while ago. I really can't remember when I
 did it but it was probably around the time the song was released by
-the Avett Brothers. It's their song "The Greatest Sum". Visit their
+the Avett Brothers (2008?).
+
+It's the Avett Brother's song "The Greatest Sum". Visit their
 [website](https://www.theavettbrothers.com/) for the latest releases
 and tour information.
 
