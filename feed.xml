@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://fmcgeough.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://fmcgeough.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-05-30T19:32:15+00:00</updated><id>https://fmcgeough.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Another Guitar Recording</title><link href="https://fmcgeough.github.io/blog/2024/more-music/" rel="alternate" type="text/html" title="Another Guitar Recording"/><published>2024-05-30T10:25:00+00:00</published><updated>2024-05-30T10:25:00+00:00</updated><id>https://fmcgeough.github.io/blog/2024/more-music</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2024/more-music/"><![CDATA[<p>This was a song I recorded a while ago. I really can’t remember when I did it but it was probably around the time the song was released by the Avett Brothers (2008?).</p> <p>It’s the Avett Brother’s song “The Greatest Sum”. Visit their <a href="https://www.theavettbrothers.com/">website</a> for the latest releases and tour information.</p> <p>I enjoyed the lyrics.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This and who I used to be
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://fmcgeough.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://fmcgeough.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-05-31T17:30:49+00:00</updated><id>https://fmcgeough.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Another Guitar Recording</title><link href="https://fmcgeough.github.io/blog/2024/more-music/" rel="alternate" type="text/html" title="Another Guitar Recording"/><published>2024-05-30T10:25:00+00:00</published><updated>2024-05-30T10:25:00+00:00</updated><id>https://fmcgeough.github.io/blog/2024/more-music</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2024/more-music/"><![CDATA[<p>This was a song I recorded a while ago. I really can’t remember when I did it but it was probably around the time the song was released by the Avett Brothers (2008?).</p> <p>It’s the Avett Brother’s song “The Greatest Sum”. Visit their <a href="https://www.theavettbrothers.com/">website</a> for the latest releases and tour information.</p> <p>I enjoyed the lyrics.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This and who I used to be
 Don’t matter much at all to me
 The pit you dug to plant your feet
 A far cry from my destiny
@@ -6,7 +6,7 @@ Not even the clouds
 Not even the past
 Not even the hands of God
 Could hold me back from you
-</code></pre></div></div> <p>It looks like the recording was done on my phone so the quality isn’t so hot.</p> <div class="row mt-3"> <div class="col-sm mt-3 mt-md-0"> <figure> <audio src="/assets/audio/2024-05-the_greatest_sum.mp3" controls=""/> </figure> </div> </div>]]></content><author><name></name></author><category term="guitar"/><category term="guitar"/><category term="audios"/><summary type="html"><![CDATA[A simple recording of a nice Avett Brothers song]]></summary></entry><entry><title type="html">Flushing Ecto db connections periodically in Elixir</title><link href="https://fmcgeough.github.io/blog/2024/ecto-periodic-flush/" rel="alternate" type="text/html" title="Flushing Ecto db connections periodically in Elixir"/><published>2024-05-29T15:05:00+00:00</published><updated>2024-05-29T15:05:00+00:00</updated><id>https://fmcgeough.github.io/blog/2024/ecto-periodic-flush</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2024/ecto-periodic-flush/"><![CDATA[<p>In Elixir’s db_connection library version 2.4.1 and above there is a facility to disconnect all the connections.</p> <p>The myxql module <code class="language-plaintext highlighter-rouge">MyXql.Client</code> <code class="language-plaintext highlighter-rouge">do_connect/1</code> function is what actually translates your “hostname” into an IP address (via <code class="language-plaintext highlighter-rouge">gen_tcp.connect/4</code>). By periodically calling <code class="language-plaintext highlighter-rouge">disconnect_all/3</code> all the existing connections are dropped (within the time limit you specify) and <code class="language-plaintext highlighter-rouge">do_connect/1</code> gets called again for each connection so if there has been a DNS change it’ll be picked up.</p> <p>I wouldn’t try this unless you can identify an obvious problem. The db_connection library is managing some complex things already. You don’t want to add complexity to it if you can avoid it. In any case, here’s some sample code that can do the work.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Ecto.PeriodicFlush do
+</code></pre></div></div> <p>It looks like the recording was done on my phone so the quality isn’t so hot.</p> <div class="row mt-3"> <div class="col-sm mt-3 mt-md-0"> <figure> <audio src="/assets/audio/2024-05-the_greatest_sum.mp3" controls=""/> </figure> </div> </div>]]></content><author><name></name></author><category term="guitar"/><category term="guitar"/><category term="audios"/><summary type="html"><![CDATA[A simple recording of a nice Avett Brothers song]]></summary></entry><entry><title type="html">Vic Chesnutt and Old Cover from 2009</title><link href="https://fmcgeough.github.io/blog/2024/vic-chestnut-supernatural/" rel="alternate" type="text/html" title="Vic Chesnutt and Old Cover from 2009"/><published>2024-05-30T10:25:00+00:00</published><updated>2024-05-30T10:25:00+00:00</updated><id>https://fmcgeough.github.io/blog/2024/vic-chestnut-supernatural</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2024/vic-chestnut-supernatural/"><![CDATA[<p>This is another recording I found from long ago. It’s really tinny and I probably had turned on recording on my Mac laptop while fooling around.</p> <p><a href="https://en.wikipedia.org/wiki/Vic_Chesnutt">Vic Chestnutt</a> was an influential musician from Athens, Georgia. He collaborated with a large number of musicians and had an outsized influence compared to the sales of his albums.</p> <p>He was partially paralyzed at 18 after a night of drinking and driving. On <a href="https://www.youtube.com/watch?v=jXFE-hdxM9A">Terry Gross’ Fresh Air</a> he said he was “a quadriplegic from [his] neck down”, and although he had feeling and some movement in his body, he could not walk “functionally” and that, although he realized shortly afterward that he could still play guitar, he could only play simple chords.</p> <p>He passed away in 2009 on Christmas Day as a result of an overdose of muscle relaxants. He had dealt with consistent pain and lacked insurance to cover needed surgeries.</p> <p>This recording is really bad. Very tinny. Since I just sort of stumbled over it I don’t know how it was recorded but my I think it was probably captured on a Mac laptop and its not so great microphone. It’s Chesnutt’s song Supernatural. This was released in 1994 and covered by numerous artists. In any case I decided to post whatever I managed to scrounge together so here it is.</p> <div class="row mt-3"> <div class="col-sm mt-3 mt-md-0"> <figure> <audio src="/assets/audio/2024-05-supernatural.mp3" controls=""/> </figure> </div> </div>]]></content><author><name></name></author><category term="guitar"/><category term="guitar"/><category term="audios"/><summary type="html"><![CDATA[Vic Chesnutt passed in 2009 and I recorded one of his songs]]></summary></entry><entry><title type="html">Flushing Ecto db connections periodically in Elixir</title><link href="https://fmcgeough.github.io/blog/2024/ecto-periodic-flush/" rel="alternate" type="text/html" title="Flushing Ecto db connections periodically in Elixir"/><published>2024-05-29T15:05:00+00:00</published><updated>2024-05-29T15:05:00+00:00</updated><id>https://fmcgeough.github.io/blog/2024/ecto-periodic-flush</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2024/ecto-periodic-flush/"><![CDATA[<p>In Elixir’s db_connection library version 2.4.1 and above there is a facility to disconnect all the connections.</p> <p>The myxql module <code class="language-plaintext highlighter-rouge">MyXql.Client</code> <code class="language-plaintext highlighter-rouge">do_connect/1</code> function is what actually translates your “hostname” into an IP address (via <code class="language-plaintext highlighter-rouge">gen_tcp.connect/4</code>). By periodically calling <code class="language-plaintext highlighter-rouge">disconnect_all/3</code> all the existing connections are dropped (within the time limit you specify) and <code class="language-plaintext highlighter-rouge">do_connect/1</code> gets called again for each connection so if there has been a DNS change it’ll be picked up.</p> <p>I wouldn’t try this unless you can identify an obvious problem. The db_connection library is managing some complex things already. You don’t want to add complexity to it if you can avoid it. In any case, here’s some sample code that can do the work.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Ecto.PeriodicFlush do
   @moduledoc """
   Run a background process to periodically disconnect from databases
   """
@@ -993,101 +993,4 @@ end
     end)
   end
 end
-</code></pre></div></div> <p>On puzzles in general, there are a number of companies that use puzzles from these sites (or some developed internally) as filters for hiring. This is a bit frustrating if you are applying for a job working on what amounts to a CRUD app but are asked to solve puzzles that would never come up in the actual work for the job. But its not uncommon. If you know the company you’d like to work at will throw these type of puzzles at you then I’d recommend spending some time on one or more of the programming puzzle sites and work thru some puzzles. If you can find out which site the company uses then practice on that since each has their own UI and idiosyncrasies and you want to be familiar with it before you start working on puzzles as part of interview (ordinarily as a timed exercise).</p> <p>Sites to check out that have Elixir support:</p> <ul> <li><a href="https://codesignal.com/">https://codesignal.com/</a></li> <li><a href="https://exercism.io/">https://exercism.io/</a></li> </ul>]]></content><author><name></name></author><category term="Elixir"/><category term="Elixir"/><summary type="html"><![CDATA[Elixir puzzles]]></summary></entry><entry><title type="html">Elixir, Reading Dynamo Streams (Part 3)</title><link href="https://fmcgeough.github.io/blog/2019/dynamo-streams-3/" rel="alternate" type="text/html" title="Elixir, Reading Dynamo Streams (Part 3)"/><published>2019-10-23T08:53:13+00:00</published><updated>2019-10-23T08:53:13+00:00</updated><id>https://fmcgeough.github.io/blog/2019/dynamo-streams-3</id><content type="html" xml:base="https://fmcgeough.github.io/blog/2019/dynamo-streams-3/"><![CDATA[<p>Finishing up this small project to read a DynamoDB stream with Elixir. The github repo for the project is: <a href="https://github.com/fmcgeough/dynamo_streamer">dynamo_streamer</a>. This post will cover generating random data to insert into the table and reading from the stream associated with the table.</p> <h2 id="writing-data">Writing Data</h2> <p>The module that represents the table data is simple (since the main purpose is just to show how to use the stream) :</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule DynamoStreamer.UserActivity do
-  @derive ExAws.Dynamo.Encodable
-
-  alias DynamoStreamer.{Id, Table}
-
-  defstruct [:id, :email, :activity, :ttl]
-
-  def new(email, activity) do
-    %__MODULE__{
-      id: Id.generate(),
-      ttl: DateTime.utc_now() |&gt; DateTime.add(3_600, :second) |&gt; DateTime.to_unix(),
-      email: email,
-      activity: activity
-    }
-  end
-end
-</code></pre></div></div> <p>This uses the @derive attribute. You can read more about this in the Elixir doc at <a href="https://elixir-lang.org/getting-started/protocols.html">Protocols</a>. The bottom line is that your struct will be converted into a map with decorations on it indicating the type. For example, lets suppose that I have a UserActivity struct that looks like this:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>%DynamoStreamer.UserActivity{
-  activity: %{page: "bGqh9Qqhhg29r3PdLtRp", task: "buying"},
-  email: "PTnFGpDrQ8h66j9nff8g@gmail.com",
-  id: "jLn22NHrRHBM9BfjgNtm",
-  ttl: 1571842348
-}
-</code></pre></div></div> <p>When its encoded by the ex_aws_dynamo library for transmission to DynamoDB API it’ll look like this:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>%{
-  "activity" =&gt; %{
-    "M" =&gt; %{
-      "page" =&gt; %{"S" =&gt; "bGqh9Qqhhg29r3PdLtRp"},
-      "task" =&gt; %{"S" =&gt; "buying"}
-    }
-  },
-  "email" =&gt; %{"S" =&gt; "PTnFGpDrQ8h66j9nff8g@gmail.com"},
-  "id" =&gt; %{"S" =&gt; "jLn22NHrRHBM9BfjgNtm"},
-  "ttl" =&gt; %{"N" =&gt; "1571842348"}
-}
-</code></pre></div></div> <p>So, its still a map with your keys (as strings) at the top-most layer but the values now have those letters as keys in front of them. You can look thru the DynamoDB doc but in the example above: “M” = map, “S” = string, and “N” = number.</p> <p>An important thing to note is that data comes back to you from DynamoDB like that too. But I’m getting ahead of myself a bit. First, I’ll generate a random function in user_activity to generate some fake data and insert a few records into the table and make sure they are there.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  def random do
-    new("#{Id.generate()}@gmail.com", %{
-      page: Id.generate(),
-      task: Enum.random(["buying", "selling", "viewing", "data_entry"])
-    })
-  end
-</code></pre></div></div> <p>Now insert a few records:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; alias DynamoStreamer.UserActivity
-iex&gt; alias ExAws.Dynamo
-iex&gt; 1..4 |&gt;
-   Enum.each(fn _ -&gt; Dynamo.put_item("user-activities", UserActivity.random()) |&gt;
-   ExAws.request()
-   end)
-</code></pre></div></div> <p>Now calling Dynamo.scan should return the 4 records</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; Dynamo.scan("user-activities") |&gt; ExAws.request()
-{:ok,
- %{
-   "Count" =&gt; 4,
-   "Items" =&gt; [
-     %{
-       "activity" =&gt; %{
-         "M" =&gt; %{
-           "page" =&gt; %{"S" =&gt; "hTg3Tt77mrPJ3MqBFTgp"},
-           "task" =&gt; %{"S" =&gt; "buying"}
-         }
-       }
-     },
-     etc..
-</code></pre></div></div> <p>As you can see the data is there in the “Items” value but its got all the DynamoDB signifiers in front on it and nobody would want to work with it that way. You can take the data and make it into a regular map in this way:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{:ok, %{"Items" =&gt; items}} = ExAws.Dynamo.scan("user-activities") |&gt; ExAws.request()
-items |&gt; Enum.map(&amp;ExAws.Dynamo.Decoder.decode(&amp;1, as: DynamoStreamer.UserActivity))
-</code></pre></div></div> <p>This yields values that look like this:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>%DynamoStreamer.UserActivity{
-    activity: %{"page" =&gt; "D7rJ8gjH26N98g7JJgjF", "task" =&gt; "data_entry"},
-    email: "4pDmHmj9GhpjntT3m8qR@gmail.com",
-    id: "fpqhngnn64ftdN3pjDgg",
-    ttl: 1571843947
-  }
-</code></pre></div></div> <p>So, the <code class="language-plaintext highlighter-rouge">activity</code> is not decoded to atoms because its a map. If you wanted to do that you’d have to implement your own decode which will be called after the built in decoder is called.</p> <p>OK, so we’ve got records. Do we have streams? Well calling Dynamo.describe_table(“user-activities”) gives back a bunch of interesting info including “LatestStreamArn”. There’s some other interesting info in there so lets make a struct that encapsulates that.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule DynamoStreamer.StreamInfo do
-  defstruct [:stream_arn, :stream_label, :enabled, :view_type]
-
-  @type t :: %__MODULE__{
-          stream_arn: binary | nil,
-          stream_label: binary | nil,
-          enabled: boolean | nil,
-          view_type: binary | nil
-        }
-
-  def new(%{
-        "Table" =&gt; %{
-          "LatestStreamArn" =&gt; stream_arn,
-          "LatestStreamLabel" =&gt; stream_label,
-          "StreamSpecification" =&gt; %{
-            "StreamEnabled" =&gt; enabled,
-            "StreamViewType" =&gt; view_type
-          }
-        }
-      }) do
-    %__MODULE__{
-      stream_arn: stream_arn,
-      stream_label: stream_label,
-      enabled: enabled,
-      view_type: view_type
-    }
-  end
-
-  def new(_), do: {:error, "Unexpected format"}
-end
-</code></pre></div></div> <p>As it turns out, we need the stream_arn for a couple of things. We use it for listing shards using the describe_stream function and we need it to get a shard iterator which we need to get the records themselves.</p> <p>I’ve put together all the pieces and pushed it up to github. There are lots of other details that you’d need to work out in order to use in a real application but hopefully it helps get you started if you’re just curious about how DynamoDB works with Elixir.</p>]]></content><author><name></name></author><category term="Elixir"/><category term="Elixir"/><summary type="html"><![CDATA[How to read from Dynamo stream in Elixir]]></summary></entry></feed>
+</code></pre></div></div> <p>On puzzles in general, there are a number of companies that use puzzles from these sites (or some developed internally) as filters for hiring. This is a bit frustrating if you are applying for a job working on what amounts to a CRUD app but are asked to solve puzzles that would never come up in the actual work for the job. But its not uncommon. If you know the company you’d like to work at will throw these type of puzzles at you then I’d recommend spending some time on one or more of the programming puzzle sites and work thru some puzzles. If you can find out which site the company uses then practice on that since each has their own UI and idiosyncrasies and you want to be familiar with it before you start working on puzzles as part of interview (ordinarily as a timed exercise).</p> <p>Sites to check out that have Elixir support:</p> <ul> <li><a href="https://codesignal.com/">https://codesignal.com/</a></li> <li><a href="https://exercism.io/">https://exercism.io/</a></li> </ul>]]></content><author><name></name></author><category term="Elixir"/><category term="Elixir"/><summary type="html"><![CDATA[Elixir puzzles]]></summary></entry></feed>
