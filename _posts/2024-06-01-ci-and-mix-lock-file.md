@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Continuous Integer, Elixir and mix.lock file
+title: CI, Elixir and mix.lock
 date: 2024-06-01 11:30:00
 description: Ensure your mix.lock file is not changing without your knowledge
 categories: elixir
@@ -18,7 +18,7 @@ the [Pipfile and the Pipfile.lock](https://github.com/kennethreitz/pipenv). In R
 there is the [Gemfile and the Gemfile.lock](https://bundler.io/). In Javascript
 there is the [package-lock.json](https://docs.npmjs.com/).
 
-I recommend for continuous integeration for Elixir you should use the command:
+I recommend for continuous integration (CI) for Elixir you should use the command:
 
 ```
 mix deps.get --check-locked
