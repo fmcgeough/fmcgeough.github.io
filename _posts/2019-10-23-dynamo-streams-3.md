@@ -3,8 +3,8 @@ layout: post
 title: Elixir, Reading Dynamo Streams (Part 3)
 date: 2019-10-23 08:53:13
 description: How to read from Dynamo stream in Elixir
-categories: Elixir
-tags: Elixir
+categories: elixir
+tags: dynamodb
 ---
 
 Finishing up this small project to read a DynamoDB stream with Elixir. The

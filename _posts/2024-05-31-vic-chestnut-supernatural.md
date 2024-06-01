@@ -3,7 +3,7 @@ layout: post
 title: Vic Chesnutt and Old Cover from 2009
 date: 2024-05-30 10:25:00
 description: Vic Chesnutt passed in 2009 and I recorded one of his songs
-tags: guitar audios
+tags: recording acoustic
 categories: guitar
 giscus_comments: true
 ---

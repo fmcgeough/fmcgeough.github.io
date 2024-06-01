@@ -3,8 +3,8 @@ layout: post
 title: Elixir and Dependencies
 date: 2024-02-21 08:53:13
 description: Keeping Your Elixir Dependencies Up To Date
-categories: Elixir
-tags: Elixir
+categories: elixir
+tags: mix maintenance
 giscus_comments: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title: Mavis Mule and Learning Slide
 date: 2024-05-29 10:25:00
 description: Describes the Mule Resophonic Guitar company and my attempts to learn slide guitar
-tags: guitar audios
+tags: recording acoustic
 categories: guitar
 giscus_comments: true
 ---

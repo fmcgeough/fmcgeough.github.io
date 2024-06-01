@@ -3,8 +3,8 @@ layout: post
 title: Elixir, Programming Puzzles and Sorting Arrays
 date: 2019-12-31 07:53:13
 description: Elixir puzzles
-categories: Elixir
-tags: Elixir
+categories: elixir
+tags: puzzle
 ---
 
 There are a number of programming puzzle sites that are worthwhile tools for learning

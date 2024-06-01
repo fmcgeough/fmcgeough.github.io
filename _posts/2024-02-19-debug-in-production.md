@@ -3,8 +3,8 @@ layout: post
 title: Debugging Elixir in Production
 date: 2024-02-19 08:53:13
 description: Some debugging suggestions specific to Elixir production
-categories: Elixir
-tags: Elixir
+categories: elixir
+tags: debugging
 giscus_comments: true
 ---
 

@@ -3,8 +3,8 @@ layout: post
 title: Flushing Ecto db connections periodically in Elixir
 date: 2024-05-29 15:05:00
 description: Sample code to show how to use disconnect_all
-categories: Elixir
-tags: Elixir
+categories: elixir
+tags: ecto myxql
 giscus_comments: true
 ---
 

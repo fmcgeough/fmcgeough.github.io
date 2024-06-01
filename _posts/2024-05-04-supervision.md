@@ -3,8 +3,8 @@ layout: post
 title: Elixir/OTP Supervision
 date: 2024-05-04 08:53:13
 description: Sample code to demonstrate some aspects of Elixir supervision
-categories: Elixir
-tags: Elixir
+categories: elixir
+tags: supervisor
 giscus_comments: true
 ---
 

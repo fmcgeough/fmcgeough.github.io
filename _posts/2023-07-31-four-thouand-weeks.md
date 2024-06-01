@@ -4,7 +4,7 @@ title: Four Thousand Weeks
 date: 2023-07-31 07:53:13
 description: Notes on the book Four Thousand Weeks, Time Management for Mortals
 categories: reading
-tags: reading
+tags: time_management
 ---
 
 Notes on the book [“Four Thousand Weeks: Time Management for

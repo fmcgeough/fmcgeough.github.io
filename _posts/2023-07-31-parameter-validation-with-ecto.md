@@ -3,8 +3,8 @@ layout: post
 title: Elixir, Parameter Validation with Ecto
 date: 2023-07-31 08:53:13
 description: Using the Ecto library to validate API Parameters
-categories: Elixir
-tags: Elixir
+categories: elixir
+tags: validation api
 giscus_comments: true
 ---
 

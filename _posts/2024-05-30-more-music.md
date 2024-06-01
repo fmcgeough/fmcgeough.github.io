@@ -3,7 +3,7 @@ layout: post
 title: Another Guitar Recording
 date: 2024-05-30 10:25:00
 description: A simple recording of a nice Avett Brothers song
-tags: guitar audios
+tags: recording acoustic
 categories: guitar
 giscus_comments: true
 ---
