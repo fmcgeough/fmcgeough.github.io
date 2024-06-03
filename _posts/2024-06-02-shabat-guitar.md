@@ -8,7 +8,7 @@ categories: guitar
 giscus_comments: true
 ---
 
-The electric guitar that I currently have and have owned for the longest time came from
+The electric guitar that I have owned for the longest time came from
 [Righteous Guitars](https://righteousguitars.com/)
 in Roswell, Georgia. I bought it used.
 Its a [Shabat Lion GB](https://shabatguitars.com/product/lion-gb/).
