@@ -13,7 +13,7 @@ The electric guitar that I have owned for the longest time came from
 in Roswell, Georgia. I bought it used.
 Its a [Shabat Lion GB](https://shabatguitars.com/product/lion-gb/).
 The body is sugar pine and the neck is maple rosewood.
-It has the [Lollar Charlie Christian pickup](https://www.lollarguitars.com/lollar-charlie-christian-pickups) instead in the neck position and the [Lollar
+It has the [Lollar Charlie Christian pickup](https://www.lollarguitars.com/lollar-charlie-christian-pickups) installed in the neck position and the [Lollar
 B.S.Tele Bridge](https://www.lollarguitars.com/lollar-telecaster-pickups/bs-tele-bridge).
 It's finish is nitrocellulose Candy Appple Red.
 
