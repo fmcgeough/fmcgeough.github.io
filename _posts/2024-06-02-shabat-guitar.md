@@ -3,7 +3,7 @@ layout: post
 title: Shabat Lion GB
 date: 2024-06-02 10:25:00
 description: Description of My Shabat Lion GB
-tags: electric
+tags: recording electric
 categories: guitar
 giscus_comments: true
 ---
@@ -27,4 +27,13 @@ and well worth visiting.
 </div>
 <div class="caption">
   Shabat Lion GB
+</div>
+
+I found some recording of the guitar. Definitely a phone recording. Using the bridge
+pickup and the MK II Spanky amp.
+
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include audio.liquid path="assets/audio/2024-06-wild_horses_shabat_lion.mp3" controls=true %}
+    </div>
 </div>
