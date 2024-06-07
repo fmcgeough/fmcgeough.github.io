@@ -1,7 +1,7 @@
 ---
 layout: post
 title: First Guitar
-date: 2024-06-02 10:25:00
+date: 2024-06-07 10:25:00
 description: Description of My Taylor 310
 tags: recording acoustic
 categories: guitar
