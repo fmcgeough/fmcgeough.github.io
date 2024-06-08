@@ -27,3 +27,13 @@ It definitely is atmospheric and was fun to play.
         {% include audio.liquid path="assets/audio/2024-06-shabat_neck_pickup.mp3" controls=true %}
     </div>
 </div>
+
+This reminded of something I did a few years when Game of Thrones was still on.
+When Arya was running in the dark to go kill the Ice King I figured what she
+really needed was some background music. :-) So I recorded this.
+
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include audio.liquid path="assets/audio/2024-06-08-game-of-thrones.mp3" controls=true %}
+    </div>
+</div>
