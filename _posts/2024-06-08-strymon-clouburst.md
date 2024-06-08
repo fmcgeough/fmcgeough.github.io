@@ -1,8 +1,8 @@
 ---
 layout: post
-title: First Guitar
+title: And sometimes I use a guitar pedal
 date: 2024-06-08 10:25:00
-description: And sometimes I use a guitar pedal
+description: Recording using the Strymon Clouburst reverb pedal
 tags: recording electric pedal
 categories: guitar
 giscus_comments: true
