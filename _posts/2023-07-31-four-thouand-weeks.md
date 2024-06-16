@@ -40,8 +40,8 @@ Any errors that you find are almost certainly my fault and not the author's.
 - Traditional time management has long held out the implicit promise of “getting
   on top of everything”, of becoming the master of one’s time. The yearning for
   this feeling of control over the unfolding hours and days is an old one: back
-  in 1908, in a short book entitled [How to Live on 24 Hours a Day - Project
-  Gutenberg link](https://www.gutenberg.org/ebooks/2274), the English journalist
+  in 1908, in a short book entitled "How to Live on 24 Hours a Day" (should
+  be availabe on Project Gutenberg), the English journalist
   and novelist Arnold Bennett offered scheduling tips to “that innumerable band
   of souls who are haunted, more or less painfully, by the feeling that the
   years slip by, and slip by, and slip by, and they have not yet been able to
