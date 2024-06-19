@@ -15,26 +15,56 @@ Macros are a form of metaprogramming. It's writing code that, in turn, writes co
 The unit test framework that is used for Elixir is [ExUnit](https://hexdocs.pm/ex_unit/ExUnit.html).
 If you look at the ExUnit doc you can see that it makes use of the macro language to define the
 primitives used in Elixir's unit tests. For example, "describe" and "test" are both macros in the
-ExUnit.Case module.
+ExUnit.Case module. Here is how `describe` is defined (as of June 2024). You can see it uses
+`defmacro`. Its interesting (and probably a bit confusing) when you recognize that defmacro
+is also a macro.
 
-It's a very good thing to understand Elixir macros. If nothing else you will run into libraries
-(like ExUnit, Ecto) that make use of them (Ecto - the database ORM for Elixir - makes extensive use of
-macros to define a DSL to simplify dealing with relational databases). However, once you learn
-about Elixir macros its a very very good idea to limit your use of them. Although macros can
-make a developer's life much easier they can also make it much more difficult by making the code
-someone is trying to maintain exceedingly complex.
+```
+  defmacro describe(message, do: block) do
+    definition =
+      quote unquote: false do
+        defp unquote(name)(var!(context)), do: unquote(body)
+      end
 
-One use of macros that I've used (and have seen multiple developers use) is to define a macro
-for a test that defines the input used for the test itself. This means that instead of writing
-n tests that all look very similar you can write one test which takes a list of n items and
-generates n tests. The easiest way to understand this is with an example.
+    quote do
+      ExUnit.Callbacks.__describe__(__MODULE__, __ENV__.line, unquote(message), fn
+        message, describes ->
+          res = unquote(block)
 
-Suppose you have an Ecto.Schema for a database table in your app. It has some required fields.
-If those fields are not provided when calling the `Ecto.Changeset` function `changeset/2` you
-want the changeset to be invalid. I'll use a contrived example to demonstrate how I'd develop
-that code and use a macro to generate unique tests. The example is an `accounts` table.
-We'll require that when building an `Ecto.Changeset` that `:account_id` and `account_state`
-are required. All the other fields are optional. Here's the module defining the `Ecto.Schema`.
+          case ExUnit.Callbacks.__describe__(__MODULE__, message, describes) do
+            {nil, nil} -> :ok
+            {name, body} -> unquote(definition)
+          end
+
+          res
+      end)
+    end
+  end
+```
+
+It's a good idea to get at least some familiarity with Elixir macros. If nothing
+else you will run into libraries (like ExUnit, Ecto) that make use of them (Ecto
+
+- the database ORM for Elixir - makes extensive use of macros to define a DSL to
+  simplify dealing with relational databases). However, once you learn about
+  Elixir macros its a very very good idea to limit your use of them. Although
+  macros can make a developer's life much easier they can also make it much more
+  difficult by making the code someone is trying to maintain exceedingly complex.
+
+One use of macros that I've used (and have seen multiple developers use) is to
+define a macro for a test that defines the input used for the test itself. This
+means that instead of writing n tests that all look very similar you can write
+one test which takes a list of n items and generates n tests. The easiest way to
+understand this is with an example.
+
+Suppose you have an Ecto.Schema for a database table in your app. It has some
+required fields. If those fields are not provided when calling the
+`Ecto.Changeset` function `changeset/2` you want the changeset to be invalid.
+I'll use a contrived example to demonstrate how I'd develop that code and use a
+macro to generate unique tests. The example is an `accounts` table. We'll
+require that when building an `Ecto.Changeset` that `:account_id` and
+`account_state` are required. All the other fields are optional. Here's the
+module defining the `Ecto.Schema`.
 
 ```
 defmodule Account do
@@ -128,6 +158,7 @@ end
 When `mix test` is run we see the following:
 
 ```
+$ mix test
   1) test error is generated when 'url' field is missing (AccountTest)
      test/account_test.exs:16
      Expected false or nil, got true
@@ -136,9 +167,66 @@ When `mix test` is run we see the following:
        test/account_test.exs:19: (test)
 ```
 
-The error line (19) is for the line `refute changeset.valid?` in our unit test file. The
-first line tells us that the `url` field is what caused the problem.
+The error line (19) is for the line `refute changeset.valid?` in our unit test
+file. The first line tells us that the `url` field is what caused the problem.
 
-There are a number of ways you can use macros to make your unit tests easier to read and maintain.
-You should always keep the maintainability of the code in mind when you decide to start using
-a macro.
+This same unit test could be rewritten easily without this approach. But let's
+add in the same issue as the "bad" test and check the output when `mix test` is
+run.
+
+```
+defmodule AccountTest do
+  use ExUnit.Case
+
+  @valid_account_params %{account_id: "123", account_state: "active", url: "http://example.com", owner_email: "test@example.com"}
+
+  test "error is generated when a required field is missing" do
+    for required_field <- Account.required() ++ [:url] do
+      params = Map.delete(@valid_account_params, required_field)
+      changeset = Account.changeset(%Account{}, params)
+      refute changeset.valid?
+      assert changeset.errors == [{required_field, {"can't be blank", [validation: :required]}}]
+    end
+  end
+end
+```
+
+When `mix test` is run we see the following:
+
+```
+$ mix test
+
+  1) test error is generated when a required field is missing (AccountTest)
+     test/account_test.exs:15
+     Expected false or nil, got true
+     code: refute changeset.valid?
+     stacktrace:
+       test/account_test.exs:19: anonymous fn/2 in AccountTest."test error is generated when a required field is missing"/1
+       (elixir 1.14.2) lib/enum.ex:2468: Enum."-reduce/3-lists^foldl/2-0-"/3
+       test/account_test.exs:16: (test)
+```
+
+With that output its not possible to see the field that caused the failure. We
+can change the `refute` line to `refute changeset.valid?, "Removing
+'#{required_field}' didn't make changeset invalid"` so that the field is output
+when that line fails. That gives us:
+
+```
+  1) test error is generated when a required field is missing (AccountTest)
+     test/account_test.exs:15
+     Removing 'url' didn't make changeset invalid
+     code: for required_field <- Account.required() ++ [:url] do
+     stacktrace:
+       test/account_test.exs:19: anonymous fn/2 in AccountTest."test error is generated when a required field is missing"/1
+       (elixir 1.14.2) lib/enum.ex:2468: Enum."-reduce/3-lists^foldl/2-0-"/3
+       test/account_test.exs:16: (test)
+```
+
+So that output tells us what we want to know. When the `url` field is removed it
+does not make the changeset invalid.
+
+There are a number of ways you can use macros to make your unit tests easier to
+read and maintain. You should always keep the maintainability of the code in
+mind when you decide to start using a macro. When you are using a macro it's
+always possible to rework the code to not use it. You have to decide if using
+the macro makes the code more maintainable or less.
