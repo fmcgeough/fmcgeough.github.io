@@ -24,7 +24,7 @@ about Elixir macros its a very very good idea to limit your use of them. Althoug
 make a developer's life much easier they can also make it much more difficult by making the code
 someone is trying to maintain exceedingly complex.
 
-Once use of macros that I've used and have seen multiple developers use is to define a macro
+One use of macros that I've used (and have seen multiple developers use) is to define a macro
 for a test that defines the input used for the test itself. This means that instead of writing
 n tests that all look very similar you can write one test which takes a list of n items and
 generates n tests. The easiest way to understand this is with an example.
@@ -32,7 +32,7 @@ generates n tests. The easiest way to understand this is with an example.
 Suppose you have an Ecto.Schema for a database table in your app. It has some required fields.
 If those fields are not provided when calling the `Ecto.Changeset` function `changeset/2` you
 want the changeset to be invalid. I'll use a contrived example to demonstrate how I'd develop
-that code and use a macro to generate unique tests. The examples is an `accounts` table.
+that code and use a macro to generate unique tests. The example is an `accounts` table.
 We'll require that when building an `Ecto.Changeset` that `:account_id` and `account_state`
 are required. All the other fields are optional. Here's the module defining the `Ecto.Schema`.
 
