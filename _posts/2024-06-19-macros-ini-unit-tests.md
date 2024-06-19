@@ -43,19 +43,21 @@ is also a macro.
 ```
 
 It's a good idea to get at least some familiarity with Elixir macros. If nothing
-else you will run into libraries (like ExUnit, Ecto) that make use of them (Ecto
+else you will run into libraries (like ExUnit, Ecto) that make use of them and
+the Elixir language itself defines many functions using macros. Ecto, the database
+ORM for Elixir, makes extensive use of macros to define a DSL to
+simplify dealing with relational databases.
 
-- the database ORM for Elixir - makes extensive use of macros to define a DSL to
-  simplify dealing with relational databases). However, once you learn about
-  Elixir macros its a very very good idea to limit your use of them. Although
-  macros can make a developer's life much easier they can also make it much more
-  difficult by making the code someone is trying to maintain exceedingly complex.
+Once you learn about Elixir macros its a very good idea, in general, to not use
+them. Although well-done macros can make a developer's life much easier they
+also can make code way more obtuse. This raises the cost of maintaining the
+software.
 
-One use of macros that I've used (and have seen multiple developers use) is to
-define a macro for a test that defines the input used for the test itself. This
-means that instead of writing n tests that all look very similar you can write
-one test which takes a list of n items and generates n tests. The easiest way to
-understand this is with an example.
+One use of macros that you might see (or use yourself) is to define a macro for
+a test that defines the input used for the test itself. This means that instead
+of writing n tests that all look very similar you can write one test which takes
+a list of n items and generates n tests. The easiest way to understand this is
+with an example.
 
 Suppose you have an Ecto.Schema for a database table in your app. It has some
 required fields. If those fields are not provided when calling the
