@@ -9,16 +9,16 @@ giscus_comments: true
 ---
 
 One of the strengths of the Elixir language is a powerful first-class macro language. The creator
-of Elixir, José Valim, based on the development of Elixir macros (in part) on how Lisp macros work.
+of Elixir, José Valim, based the development of Elixir macros (in part) on how Lisp macros work.
 Macros are a form of metaprogramming. It's writing code that, in turn, writes code.
 
 The unit test framework that is used for Elixir is [ExUnit](https://hexdocs.pm/ex_unit/ExUnit.html).
-If you look at the ExUnit code you can see that it makes use of the macro language to define the
+If you look at the ExUnit doc you can see that it makes use of the macro language to define the
 primitives used in Elixir's unit tests. For example, "describe" and "test" are both macros in the
 ExUnit.Case module.
 
 It's a very good thing to understand Elixir macros. If nothing else you will run into libraries
-(like ExUnit) that make use of them (Ecto - the database ORM for Elixir - makes extensive use of
+(like ExUnit, Ecto) that make use of them (Ecto - the database ORM for Elixir - makes extensive use of
 macros to define a DSL to simplify dealing with relational databases). However, once you learn
 about Elixir macros its a very very good idea to limit your use of them. Although macros can
 make a developer's life much easier they can also make it much more difficult by making the code
