@@ -284,9 +284,13 @@ does not make the changeset invalid.
 
 ## Recap
 
-Elixir macros are very powerful. You should not write a macro without 1) a fair amount
-of thought on whether you are going to be able to maintain the macro; 2) are you sure
-that you are making developers lives easier long term?
+Elixir macros are very powerful. You should not write a macro without thinking
+through a couple of things:
+
+- are you sure you are going to be able to maintain the macro. Is the macro going
+  to be maintainable for other developers?
+- are you sure that the macro makes developers lives easier long term? Could you
+  get the same value from just a regular function?
 
 Using a comprehension to pass data into a test to avoid repeating code by making
 the test data-driven is a technique that you might want to consider if it meets
