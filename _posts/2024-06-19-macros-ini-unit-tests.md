@@ -194,6 +194,39 @@ $ mix test
 The error line (19) is for the line `refute changeset.valid?` in our unit test
 file. The first line tells us that the `url` field is what caused the problem.
 
+So, what is going on here? Well, the comprehension takes each value in turn and
+uses that as input to the `test` macro. The `required_field` value becomes
+available in the unit test string and in the test block itself. In the test
+string `"error is generated when '#{required_field}' field is missing"` no
+interpolation is needed. This is because the string interpolation is inside
+the context of the macro itself. The test block executes in its own context
+so you need to use `unquote(required_field)` to get actual value. If you
+tried to just use `required_field` you'll get a compiler error.
+`undefined function required_field/0`.
+
+If you wanted you could output the binding just before the `test` line:
+
+```
+  for required_field <- Account.required() do
+    IO.inspect(binding(), label: "binding")
+    test "error is generated when '#{required_field}' field is missing" do
+      params = Map.delete(@valid_account_params, unquote(required_field))
+      changeset = Account.changeset(%Account{}, params)
+      refute changeset.valid?
+      assert changeset.errors == [{unquote(required_field), {"can't be blank", [validation: :required]}}]
+    end
+  end
+```
+
+Since we have two required fields (`:account_id` and `:account_state`) this outputs:
+
+```
+binding: [required_field: :account_id]
+binding: [required_field: :account_state]
+```
+
+## Rewrite without the comprehension
+
 This same unit test could be rewritten easily without this approach. But let's
 add in the same issue as the "bad" test and check the output when `mix test` is
 run.
@@ -249,8 +282,12 @@ when that line fails. That gives us:
 So that output tells us what we want to know. When the `url` field is removed it
 does not make the changeset invalid.
 
-There are a number of ways you can use macros to make your unit tests easier to
-read and maintain. You should always keep the maintainability of the code in
-mind when you decide to start using a macro. When you are using a macro it's
-always possible to rework the code to not use it. You have to decide if using
-the macro makes the code more maintainable or less.
+## Recap
+
+Elixir macros are very powerful. You should not write a macro without 1) a fair amount
+of thought on whether you are going to be able to maintain the macro; 2) are you sure
+that you are making developers lives easier long term?
+
+Using a comprehension to pass data into a test to avoid repeating code by making
+the test data-driven is a technique that you might want to consider if it meets
+your use case.
