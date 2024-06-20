@@ -1,63 +1,85 @@
 ---
 layout: post
-title: Using Macros for Elxiir Unit Tests
+title: Elxiir Unit Tests and Iterating a Single Test
 date: 2024-06-19 11:30:00
-description: When it is good to use a macro for a unit test
+description: What does it mean when I have a test block in Elixir?
 categories: elixir
-tags: mix
+tags: ex_unit
 giscus_comments: true
 ---
 
-One of the strengths of the Elixir language is a powerful first-class macro language. The creator
-of Elixir, José Valim, based the development of Elixir macros (in part) on how Lisp macros work.
-Macros are a form of metaprogramming. It's writing code that, in turn, writes code.
+One of the strengths of the Elixir language is a powerful first-class macro
+language. The creator of Elixir, José Valim, based the development of Elixir
+macros (in part) on how Lisp macros work. Macros are a form of metaprogramming.
+It's writing code that, in turn, writes code.
 
-The unit test framework that is used for Elixir is [ExUnit](https://hexdocs.pm/ex_unit/ExUnit.html).
-If you look at the ExUnit doc you can see that it makes use of the macro language to define the
-primitives used in Elixir's unit tests. For example, "describe" and "test" are both macros in the
-ExUnit.Case module. Here is how `describe` is defined (as of June 2024). You can see it uses
-`defmacro`. Its interesting (and probably a bit confusing) when you recognize that defmacro
-is also a macro.
+It's a good idea to get at least some familiarity with Elixir macros. If nothing
+else you will run into libraries (like ExUnit, Ecto) that make use of them and
+the Elixir language itself defines many functions using macros. Ecto, the
+database ORM for Elixir, makes extensive use of macros to define a DSL to
+simplify dealing with relational databases.
+
+## the test macro in the ex_unit library
+
+The unit test framework that is used for Elixir is
+[ExUnit](https://hexdocs.pm/ex_unit/ExUnit.html). If you look at the ExUnit doc
+you can see that it makes use of the macro language to define the primitives
+used in Elixir's unit tests. For example, "describe" and "test" are both macros
+in the ExUnit.Case module. Here is how `test` is defined (as of June 2024). You
+can see it uses `defmacro`. Its interesting (and probably a bit confusing) when
+you recognize that defmacro is also a macro.
 
 ```
-  defmacro describe(message, do: block) do
-    definition =
-      quote unquote: false do
-        defp unquote(name)(var!(context)), do: unquote(body)
-      end
+  defmacro test(message) do
+    %{module: mod, file: file, line: line} = __CALLER__
 
-    quote do
-      ExUnit.Callbacks.__describe__(__MODULE__, __ENV__.line, unquote(message), fn
-        message, describes ->
-          res = unquote(block)
-
-          case ExUnit.Callbacks.__describe__(__MODULE__, message, describes) do
-            {nil, nil} -> :ok
-            {name, body} -> unquote(definition)
-          end
-
-          res
-      end)
+    quote bind_quoted: binding() do
+      name = ExUnit.Case.register_test(mod, file, line, :test, message, [:not_implemented])
+      def unquote(name)(_), do: flunk("Not implemented")
     end
   end
 ```
 
-It's a good idea to get at least some familiarity with Elixir macros. If nothing
-else you will run into libraries (like ExUnit, Ecto) that make use of them and
-the Elixir language itself defines many functions using macros. Ecto, the database
-ORM for Elixir, makes extensive use of macros to define a DSL to
-simplify dealing with relational databases.
+## Breaking down the test macro
 
-Once you learn about Elixir macros its a very good idea, in general, to not use
-them. Although well-done macros can make a developer's life much easier they
-also can make code way more obtuse. This raises the cost of maintaining the
-software.
+Let's consider (in general) how macros work with Elixir. When your code is
+compiled it is converted to an AST (this is an abstract syntax tree. An AST is
+your code converted to data). The places where the code is actually a macro are
+identified. Once the AST is generated the macro is expanded. This can be a
+recursive process. But eventually everything is converted to an AST. At that
+point the AST can be converted to the byte code that executes in the VM.
 
-One use of macros that you might see (or use yourself) is to define a macro for
-a test that defines the input used for the test itself. This means that instead
-of writing n tests that all look very similar you can write one test which takes
-a list of n items and generates n tests. The easiest way to understand this is
-with an example.
+In the `test` macro above a signle parameter is passed. This is the name of the
+unit test. The first thing the test macro does is use the `__CALLER__` macro to
+get the module running the test, its file, and the line number of the test.
+
+Then `test` does a quote block. As you maybe can guess `quote` is also a macro. It takes
+two arguments: `opts` and `block`. The `opts` in this case are `bind_quoted:
+binding()`. This option passes a binding to the macro. Whenever a binding is
+given, `unquote/1` is automatically disabled. The call `binding(context \\ nil)`
+returns the binding for the given context as a keyword list. In the returned
+result, keys are variable names and values are the corresponding variable
+values. If the given context is nil (by default it is and it is in how the test
+macro is written), the binding for the current context is returned.
+
+Inside the do block a call is made to `ExUnit.Case.register_test`. This is what
+will check that the name of your test is actually unique. It's probably good
+to point out that the String that you use for your test can be a maximum of
+255 characters. If you give a String longer than that you'll get a compile
+error that looks something like this:
+
+```
+== Compilation error in file test/account_test.exs ==
+** (SystemLimitError) the computed name of a test (which includes its type, the name of its parent describe block if present, and the test name itself) must be shorter than 255 characters
+```
+
+## using a comprehension above a test
+
+One use of macros that you might see (or use yourself) is to define a comprehension
+outside a test declaration. This allows you to write a single test that uses
+different inputs to, in effect, have means that instead of a single test you
+actually have multiple tests equal to the elements in the comprehension.
+The easiest way to understand this is with an example.
 
 Suppose you have an Ecto.Schema for a database table in your app. It has some
 required fields. If those fields are not provided when calling the
