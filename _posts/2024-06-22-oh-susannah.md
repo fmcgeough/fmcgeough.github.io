@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Oh Susannah
+title: Oh! Susanna
 date: 2024-06-22 10:25:00
 description: Mavis Mule and Ring Slide
 tags: recording electric slide
