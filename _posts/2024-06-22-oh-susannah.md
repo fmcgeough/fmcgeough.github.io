@@ -100,7 +100,7 @@ For I come from Alabama
 With my banjo on my knee
 ```
 
-Later in that same practice I retuned to Open-C (on my Mavis Mule)
+Later in that same practice I retuned to Open-D (on my Mavis Mule)
 and recorded this (which is pretty far from Oh! Susanna but I named
 it that anyway since it came out of the same practice session):
 
