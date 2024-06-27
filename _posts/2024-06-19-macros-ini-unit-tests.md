@@ -77,8 +77,8 @@ error that looks something like this:
 
 One use of macros that you might see (or use yourself) is to define a comprehension
 outside a test declaration. This allows you to write a single test that uses
-different inputs to, in effect, have means that instead of a single test you
-actually have multiple tests equal to the elements in the comprehension.
+each of the comprehension values. So, instead of writing a number of unit tests
+that end up having the same code you write the test once and make it data-driven.
 The easiest way to understand this is with an example.
 
 Suppose you have an Ecto.Schema for a database table in your app. It has some
