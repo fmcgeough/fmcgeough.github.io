@@ -8,7 +8,7 @@ category: educational
 related_publications: false
 ---
 
-Stored in the github repo [ex_sleeplock](https://github.com/fmcgeough/ex_sleeplock).
+Published to hex.pm [ex_sleeplock](https://hex.pm/packages/ex_sleeplock).
 
 An easy approach to throttling the number of processes allowed to execute a block of code simultaneously in Elixir.
 
