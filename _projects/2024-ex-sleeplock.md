@@ -4,7 +4,7 @@ title: Elixir Sleeplock
 description: Allow only a certain number of processes to execute a block of code at one time
 img:
 importance: 1
-category: educational
+category: published
 related_publications: false
 ---
 

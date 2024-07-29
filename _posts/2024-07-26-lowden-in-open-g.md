@@ -42,9 +42,6 @@ I decided to share some pictures of it.
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="assets/img/2024-07-26-lowden5.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2024-07-26-lowden6.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
-    </div>
 </div>
 
 It's a wonderfully sounding instrument. I like the feel of the neck and its unique
