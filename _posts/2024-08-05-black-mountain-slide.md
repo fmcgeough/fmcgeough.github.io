@@ -11,7 +11,7 @@ giscus_comments: true
 The Black Mountain company (Black Mountain picks) makes some great tools
 for guitarists. I first became aware of their company when I was having
 thumb pain. I had evidentally worked way too hard on a particular bluegrass
-song. I had gripped the heck out of my pick and manages to make my thumb
+song. I had gripped the heck out of my pick and managed to make my thumb
 feel pretty bad. I was looking for something that would allow me to continue
 to play without putting pressure on my thumb. I found Black Mountain thumb
 picks.
