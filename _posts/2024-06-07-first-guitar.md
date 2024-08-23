@@ -12,7 +12,7 @@ After moving to Atlanta in 1990 I bought a guitar from
 [Maple Street Guitars](https://www.maplestreetguitars.com/). This
 is a wonderful guitar shop near public transportation (Marta). They
 carry both acoustic and electric guitars. The folks that work there
-are friendly and extremely knowledgable. You'll see postings about
+are friendly and extremely knowledgeable. You'll see postings about
 one or more of them appearing in music venues around town.
 
 Maple Street carries Taylor guitars and I bought a Taylor 310. Taylor
