@@ -20,7 +20,7 @@ required a database connection. Database connections available in limited quanti
 out a connection. The API should always have an available connection to process a request.
 
 It's clear that a service can have lots of simultaneous requests that it needs
-to handle. For the services I was working with the service handled many simulatenous
+to handle. For the services I was working with the service handled many simultaneous
 requests well. The problem was processing messages from Kafka.
 
 The service used the [brod](https://hexdocs.pm/brod/readme.html) library. In particular,
@@ -47,7 +47,7 @@ is `handle_message/2`. This is defined in the brod Erlang code as:
 
 When a message arrives for any of brod partition processes the brod code calls the app's
 implementation of `handle_message/2`. The app is responsible for processing the
-mesasge and returning a value that lets brod know whether to "commit" the offset of
+message and returning a value that lets brod know whether to "commit" the offset of
 the read message, just "ack" the message or tell Kafka nothing.
 
 The callback is typically code that is going to examine the incoming Kafka message
