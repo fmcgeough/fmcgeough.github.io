@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Elixir and Ecto's telemetry events
-date: 2024-06-27 12:41:00
+date: 2024-09-02 12:00:00
 description: How to use Ecto's telemetry events
 categories: elixir
 tags: telemetry
