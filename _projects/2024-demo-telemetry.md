@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Demonstration of Ecto telemetry events
+title: Demonstration of Elixir/Ecto telemetry events
 description: Elixir/Ecto and how to generate, modify and handle telemetry events
 img:
 importance: 1
