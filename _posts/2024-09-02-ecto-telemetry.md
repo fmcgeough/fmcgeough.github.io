@@ -29,6 +29,7 @@ The sections below provide information that might be helpful when you are first 
 Telemetry, as a general concept, has been around quite a while. It refers to the gathering of
 measurements (and other information) at or near the point of what is being measured. Then
 automatically transmitting that information to a system that allows analysis of the measurements.
+Sometimes you will see the term "telemeter" used to describe a device used to capture measurements.
 
 > A telemeter is a physical device used in telemetry. It consists of a sensor, a transmission path,
 > and a display, recording, or control device. Electronic devices are widely used in telemetry and can
@@ -36,22 +37,21 @@ automatically transmitting that information to a system that allows analysis of 
 > mechanical, hydraulic and optical.
 
 Early systems that used telemetry were quite primitive. For example, early steam engines performed
-measurements on a mercury pressure gauge and was able to indicate the measurement at a short
-distance. Our modern view of telemetry involves transmitting measurements data in large volumes
-from multiple points to a common analysis system where graphs, charts, gauges and general queries
-over measurement data is possible.
+measurements on a mercury pressure gauge. The gauges indicated the measurement and could be read at
+a short distance. Our modern use of telemetry involves transmitting measurements data in large
+volumes from multiple points to a common analysis system where graphs, charts, gauges and general
+queries over measurement data is possible.
 
 A telemetry event is a measurement (or measurements) at a specific point in time and given a
 timestamp and a name. Telemetry events are a history (of sorts) for your system.
 
 ## Why do I want Telemetry?
 
-Embracing telemetry allows monitoring your software. You can use the
-measurements to evaluate and monitor the general health of your software. You
-can use it to spot trends that require investigation and evaluation. For
-example, it's important to know if APIs provided by your service are suddenly
-50% slower. That's something that probably needs immediate investigation! And
-it's easily visible if you are using telemetry.
+Embracing telemetry allows monitoring your software. You can use the measurements to evaluate and
+monitor the general health of your software. You can use it to spot trends that require
+investigation and evaluation. For example, it's important to know if APIs provided by your service
+are suddenly 50% slower. That's something that probably needs immediate investigation! And it's
+easily visible if you are using telemetry.
 
 In the context of Ecto, using it's telemetry events can give you:
 
@@ -72,21 +72,20 @@ use the telemetry library.
 > does not generate telemetry events. In some cases the library may generate its own version of
 > telemetry events that you can coerce into the telemetry system.
 
-In Elixir (and Erlang) code telemetry is generation of a named telemetry event. The event can
-include measurements and metadata. There is a standard way for your app to plug into telemetry
-events and transmit the metrics to a collection point.
+In Elixir (and Erlang) telemetry means the generation of a named telemetry event. The event is not
+only a measurement but may also include metadata.
 
-An event is named using a List of atoms. This list of atoms has to uniquely identify the event.
-What I mean when I saw "uniquely identifies the event" is that it identifies the general category
-of the event. That is, we may have an event named `[:my_app, :sonar_system, :ping]` that is used
-to report some sonar ping event. This is its name but there can be multiple telemetry events
-of this kind generated, each with its own timestamp.
+An event is named using a List of atoms. This list of atoms uniquely identifies the type of event.
+That is, the name identifies the general category of the event. That is, we may have an event named
+`[:my_app, :sonar_system, :ping]` that is used to report some sonar ping event. This is its name but
+there can be multiple telemetry events of this kind generated, each with its own timestamp.
 
-Ecto, Phoenix and most likely other libraries have a dependency on the telemetry
-library. When your app starts the telemetry library starts a GenServer that
-creates an `ets` table. This is used to connect generated events to registered
-callbacks for those events. The callback is responsible for doing something with
-the generated event - such as sending it on to Datadog or Prometheus.
+Ecto, Phoenix and other libraries you may use have a dependency on the telemetry library. When your
+app starts the telemetry library starts a GenServer that creates an `ets` table. This is used to
+connect generated events to registered callbacks for those events. The callback is responsible for
+doing something with the generated event - such as sending it on to Datadog or Prometheus.
+
+## Listening for Telemetry Events
 
 There are two functions in the telemetry library for registering your interest in events:
 
@@ -120,9 +119,25 @@ Here are the parameters to these functions:
   telemetry library back to you to handle each event you should just use `nil`.
 
 Once you have attached the handler your handler function will start being called when an event
-is generated. The code path for an event is: telemetry event generated -> telemetry library ->
-lookup any handlers interested in this event -> telemetry library calls handler function. That is,
-this is all happening in the same process ordinarily.
+is generated. The code path for an event is:
+
+```
+generate event -> telemetry library
+                  for each handler for event
+                            -> call the handler function
+```
+
+The basic mechanics of plugging into Ecto's telemetry events are:
+
+- figure out the event names and put them in a list
+- call `:telemetry.attach_many` and give the telemetry system a handler function. The handler is a
+  function that takes four parameters:
+  - The event name
+  - Measurements (Map)
+  - Metadata (Map)
+  - Handler Config - this is data that you pass into the telemetry library when informing it that
+    you want to listen for events. In most cases applications do not use this and nil is passed into
+    the telemetry library and it is what is passed to the handler function for this parameter.
 
 ## How and When are Telemetry Events Generated in Ecto?
 
@@ -166,20 +181,6 @@ You can set the event name yourself by using a `telemetry_prefix` on your Ecto R
 your config files. For example, you might set the `telemetry_prefix` to `[:my_app, :ecto,
 :primary_db]` for a Repo associated with your primary database and `[:my_app, :ecto, :replica_db]`
 for your replica database.
-
-## Plugging Into Ecto Telemetry
-
-The basic mechanics of plugging into Ecto's telemetry events are:
-
-- figure out the event names and put them in a list
-- call `:telemetry.attach_many` and give the telemetry system a handler function. The handler is a
-  function that takes four parameters:
-  - The event name
-  - Measurements (Map)
-  - Metadata (Map)
-  - Handler Config - this is data that you pass into the telemetry library when informing it that
-    you want to listen for events. In most cases applications do not use this and nil is passed into
-    the telemetry library and it is what is passed to the handler function for this parameter.
 
 ## The Database Activity Event
 
