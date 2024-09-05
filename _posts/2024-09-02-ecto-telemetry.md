@@ -177,10 +177,13 @@ as the event name, by default. This takes your Repo module name and converts it
 from camel-case to snake-case. So, if your Ecto repo is called `MyApp.MyRepo` the
 event name is `[:my_app, :my_repo]`.
 
-You can set the event name yourself by using a `telemetry_prefix` on your Ecto Repo definition in
-your config files. For example, you might set the `telemetry_prefix` to `[:my_app, :ecto,
-:primary_db]` for a Repo associated with your primary database and `[:my_app, :ecto, :replica_db]`
-for your replica database.
+You can set the event name yourself by using a `telemetry_prefix` on your
+Ecto Repo definition in your config files. For example, you might
+set the `telemetry_prefix` to `[:my_app, :ecto, :primary_db]` 
+for a Repo associated with your primary database and 
+`[:my_app, :ecto, :replica_db]` for your replica database. The
+event that Ecto generates will be your telemetry_prefix
+concatenated with `[:query]`.
 
 ## The Database Activity Event
 
