@@ -18,7 +18,7 @@ events. It's available in [github](https://github.com/fmcgeough/demo_telemetry).
 The project shows how to:
 
 - use telemetry_prefix on your repo to change the name of the event
-- use telemetry_prefix with your queries to allow you to easily identify what
+- use telemetry_options with your queries to allow you to easily identify what
   database activity has occurred in your metrics handler
 - what event name is if you do not use telemetry_prefix for your repo
 
