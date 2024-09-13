@@ -9,18 +9,24 @@ giscus_comments: true
 ---
 
 I didn't grow up listening to bluegrass music or going to bluegrass festivals. My bluegrass exposure
-up until my early twenties my bluegrass explore was probably:
+up until my early twenties can be summed up as:
 
 - listening to Flatt & Scruggs "The Ballad of Jed Clampett" on the Beverly Hillbillies (Jerry Scoggins
   is singing on that)
 - happening to step into the family room where Dad was watching Hee-Haw (before quickly leaving because
   it seemed more embarrassing than funny).
 
-After I left the Coast Guard I lived in New England. And this was actually a hotbed of bluegrass
-(believe it or not). Rounder Records was founded in 1970 in Somerville, Massachusetts. And there
-were a number of women that I met who really liked bluegrass music. So I started listening to some
-of the classics I'd never been exposed to. Like "Will the Circle Be Unbroken" by The Nitty Gritty
-Dirt Band. It was on that album that I first heard Doc Watson.
+It wasn't that I didn't _like_ bluegrass. I just never heard it. Nobody I knew was interested in
+it. I never saw bluegrass albums. I wouldn't have been able to pick a Martin D-28 from a Gibson
+J-45 out of a lineup. I'm doubtful whether I could identify a mandolin.
+
+I joined the Coast Guard after high school. After I left the Coast Guard I lived in New England.
+Surprisingly, New England was actually a hotbed of bluegrass music. There was a famous recording
+company called "Rounder Records" and this was founded in 1970 in Somerville, Massachusetts.
+
+There were a number of women that I met who really liked bluegrass music. So I started listening
+to some of the classics I'd never been exposed to. Like "Will the Circle Be Unbroken" by The Nitty
+Gritty Dirt Band. It was on that album that I first heard Doc Watson.
 
 Doc Watson was blind from a young age (I didn't know this at the time). He was an amazing flatpicker
 from North Carolina. After hearing him on the album I saw that he was coming to Boston to play at
@@ -34,15 +40,18 @@ Garcia played banjo in), and Norman Blake. I continue to enjoy bluegrass music t
 it's exciting to see a resurgence with the popularity of Billy Strings.
 
 I moved to Atlanta in 1990. Met my (future) wife and we had two daughters. This was how I met
-Jeff Mosier. One of his daughters and our daughter were friends so they'd have play dates and
-get together at either our place or their place. I knew he was a musician but to me he was just
+Jeff Mosier. One of his daughters and one of our daughters were friends so they'd have play dates
+and get together at either our place or their place. I knew Jeff was a musician but to me he was just
 a terrific and patient father and all-around good guy. I had no idea he had played with Phish,
 the Allman Brothers, etc. Or that he had been part of the iconic Atlanta band "Aquarium Rescue Unit".
 
-We saw he was playing at a venue in Roswell Georgia that was close to us and got tickets in
-May 2024 and I saw him and his brother play. It was awesome! He has a very interesting approach
-to the banjo. And even though we haven't seen him for years he gave both my wife and I a big
-hug. So still an incredibly nice human being. I recorded a little snippet of one song.
+We saw he was playing at a venue in Roswell Georgia called Mimosa Hall. This isn't that far from
+us so we got tickets. And in May 2024 we saw him and his brother play. Jeff played the banjo and
+his brother played his grandmother's Martin D-35 from the 1990s. It was awesome to finally hear
+him! He has a very interesting approach to the banjo. And even though we haven't seen him for years
+he gave both my wife and I a big hug. So still an incredibly nice human being. I recorded a little
+snippet of one song they played but mostly I just sat and listened with a small audience to him
+play and tell stories.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
