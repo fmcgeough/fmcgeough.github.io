@@ -28,7 +28,7 @@
         "Published a library to hex.pm to allow only some app defined limit of number of processes to execute a block of code at one time",
         "Created a github repo to demonstrate how to use Ecto telemetry events"
       ]
-    },    
+    },
     {
       "name": "PagerDuty, Inc",
       "position": "Senior Software Engineer",
