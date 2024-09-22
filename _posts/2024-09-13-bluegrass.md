@@ -11,9 +11,9 @@ giscus_comments: true
 I didn't grow up listening to bluegrass music or going to bluegrass festivals.
 My bluegrass exposure up until my early twenties can be summed up as:
 
-- listening to Flatt & Scruggs "The Ballad of Jed Clampett" on the Beverly    
+- listening to Flatt & Scruggs "The Ballad of Jed Clampett" on the Beverly  
   Hillbillies (Jerry Scoggins is singing on that)
-- happening to step into the family room where Dad was watching Hee-Haw     
+- happening to step into the family room where Dad was watching Hee-Haw  
   (before quickly leaving because it seemed more embarrassing than funny).
 
 I'm specifically leaving out a bunch of music that I did listen to that wasn't bluegrass but was definitely inspired or influenced by bluegrass. It wasn't that I didn't _like_ bluegrass. I just never heard it. Nobody I knew
@@ -54,8 +54,8 @@ friends so they'd have play dates and get together at either our place or their
 place. I knew Jeff was a musician but to me he was just a terrific and patient
 father and all-around good guy. I had no idea he had played with Phish, the
 Allman Brothers, etc. Or that he had been part of the iconic Atlanta band
-"Aquarium Rescue Unit". Jeff was someone, thanks to his Grandma, who went to 
-bluegrass festivals from a young age. Sitting around a campfire till 2 or 
+"Aquarium Rescue Unit". Jeff was someone, thanks to his Grandma, who went to
+bluegrass festivals from a young age. Sitting around a campfire till 2 or
 3 am and sharing songs and licks.
 
 In 2024, we saw he was playing at a venue in Roswell Georgia called Mimosa Hall.
@@ -105,7 +105,7 @@ one has something special to touch our hearts and teach us.
 ## Links
 
 Here are some Spotify links to bluegrass (or bluegrass influenced) albums I
-enjoy: 
+enjoy:
 
 - [Norman Blake, Whiskey Before Breakfast](https://open.spotify.com/album/7KoAd8Jt2udhxxRZ2uiiee?si=KZW2Yz9vTpeM9Z4AYO5_lQ)
 - [Tony Rice, Church Street Blues](https://open.spotify.com/album/2ikwlUUIe2EiOO2gDZjOJb?si=acNLq_YeQPeRnksQUbMtiw)
