@@ -6,7 +6,7 @@
     "email": "fmcgeough@gmail.com",
     "phone": "",
     "url": "https://github.com/fmcgeough",
-    "summary": "I’ve worked extensively in various problem domains and helped develop high performance elegant solutions. I have an excellent background in software design in various languages but work primarily in Elixir with the Phoenix framework now. I'm focused on communicating well and providing valuable solutions for customers that work well, are extremely maintainable and scale and work seamlessly for back end staff.",
+    "summary": "I’ve worked extensively in various problem domains and helped develop high performance elegant solutions. I have an excellent background in software design in various languages but work primarily in Elixir with the Phoenix framework now. I'm focused on communicating well and providing valuable solutions for customers that work well, are extremely maintainable and scale and work seamlessly for back end staff. I have a general interest in how to build well-functioning software teams that can deliver desired functionality in a timely manner.",
     "location": {
       "address": "",
       "postalCode": "",
@@ -18,11 +18,23 @@
   },
   "work": [
     {
+      "name": "Self Employed",
+      "position": "Independent Elixir Developer",
+      "url": "https://fmcgeough.github.io/",
+      "startDate": "2024-08-01",
+      "endDate": ,
+      "summary": "Working independently on various open source projects and contributing to the Elixir community",
+      "highlights": [
+        "Published a library to hex.pm to allow only some app defined limit of number of processes to execute a block of code at one time",
+        "Created a github repo to demonstrate how to use Ecto telemetry events"
+      ]
+    },    
+    {
       "name": "PagerDuty, Inc",
       "position": "Senior Software Engineer",
       "url": "https://www.pagerduty.com/",
       "startDate": "2020-01-01",
-      "endDate": "",
+      "endDate": "2024-08-01",
       "summary": "Developed backend services in Elixir using the Phoenix framework",
       "highlights": [
         "Wrote numerous blog posts and led many pairing sessions to level-up developers Elixir knowledge",
