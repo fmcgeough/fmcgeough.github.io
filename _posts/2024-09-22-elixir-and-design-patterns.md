@@ -22,13 +22,9 @@ Most developers aren't creating design patterns. They are using ones they are aw
 
 There has been a lot written about software design patterns. Design patterns in software has been the subject of active discussions and numerous books since around 1977. A key pattern book that you'll see referenced elsewhere is "Design Patterns: Elements of Reusable Object-Oriented Software" by Erich Gamma, Richard Helm,Ralph Johnson, and John Vlissides (published by Addison-Wesley). These four authors were the so-called "Gang of Four" (GoF). The book was released in 1994.
 
-<div class="row mt-3">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" 
-        path="assets/img/2024-09-design-patterns.jpg" 
-        class="img-fluid rounded z-depth-1"  zoomable=true %}
-    </div>
-</div>
+{% include figure.liquid loading="eager"
+path="assets/img/2024-09-design-patterns.jpg"
+class="img-fluid rounded z-depth-1" %}
 
 A design pattern is a description of a well-defined pattern. It is not an implementation that you can just copy/paste into your code. There are plenty of links to implementations for various languages that you can find with a simple search once you find a pattern that looks like it fits the problem you are trying to solve.
 
@@ -56,13 +52,9 @@ together in their own [pattern catalog](https://hillside.net/patterns/patterns-c
 
 Once the idea of pattterns became widely accepted the concept of an anti-pattern arose. An anti-pattern in software engineering, project management, and business processes is a common response to a recurring problem that is usually ineffective and risks being highly counterproductive. In software the first use of the term seemed to be in 1995 by computer programmer Andrew Koenig. It seemed to get its first big public boost with the publication of the book Anti Patterns by The "Upstart Gang of Four": William Brown, Raphael Malveau, Skip McCormick, and Tom Mowbray.
 
-<div class="row mt-3">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" 
-        path="assets/img/2024-09-antipatterns_book.jpeg" 
-        class="img-fluid rounded z-depth-1"  zoomable=true %}
-    </div>
-</div>
+{% include figure.liquid loading="eager"
+path="assets/img/2024-09-antipatterns_book.jpeg"
+class="img-fluid rounded z-depth-1" %}
 
 All of this is great and there is a lot of material to read and videos to watch on YouTube that can make you a better engineer and help you create better solutions. However, the bulk of it (almost all) is written from an object-oriented perspective (first C+++ and then Java). Translations of the patterns to other object-oriented languages (like Ruby) are pretty straightforward. That's not the case for a functional language like Elixir. In general I think functional programming does eliminate or greatly simplify a number of design patterns. Are design patterns necessary for functional programming languages?
 
@@ -75,4 +67,4 @@ There is more of an emphasis within the Elixir community in explaining what the 
 - [Design Modeling Made Functional](https://pragprog.com/titles/swdddf/domain-modeling-made-functional/)
 - [Gang of None](https://www.youtube.com/watch?v=agkXUp0hCW8)
 - [Functional Programming Design Patterns](https://fsharpforfunandprofit.com/fppatterns/)
-- [Typeed Design Patterns for the Functional Era](https://arxiv.org/pdf/2307.07069)
+- [Typed Design Patterns for the Functional Era](https://arxiv.org/pdf/2307.07069)
