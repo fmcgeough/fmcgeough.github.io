@@ -62,7 +62,7 @@ For me the answer is yes. If nothing else it helps to talk about the solution yo
 
 So what resources are available for an Elixir developer? If you do a search in Github for "Design Patterns Java" you get 17.6k results. Do that same search for Elixir and you get 11.
 
-There is more of an emphasis within the Elixir community in explaining what the role of design patterns is within Elixir. Recently a section on Antipatterns was added to the standard Elixir documentation. [Anti Patterns](https://hexdocs.pm/elixir/main/code-anti-patterns.html). There is a book called [Elixir Patterns](https://elixirpatterns.dev/) that is in development and will be released soon. Here are some other links that may be useful.
+Recently, more work is in process to explain the role of design patterns in Elixir. For example, a section on Antipatterns was added to the standard Elixir documentation. [Anti Patterns](https://hexdocs.pm/elixir/main/code-anti-patterns.html). There is a book called [Elixir Patterns](https://elixirpatterns.dev/) that is in development and will be released soon. Hopefully all of this work continues and accelerates. Here are some other links that may be useful.
 
 - [Design Modeling Made Functional](https://pragprog.com/titles/swdddf/domain-modeling-made-functional/)
 - [Gang of None](https://www.youtube.com/watch?v=agkXUp0hCW8)
