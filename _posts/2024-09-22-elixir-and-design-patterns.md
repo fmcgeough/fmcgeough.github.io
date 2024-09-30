@@ -10,17 +10,16 @@ giscus_comments: true
 
 Have you ever wondered about the answers you've given when someone asks you "what do you do?". If you are a software developer you may respond "I write software". Or if you know your company's goals you might say "I write software that ...insert one of the cooler sounding goals that you are aware of. Its when you are talking to someone else who spends their days editing, compiling, testing, debugging, releasing that you get into actual details. What is it that I do all day?
 
-I'm particularly interested in how th4 software itself is actually written.
-Creating software typically involves you looking at the problem to solve with an eye on "what design patterns are we going to need to solve this problem?". You can think of a design pattern as "when I see problem xyz, I should use code that resembles abc".
+I've always been particularly interested in how we write software. From my perspective creating software typically involves looking at the problem to solve and thinking "is this a new problem or one that has already been solved?" and "if its a problem that has already been solved then what is the structure of the solution that I should write". The structure of a solution to a problem is a design pattern. You can think of a design pattern as "when I see problem xyz, I should use code that resembles abc".
 
-Most developers aren't creating design patterns. They are using ones they are aware of. For example a design pattern you use may be:
+When applying a design pattern to a problem you may do one of the following:
 
-- a design pattern that your organization has created. This tend to be large structural patterns. For example, your organziation may say "if any data needs to be stored it must be stored in a Postgres database" or "if any API is created it must adhere to the best REST API practices and include...".
-- patterns that you have used before successfully to solve other problems. After you solve even your first problem you start building an internal catalog of what works and what doesn't.
-- patterns created or influenced by the particular language, framework or tool you are using. If you are using Elixir and Phoenix (or other functional languages) then how you construct a solution is going to be different from a solution written in an object-oriented language.
-- patterns that you find searching on the Web or through technical books or papers
+- apply/use a design pattern that your organization has created. This tend to be large structural patterns. For example, your organziation may say "if any data needs to be stored it must be stored in a Postgres database" or "if any API is created it must adhere to the best REST API practices and include...".
+- recall or reuse (in the form of a library) design patterns that you have used before successfully to solve other similar problems. After you solve even your first problem you start building an internal mental catalog (if not a library) of what works and what doesn't.
+- use design patterns created or influenced by the particular language, framework or tool you are using. If you are using Elixir and Phoenix (or other functional languages) then how you construct a solution is going to be different from a solution written in an object-oriented language.
+- you may not have used a particular design pattern before but you may be aware of a design pattern book or paper that you think fits the problem. Or you may use a tool like ChatGPT (or similar) to describe the problem that you are trying to solve and ask it to give you ideas on design patterns that can be used.
 
-There has been a lot written about software design patterns. Design patterns in software has been the subject of active discussions and numerous books since around 1977. A key pattern book that you'll see referenced elsewhere is "Design Patterns: Elements of Reusable Object-Oriented Software" by Erich Gamma, Richard Helm,Ralph Johnson, and John Vlissides (published by Addison-Wesley). These four authors were the so-called "Gang of Four" (GoF). The book was released in 1994.
+There has been a lot written about software design patterns. Design patterns in software has been the subject of active discussions and numerous books since around 1977. A key pattern book that you'll see referenced elsewhere is "Design Patterns: Elements of Reusable Object-Oriented Software" by Erich Gamma, Richard Helm,Ralph Johnson, and John Vlissides (published by Addison-Wesley). These four authors were referred to as the "Gang of Four" (GoF). You'll see that term used in other books or papers. The book was released in 1994.
 
 {% include figure.liquid loading="eager"
 path="assets/img/2024-09-design-patterns.jpg"
@@ -32,7 +31,7 @@ A design pattern is a description of a well-defined pattern. It is not an implem
 
 The description of the pattern may include a sample implementation. The "Design Patterns" book was written in a C++ context (Java was not released by Sun Microsystems to the world until 1995 - the year after the GoF book was published). So examples in that book are using C++.
 
-In "Design Patterns" a design pattern has a number of common elements. I've listed them below. As mentioned the book was written in a C++ context. This means that a number of the common elements are specific to object-oriented software.
+In "Design Patterns" a design pattern has a number of common elements. I've listed them below. As mentioned the book was written in a C++ context. This means that a number of the common elements are specific to object-oriented software. However, if you review this list you can perhaps see that a lot of the concepts can be applied to functional programs as well.
 
 - clear name - a description name that allows developers to use the term when discussing how it should or could be used in the software they are working on.
 - context - from the GoF book the defined contexts are: creational, structural and behavioral.
