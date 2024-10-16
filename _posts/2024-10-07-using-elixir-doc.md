@@ -96,7 +96,7 @@ The ability to go to source code from documentation was something I was familiar
 
 Elixir comes with a repl like Python or Ruby. The repl is called iex. When you are developing locally and using [iex](https://hexdocs.pm/iex/IEx.html) you can access documentation. It does require that you "know" what you are looking for but provides a bit of help in that regard.
 
-As an example let's look at DateTime. If you are using DateTime in the iex repl and forget what functions are available you can enter `DateTime.` and hit <tab>. All the functions are displayed.
+As an example let's look at DateTime. If you are using DateTime in the iex repl and forget what functions are available you can enter `DateTime.` and hit `<tab>`. All the functions are displayed.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
@@ -106,7 +106,7 @@ As an example let's look at DateTime. If you are using DateTime in the iex repl 
     </div>
 </div>
 
-Since DateTime has a large number of functions, all of the possible functions are not displayed. You can use <pg-up> or <pg-down> to show all the functions.
+Since DateTime has a large number of functions, all of the possible functions are not displayed. You can use `<pg-up>` or `<pg-down>` to show all the functions.
 
 To get help on any individual function you can use `h` followed by the function name (and possibly arity if there are multiple functions with same name but different arity).
 
@@ -118,7 +118,7 @@ To get help on any individual function you can use `h` followed by the function 
     </div>
 </div>
 
-This extensive help is available for not only the core Elixir software but any important library that you might interact with (Phoenix, Ecto, etc).
+This extensive help is available in iex for not only the core Elixir software but any important library that you have a dependency on (Phoenix, Ecto, etc) when you are working on your own project.
 
 ## Core Elixir Doc
 
