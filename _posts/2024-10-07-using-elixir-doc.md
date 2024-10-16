@@ -131,6 +131,8 @@ To get help on any individual function you can use `h` followed by the function 
 
 This extensive help is available in iex for not only the core Elixir software but any important library that you have a dependency on (Phoenix, Ecto, etc) when you are working on your own project.
 
+One last thing is that there is tab completion for finding a module as well. So if I type "D" and `tab` then I get Date, DateTime, Dict, Duration, and DynamicSupervisor. This is not only useful for lookup but things like this that save having to type are always welcome if you develop software for a living.
+
 ## Core Elixir Doc
 
 There is a Documentation page on the main Elixir site at
