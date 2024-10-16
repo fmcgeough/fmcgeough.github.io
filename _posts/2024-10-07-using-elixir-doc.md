@@ -55,6 +55,17 @@ The "Pages" tab has all sorts of goodies. It's got:
 
 The Elixir "Modules" tab was highlighted when I got to Enum. Enum appears in the modules documentation with three subheadings: Summary, Types, Functions. This is providing navigation that isn't available in Javadoc. You can expand the functions and click on any of them and the right-hand panel goes to the function and it's doc.
 
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" 
+        path="assets/img/2024-10-elixir-enum-nav-expanded.png" 
+        class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Elixir Module Navigation
+</div>
+
 The code parts of the doc in Elixir (@specs, Examples, etc) show with a grey background and in a non-serif font. The Javadoc just has the font change. I find the Elixir version easier to read.
 
 In both a function has a description. In Elixir this is broken into two pieces: a summary that appears first, followed by a break and then the actual description. In Javadoc the description is however many paragraphs of text are needed to describe the function. For example, for both a Java Collection and Enum there is a min function. For Elixir the description is "Returns the minimal element in the enumerable according to Erlang's term ordering". For Javadoc its "Returns the minimum element of the given collection, according to the natural ordering of its elements. All elements in the collection must implement the Comparable interface. Furthermore, all elements in the collection must be mutually comparable (that is, e1.compareTo(e2) must not throw a ClassCastException for any elements e1 and e2 in the collection)".
