@@ -95,6 +95,7 @@ You might think that Elixir doc might be better but that's because it was invent
         path="assets/img/2024-10-go-collections.png" 
         class="img-fluid rounded z-depth-1" %}
     </div>
+</div>
 <div class="caption">
     Go Collections
 </div>
