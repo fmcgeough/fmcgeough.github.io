@@ -10,7 +10,7 @@ giscus_comments: true
 
 I started learning about Elixir in 2016. One of the first things that I liked about it was the good-looking documentation. Examining important modules like [Process](https://hexdocs.pm/elixir/Process.html), [GenServer](https://hexdocs.pm/elixir/GenServer.html), or [Enum](https://hexdocs.pm/elixir/Enum.html) was a pleasure. There was a nice description of what the module provided and clear doc for each public function. The doc for functions would include example or explanatory code that was well formatted and easy to read.
 
-I thought I'd try and summarize what I liked about the Elixir doc system as opposed to other languages.
+I thought I'd try and summarize what I liked about the Elixir doc system when I first encountered it. The images shown below are from recent doc but you can "time-travel" back to previous versions of Elixir doc by selecting a version from the navigation. I believe this was added around 2019 (Elixir version 1.8).
 
 ## Elixir's Doc vs Java's Doc
 
