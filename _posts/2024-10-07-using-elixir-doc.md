@@ -22,11 +22,20 @@ I think what I liked about what I saw (over Java and Javadoc that I was working 
         path="assets/img/2024-10-java-collections.png" 
         class="img-fluid rounded z-depth-1" %}
     </div>
+</div>
+<div class="caption">
+    Java Collections
+</div>
+
+<div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
         path="assets/img/2024-10-elixir-enum.png" 
         class="img-fluid rounded z-depth-1" %}
     </div>
+</div>
+<div class="caption">
+    Elixir Collections
 </div>
 
 On the face of it these are presenting similar information. A name, a description, followed by different types of details. There's navigation for both.
@@ -64,11 +73,19 @@ You might think that Elixir doc might be better but that's because it was invent
         path="assets/img/2024-10-rust-collections.png" 
         class="img-fluid rounded z-depth-1" %}
     </div>
+</div>
+<div class="caption">
+    Rust Collections
+</div>
+
+<div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-elixir-enum.png" 
+        path="assets/img/2024-10-go-collections.png" 
         class="img-fluid rounded z-depth-1" %}
     </div>
+<div class="caption">
+    Go Collections
 </div>
 
 I'm not saying these languages are not useful (by any stretch). They are both amazing languages. But their target audience seems to be quite different. And, in both cases, I think it's fair to say that the doc is provided as a reference. That is, if you already know how everything works but need some piece of individual information then it's useful. Trying to learn by looking at this doc is the wrong approach. There are quite good books and blog posts that can help in that regard.
