@@ -50,7 +50,7 @@ The "Pages" tab has all sorts of goodies. It's got:
 - Cheatsheets
 - Anti-Patterns - this is relatively new list of things not to do
 - Meta-Programming - one of Elixir's strength's is support for meta-programming. This allows developers to create DSL (Domain Specific Languages) that can simplify and clarify code
-- Mix & OTP - Mix is Elixir's general purpose (and exensible) build tool. OTP is the system provided by the VM with core functionality and patterns that powers both Erlang and Elixir
+- Mix & OTP - Mix is Elixir's general purpose (and extensible) build tool. OTP is the system provided by the VM with core functionality and patterns that powers both Erlang and Elixir
 - References - conventions, guidelines and more
 
 The Elixir "Modules" tab was highlighted when I got to Enum. Enum appears in the modules documentation with three subheadings: Summary, Types, Functions. This is providing navigation that isn't available in Javadoc. You can expand the functions and click on any of them and the right-hand panel goes to the function and it's doc.
@@ -208,6 +208,6 @@ There are a few general characteristics of the generated doc that are important 
 
 I was genuinely impressed when I started looking at Elixir back in 2016. It's clear that there was a set of goals related to documentation when the language was developed. I found the doc quite useful compared to other languages that I was looking at or working with at the time. The images shown are from documentation now (not 2016). Many of the same things were already in place in Elixir back then.
 
-I liked the layout (which has improved quite a bit from 2016). I appreciated the organization of the material. If I found any issues in the docuemntation I was able to get a pull request merged rather quickly (usually in a couple hours).
+I liked the layout (which has improved quite a bit from 2016). I appreciated the organization of the material. If I found any issues in the documentation I was able to get a pull request merged rather quickly (usually in a couple hours).
 
 These are all impressions before I tried using the documentation system myself. I'll write another post covering writing documentation in Elixir.
