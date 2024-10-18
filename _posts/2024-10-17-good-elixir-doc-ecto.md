@@ -70,7 +70,7 @@ There are important mix tasks associated with Ecto that allow a developer to cre
 
 The Ecto mix.exs file has a lot of lines related to documentation. Since it's a lot of lines I'll break it into sections.
 
-## Ecto mix.exs - the project function
+## the project function
 
 The ex_doc library reads the project data `:name` and `:docs` values. Using a function to define the data for `:docs` is how projects generally define documentation data in mix.exs. It's overwhelming if all the `:docs` lines are part of the project function.
 
@@ -95,7 +95,7 @@ The ex_doc library reads the project data `:name` and `:docs` values. Using a fu
   end
 ```
 
-## Ecto mix.exs - docs elements
+## docs elements
 
 The elements that can be used in `:docs` are documented in the [ex_doc Mix Tasks](https://hexdocs.pm/ex_doc/Mix.Tasks.Docs.html). An abbreviated version is shown below:
 
@@ -128,7 +128,7 @@ The elements that can be used in `:docs` are documented in the [ex_doc Mix Tasks
 - :source_ref - The branch/commit/tag used for source link inference; default: "main".
 - :source_url_pattern - Public URL of the project for source links.
 
-## Ecto mix.exs - docs function
+## the docs function
 
 Ecto defines an extensive `:docs` element. It uses almost every available option in ex_doc. One thing it does not override is `:output` (by default this is the `./doc` directory). Notice that the version and source_url are set using module attributes (`@version` and `@source_url`). This is a good practice (especially for a library) since those values are useful elsewhere in mix.exs. The `@version` attribute is used in the project and the `@source_url` is used in the package function.
 
@@ -214,12 +214,12 @@ Ecto defines an extensive `:docs` element. It uses almost every available option
   end
 ```
 
-## Ecto mix.exs - skip_undefined_reference_warnings_on
+## skip_undefined_reference_warnings_on
 
 The defined value for `:skip_undefined_reference_warnings_on` is set
 to `["CHANGELOG.md"]`. This makes sense. There may be situations where a module or type is removed from the code base. This will be noted in the CHANGELOG but if it is and we don't set that file in the `:skip_undefined_reference_warnings_on` list then warnings are generated.
 
-## Ecto mix.exs and using extras
+## using extras function
 
 The ex_doc library describes how to use both `:extras` and `groups_for_extras`. These value are used to by Ecto to provide useful information under the "GUIDES" tab. Ecto uses this:
 
@@ -230,7 +230,7 @@ The ex_doc library describes how to use both `:extras` and `groups_for_extras`. 
 
 This defines both of those values for the two keys with whatever is returned by those functions.
 
-## Ecto mix.exs - extras
+## the extras
 
 Any files that you want to include in your doc that are not in modules must be listed under `:extras`. For Ecto this is:
 
@@ -294,11 +294,11 @@ Here, Ecto is using a regex to match the files in the guides subdirectories. The
     Ecto Guides
 </div>
 
-## Ecto mix.exs and using Groups
+## using Groups
 
 The ex_doc library describes [how to use the various Groups functions](https://hexdocs.pm/ex_doc/Mix.Tasks.Docs.html#module-groups) in it's documentation.
 
-## Ecto mix.exs - groups_for_docs
+## groups_for_docs
 
 There is a defined value for `:groups_for_docs` that sets of six groups.
 
@@ -340,7 +340,7 @@ If you look at the `Ecto.Repo` doc navigation you'll see:
     Ecto.Repo Function Grouping
 </div>
 
-## Ecto mix.exs - groups_for_modules
+## groups_for_modules
 
 There is a defined value for `:groups_for_modules`. This value allows you to logically group the modules in your project doc. This shows up in the "Modules" tab of the generated doc. For Ecto the groups are:
 
@@ -354,7 +354,7 @@ You can use a regex when specifying what modules belong to a group. However, for
 If a module does not match any file in `:groups_for_modules` (and that module does not have a `@moduledoc false`) then the module shows up at the top of the "Modules". For Ecto this is `Ecto`, `Ecto.Changeset`, `Ecto.Multi`,
 `Ecto.Query`, `Ecto.Repo`, `Ecto.Schema`, `Ecto.Schema.Metadata` and `Mix.Ecto` (as of version 3.12.4).
 
-## Ecto mix.exs - before_closing_body_tag
+## efore_closing_body_tag
 
 There is a defined value for `:before_closing_body_tag`. This defines Javascript used to allow [mermaid.js](https://mermaid.js.org/) to work in the generated documentation. A mermaid generated diagram is available for the type [Ecto.Type](https://hexdocs.pm/ecto/Ecto.Type.html).
 
