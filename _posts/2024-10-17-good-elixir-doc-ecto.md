@@ -8,7 +8,7 @@ categories: elixir
 giscus_comments: true
 ---
 
-This is a continuation of my blog post on [Elixir and Documentation](https://fmcgeough.github.io/blog/2024/using-elixir-doc/). I wanted to go over some of the projects that I think have very good documentation. When you are writing your own doc it's helpful to have good examples to work from. The one that I'm writing about first is ecto.
+This is a continuation of my blog post on [Elixir and Documentation](https://fmcgeough.github.io/blog/2024/using-elixir-doc/). I wanted to go over some of the projects that I think have very good documentation. When you are writing your own doc it's helpful to have good examples to work from. The one that I'm writing about first is Ecto. _Note: the Elixir language documentation is also a great resource_.
 
 The [ecto library](https://hexdocs.pm/ecto/Ecto.html) is the relational database library used in Elixir. The doc it generates has some interesting features. There are 3 tabs in the Navigation:
 
@@ -108,7 +108,7 @@ The elements that can be used in `:docs` are documented in the [ex_doc Mix Tasks
 - :before_closing_footer_tag - a function that takes as argument an atom specifying the formatter being used (:html) and returns a literal HTML string to be included just before the closing footer tag (</footer>).
 - :canonical - String that defines the preferred URL with the rel="canonical" element; defaults to no canonical path.
 - :cover - Path to the epub cover image (only PNG or JPEG accepted) The image size should be around 1600x2400.
-- :deps - A keyword list application names and their documentation URL. ExDoc will by default include all dependencies and assume they are hosted on HexDocs. This can be overridden by your own values. Example: [plug: "https://myserver/plug/"]
+- :deps - A keyword list application names and their documentation URL. ExDoc will by default include all dependencies and assume they are hosted on HexDocs. This can be overridden by your own values. Example: `[plug: "https://myserver/plug/"]`
 - :extra_section - String that defines the section title of the additional Markdown and plain text pages; default: "PAGES". Example: "GUIDES"
 - :extras - List of paths to additional Markdown (.md extension), Live Markdown (.livemd extension), Cheatsheets (.cheatmd extension) and plain text pages to add to the documentation.
 - :filter_modules - Include only modules that match the given value. The value can be a regex, a string (representing a regex), or a two-arity function that receives the module and its metadata and returns true if the module must be included. If a string or a regex is given, it will be matched against the complete module name (which includes the "Elixir." prefix for Elixir modules). If a module has @moduledoc false, then it is always excluded.
@@ -349,7 +349,7 @@ There is a defined value for `:groups_for_modules`. This value allows you to log
 - Adapter specification
 - Relation structs
 
-You can use a regex when specifying what modules belong to a group. However, for the Ecto doc the modules are provided as a list. If you can use a regex here you should. This means that you'd have to ensure your modules are stored in subdirectories that match your group naming.
+You can use a regex when specifying what modules belong to a group. However, for the Ecto doc the modules are provided as a list. If you can use a regex here you should. A regex is effective if your modules are stored in subdirectories that match your group naming.
 
 If a module does not match any file in `:groups_for_modules` (and that module does not have a `@moduledoc false`) then the module shows up at the top of the "Modules". For Ecto this is `Ecto`, `Ecto.Changeset`, `Ecto.Multi`,
 `Ecto.Query`, `Ecto.Repo`, `Ecto.Schema`, `Ecto.Schema.Metadata` and `Mix.Ecto` (as of version 3.12.4).
@@ -395,7 +395,7 @@ This code could be copied into your own project if you wish to use mermaid gener
 
 ## Why does CHANGELOG.md show up as Changelog for v3.x
 
-There is nothing in mix.exs indicating that ex_doc should change the name of CHANGELOG.md to the name that actually shows in the generated doc "Changelog for v3.x" so how is this accomplished. If you open CHANGELOG.md you can see where this is coming from.
+There is nothing in mix.exs indicating that ex_doc should change the name of CHANGELOG.md to the name that actually shows in the generated doc "Changelog for v3.x" so how is this accomplished? If you open CHANGELOG.md you can see where this is coming from.
 
 ```
 # Changelog for v3.x
