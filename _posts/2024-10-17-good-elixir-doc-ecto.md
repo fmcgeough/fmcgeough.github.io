@@ -354,7 +354,7 @@ You can use a regex when specifying what modules belong to a group. However, for
 If a module does not match any file in `:groups_for_modules` (and that module does not have a `@moduledoc false`) then the module shows up at the top of the "Modules". For Ecto this is `Ecto`, `Ecto.Changeset`, `Ecto.Multi`,
 `Ecto.Query`, `Ecto.Repo`, `Ecto.Schema`, `Ecto.Schema.Metadata` and `Mix.Ecto` (as of version 3.12.4).
 
-## efore_closing_body_tag
+## before_closing_body_tag
 
 There is a defined value for `:before_closing_body_tag`. This defines Javascript used to allow [mermaid.js](https://mermaid.js.org/) to work in the generated documentation. A mermaid generated diagram is available for the type [Ecto.Type](https://hexdocs.pm/ecto/Ecto.Type.html).
 
@@ -393,7 +393,7 @@ This code could be copied into your own project if you wish to use mermaid gener
       end
 ```
 
-## Why does CHANGELOG.md show up as Changelog for v3.x
+## Why does CHANGELOG.md become Changelog for v3.x?
 
 There is nothing in mix.exs indicating that ex_doc should change the name of CHANGELOG.md to the name that actually shows in the generated doc "Changelog for v3.x" so how is this accomplished? If you open CHANGELOG.md you can see where this is coming from.
 
@@ -410,6 +410,12 @@ etc, etc
 ```
 
 The top-level heading is being used by ex_doc as the name that shows up in the navigation.
+
+## what about "MIX TASKS"?
+
+There is a separate tab in navigation called "MIX TASKS". Where did that come from? It's not mentioned explicitly in the mix.exs file.
+
+The Ecto mix tasks are under `lib/mix/tasks`. The ex_doc library recognizes this as a "special" thing and puts the doc that is in the modules in that directory into the "MIX TASKS" tab.
 
 ## Wrap Up
 
