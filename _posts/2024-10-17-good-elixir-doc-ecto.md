@@ -411,11 +411,36 @@ etc, etc
 
 The top-level heading is being used by ex_doc as the name that shows up in the navigation.
 
-## what about "MIX TASKS"?
+## what about "Mix Tasks"?
 
 There is a separate tab in navigation called "MIX TASKS". Where did that come from? It's not mentioned explicitly in the mix.exs file.
 
-The Ecto mix tasks are under `lib/mix/tasks`. The ex_doc library recognizes this as a "special" thing and puts the doc that is in the modules in that directory into the "MIX TASKS" tab.
+The Ecto mix tasks are under `lib/mix/tasks`. The ex_doc library recognizes modules used for a Mix.Task as a "special" thing and puts the doc that is in the module into the tab. The code looks for any module that starts with `Elixir.Mix.Tasks.`. This is done with this code:
+
+```
+  defp module_type_and_skip(module) do
+    cond do
+      function_exported?(module, :__struct__, 0) and
+          match?(%{__exception__: true}, module.__struct__()) ->
+        {:exception, false}
+
+      function_exported?(module, :__protocol__, 1) ->
+        {:protocol, false}
+
+      function_exported?(module, :__impl__, 1) ->
+        {:impl, true}
+
+      match?("Elixir.Mix.Tasks." <> _, Atom.to_string(module)) ->
+        {:task, false}
+
+      function_exported?(module, :behaviour_info, 1) ->
+        {:behaviour, false}
+
+      true ->
+        {:module, false}
+    end
+  end
+```
 
 ## Wrap Up
 
