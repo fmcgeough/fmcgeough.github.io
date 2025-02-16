@@ -24,7 +24,7 @@ Some sources for design patterns are:
 There has been a lot written about software design patterns. Software design patterns have been the subject of active discussions and numerous books since around 1977. There are two design patterns books that you will see referenced a lot. The first is "The Timeless Way of Building" by Christopher Alexander. Although this is a book about architecture it's had a big impact on creative thinking in a number of fields. The second book is software-centric. It's called "Design Patterns: Elements of Reusable Object-Oriented Software" by Erich Gamma, Richard Helm,Ralph Johnson, and John Vlissides (published by Addison-Wesley). These four authors were referred to as the "Gang of Four" (GoF). The book was released in 1994. (there's all sorts of other books, articles, papers of course but these two are frequently cited).
 
 {% include figure.liquid loading="eager"
-path="assets/img/2024-09-design-patterns.jpg"
+path="[assets/](https://github.com/fmcgeough/blog_posts/blob/main/)img/2024-09-design-patterns.jpg?raw=true"
 class="img-fluid rounded z-depth-1" %}
 
 A software design pattern is a description of a well-defined pattern. It is not an implementation that you can just copy/paste into your code. There are plenty of links to implementations for various languages that you can find with a simple search once you find a pattern that looks like it fits the problem you are trying to solve.
@@ -59,7 +59,7 @@ together in their own [pattern catalog](https://hillside.net/patterns/patterns-c
 Once the idea of pattterns became widely accepted the concept of an anti-pattern arose. An anti-pattern in software engineering, project management, and business processes is a common response to a recurring problem that is usually ineffective and risks being highly counterproductive. In software the first use of the term seemed to be in 1995 by computer programmer Andrew Koenig. It seemed to get its first big public boost with the publication of the book Anti Patterns by The "Upstart Gang of Four": William Brown, Raphael Malveau, Skip McCormick, and Tom Mowbray.
 
 {% include figure.liquid loading="eager"
-path="assets/img/2024-09-antipatterns_book.jpeg"
+path="[assets/](https://github.com/fmcgeough/blog_posts/blob/main/)img/2024-09-antipatterns_book.jpeg?raw=true"
 class="img-fluid rounded z-depth-1" %}
 
 All of this is great and there is a lot of material to read and videos to watch on YouTube that can make you a better engineer and help you get better at problem solving and create better solutions. However, the bulk of it (almost all) is written from an object-oriented perspective (first C+++ and then Java). Translations of the patterns to other object-oriented languages (like Ruby) are pretty straightforward. That's not the case for a functional language like Elixir. I think functional programming does eliminate or greatly simplify a number of design patterns. So, are design patterns necessary for functional programming languages?

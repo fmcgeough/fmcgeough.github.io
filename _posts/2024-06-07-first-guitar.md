@@ -27,10 +27,10 @@ more sustainable). )
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2024_taylor_310_front.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024_taylor_310_front.jpg?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2024_taylor_310_back.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024_taylor_310_back.jpg?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
 </div>
 <div class="caption">
@@ -48,7 +48,7 @@ is just random stuff I was fiddling around with.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024_taylor_310_open_g_slide.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024_taylor_310_open_g_slide.mp3?raw=true" controls=true %}
     </div>
 </div>
 <div class="caption">
@@ -57,7 +57,7 @@ is just random stuff I was fiddling around with.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-06-10-taylor-310.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-06-10-taylor-310.mp3?raw=true" controls=true %}
     </div>
 </div>
 <div class="caption">

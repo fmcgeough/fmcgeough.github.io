@@ -22,7 +22,7 @@ and well worth visiting.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/shabat_lion_gb.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/shabat_lion_gb.jpg?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
 </div>
 <div class="caption">

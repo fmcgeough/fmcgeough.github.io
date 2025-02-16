@@ -26,21 +26,21 @@ I decided to share some pictures of it.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2024-07-26-lowden1.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-07-26-lowden1.jpg?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2024-07-26-lowden2.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-07-26-lowden2.jpg?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2024-07-26-lowden3.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-07-26-lowden3.jpg?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
 </div>
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2024-07-26-lowden4.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-07-26-lowden4.jpg?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2024-07-26-lowden5.jpg" class="img-fluid rounded z-depth-1"  zoomable=true %}
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-07-26-lowden5.jpg?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
 </div>
 

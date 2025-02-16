@@ -21,14 +21,11 @@ recommend checking out some of the following resources.
   on-point. There are a slew of free videos to dive into and its also well
   worth signing up for $9 a month. A bargain.
 
-- [Ruby Rogues Podcast](https://devchat.tv/ruby-rogues/) - a ton of past
-  episodes to go through each containing some nugget of Ruby wisdom that will
-  serve you well. Clear your weekend schedule and go through all of them.
+- [Ruby Rogues Podcast](https://topenddevs.com/podcasts/ruby-rogues) - a ton
+  of past episodes to go through each containing some nugget of Ruby wisdom that will serve you well. Clear your weekend schedule and go through all of them.
 
-- Rails Conference Talks - if
-  you are a Ruby programmer you are going to deal with Rails. Either joyfully or
-  reluctantly but its impossible to avoid. Go to YouTube. Watch the past
-  Rails Conference talks. Awesome learning experience.
+- Rails Conference Talks - if you are a Ruby programmer you are going to
+  deal with Rails. Either joyfully or reluctantly but its impossible to avoid. Go to YouTube. Watch the past Rails Conference talks. Awesome learning experience.
 
 - The Ruby on Rails podcast (no longer active) - more rails but much
   more than that. Great discussions. I'm really not clear on how these people do

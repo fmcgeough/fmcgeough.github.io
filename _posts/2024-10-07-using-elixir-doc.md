@@ -30,7 +30,7 @@ I think what I liked about what I saw (over Java and Javadoc that I was working 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-elixir-enum.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-elixir-enum.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -58,7 +58,7 @@ The Elixir "Modules" tab was highlighted when I got to Enum. Enum appears in the
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-elixir-enum-nav-expanded.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-elixir-enum-nav-expanded.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -92,7 +92,7 @@ You might think that Elixir doc might be better but that's because it was invent
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-go-collections.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-go-collections.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -113,7 +113,7 @@ As an example let's look at DateTime. If you are using DateTime in the iex repl 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-iex_module_functions.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-iex_module_functions.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -125,7 +125,7 @@ To get help on any individual function you can use `h` followed by the function 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-iex-function-help.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-iex-function-help.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>

@@ -23,7 +23,7 @@ The guides section contains an Introduction section that explains the basics of 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-17-ecto-guides.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-17-ecto-guides.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -43,7 +43,7 @@ The modules section has the documentation for modules and their functions. It al
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-17-ecto-modules.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-17-ecto-modules.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -58,7 +58,7 @@ There are important mix tasks associated with Ecto that allow a developer to cre
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-17-ecto-mix-tasks.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-17-ecto-mix-tasks.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -286,7 +286,7 @@ Here, Ecto is using a regex to match the files in the guides subdirectories. The
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-17-ecto-guides.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-17-ecto-guides.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -332,7 +332,7 @@ If you look at the `Ecto.Repo` doc navigation you'll see:
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="assets/img/2024-10-18-ecto-repo-groups.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-18-ecto-repo-groups.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
