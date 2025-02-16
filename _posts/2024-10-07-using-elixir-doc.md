@@ -19,7 +19,7 @@ I think what I liked about what I saw (over Java and Javadoc that I was working 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-java-collections.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-java-collections.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -81,7 +81,7 @@ You might think that Elixir doc might be better but that's because it was invent
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-rust-collections.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-rust-collections.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
@@ -185,7 +185,7 @@ The [plug library documentation page](https://hexdocs.pm/plug/readme.html) looks
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-plug_documentation.png" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2024-10-plug_documentation.png?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
