@@ -4,7 +4,7 @@ title: Using Postgres COPY with Elixir/Ecto
 date: 2017-09-29 08:53:13
 description: Using Postgresql COPY with the Elixir ecto db library
 categories: Elixir postgresql
-tags: Elixir postgresql
+tags:
 ---
 
 This post is about using Postgres COPY to retrieve data from the database into memory when

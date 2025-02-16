@@ -4,7 +4,7 @@ title: Elixir, Ecto, Tables without id in Relationships
 date: 2017-04-19 08:53:13
 description: Using tables without id primary key in Ecto
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 Always, always, always use an "id" as the primary key for your relational database tables

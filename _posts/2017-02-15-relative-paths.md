@@ -4,7 +4,7 @@ title: Elixir and Ruby expand_path
 date: 2016-09-05 08:53:13
 description: Features of Elixir
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 A common pattern in Ruby gem code is to have some sort of configuration file

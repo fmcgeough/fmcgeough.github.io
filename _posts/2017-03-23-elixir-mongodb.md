@@ -4,7 +4,7 @@ title: Elixir, Mongo, Regex
 date: 2017-03-23 08:53:13
 description: Accessing MongoDB with Elixir
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 I built a Phoenix app for my company that provides lots of administrative insight into

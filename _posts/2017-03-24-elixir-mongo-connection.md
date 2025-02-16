@@ -4,7 +4,7 @@ title: Elixir, Mongo, Exploring Library Code
 date: 2017-03-24 08:53:13
 description: Accessing MongoDB with Elixir
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 Since I'm relatively new to Elixir one of the ways that I learn more is by looking

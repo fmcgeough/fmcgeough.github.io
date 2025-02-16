@@ -4,7 +4,7 @@ title: Rename inserted_at column in Elixir/Ecto
 date: 2017-10-03 08:53:13
 description: Modifying the name of a built-in column in Elixir/Ecto
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 By default Ecto can generate the time a row was inserted or updated

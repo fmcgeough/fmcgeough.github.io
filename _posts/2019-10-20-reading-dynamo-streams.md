@@ -4,7 +4,7 @@ title: Elixir, Reading Dynamo Streams and Layoffs
 date: 2019-10-20 08:53:13
 description: How to read from Dynamo stream in Elixir
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 I was working remotely for Weedmaps up until recently writing Elixir with a group of really great

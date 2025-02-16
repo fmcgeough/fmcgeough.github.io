@@ -4,7 +4,7 @@ title: Elixir, Ecto, embeds_many
 date: 2017-04-29 08:53:13
 description: Features of Ecto - Elixir's database library
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 I built an internal project using Elixir and the Phoenix web framework. We use

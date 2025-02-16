@@ -4,7 +4,7 @@ title: Elixir, ex_aws Library, Temporary Security Tokens
 date: 2017-04-12 08:53:13
 description: Features of the ex_aws Elixir library
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 During a development effort where I had to use AWS API's to extract information

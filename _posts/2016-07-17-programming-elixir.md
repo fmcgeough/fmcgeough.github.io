@@ -4,7 +4,7 @@ title: Programming Elixir
 date: 2016-07-17 08:53:13
 description: Learning Elixir
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 For learning Elixir I started with the ubiquitous Dave Thomas and "Programming

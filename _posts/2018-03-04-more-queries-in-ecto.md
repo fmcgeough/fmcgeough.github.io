@@ -4,7 +4,7 @@ title: Elixir, Ecto, Subqueries, GROUP BY
 date: 2018-03-04 08:53:13
 description: Exploring subqueries and group by with Elixir's ecto library
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 Since I'm very familiar with SQL, if I have to do something a bit

@@ -4,7 +4,7 @@ title: Elixir/Ecto Postgresql Grouping sets
 date: 2016-09-05 08:53:13
 description: Exploring Features of Ecto - Elixir's Database Library
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 Sat down this morning and saw an interesting question on Elixir Ecto Slack

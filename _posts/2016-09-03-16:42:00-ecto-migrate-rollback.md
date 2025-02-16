@@ -4,7 +4,7 @@ title: Elixir/Ecto migrate and rollback
 date: 2016-09-03 08:53:13
 description: Exploring Features of Ecto - Elixir's Database Library
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 Defining my own database schema for a simple Phoenix/Elixir project to present

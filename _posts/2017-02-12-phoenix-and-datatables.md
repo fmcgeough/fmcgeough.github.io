@@ -4,7 +4,7 @@ title: Elixir, Phoenix Framework and Datatables
 date: 2017-02-12 08:53:13
 description: Exploring Features of Elixir
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 I built an administrative tool for my company that used Phoenix server side templating,

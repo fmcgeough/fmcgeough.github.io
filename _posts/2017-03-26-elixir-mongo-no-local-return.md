@@ -4,7 +4,7 @@ title: Elixir, Mongo, No Local Return, Oh My!
 date: 2017-03-26 08:53:13
 description: Accessing MongoDB with Elixir
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 [Mongodb](https://hex.pm/packages/mongodb) library uses

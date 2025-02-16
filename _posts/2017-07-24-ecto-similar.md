@@ -4,7 +4,7 @@ title: Elixir, Phoenix and Ecto fragment and SIMILAR TO
 date: 2017-10-03 08:53:13
 description: Using regex style capabilities in Elixir with Ecto
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 I had a part of a Phoenix web app where users wanted to save filters

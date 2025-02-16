@@ -4,7 +4,7 @@ title: Elixir/Ecto - update_all with join
 date: 2017-10-13 08:53:13
 description: How to use update_all with join in Elixir
 categories: Elixir
-tags: Elixir
+tags:
 ---
 
 When I first began using Ecto it was only to directly issue SQL since the PostgreSQL database
