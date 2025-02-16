@@ -15,7 +15,7 @@ Ruby but there are also great online resources.
 Once you feel like you have a basic understanding of the language I'd
 recommend checking out some of the following resources.
 
-- [rubytapas](https:www.rubytapas.com) - these are wonderful short
+- [rubytapas](https://graceful.dev/) - these are wonderful short
   screencasts that teach some fundamental feature of Ruby that you probably
   haven't encountered before. The explanations are clear. The examples are right
   on-point. There are a slew of free videos to dive into and its also well
@@ -25,9 +25,9 @@ recommend checking out some of the following resources.
   episodes to go through each containing some nugget of Ruby wisdom that will
   serve you well. Clear your weekend schedule and go through all of them.
 
-- [Confreaks.TV and Rails Conference Talks](http://confreaks.tv/conferences/railsconf) - if
+- Rails Conference Talks - if
   you are a Ruby programmer you are going to deal with Rails. Either joyfully or
-  reluctantly but its impossible to avoid. Go to Confreaks.TV. Watch the past
+  reluctantly but its impossible to avoid. Go to YouTube. Watch the past
   Rails Conference talks. Awesome learning experience.
 
 - The Ruby on Rails podcast (no longer active) - more rails but much
