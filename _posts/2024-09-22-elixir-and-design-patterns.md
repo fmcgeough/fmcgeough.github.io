@@ -24,7 +24,7 @@ Some sources for design patterns are:
 There has been a lot written about software design patterns. Software design patterns have been the subject of active discussions and numerous books since around 1977. There are two design patterns books that you will see referenced a lot. The first is "The Timeless Way of Building" by Christopher Alexander. Although this is a book about architecture it's had a big impact on creative thinking in a number of fields. The second book is software-centric. It's called "Design Patterns: Elements of Reusable Object-Oriented Software" by Erich Gamma, Richard Helm,Ralph Johnson, and John Vlissides (published by Addison-Wesley). These four authors were referred to as the "Gang of Four" (GoF). The book was released in 1994. (there's all sorts of other books, articles, papers of course but these two are frequently cited).
 
 {% include figure.liquid loading="eager"
-path="[assets/](https://github.com/fmcgeough/blog_posts/blob/main/)img/2024-09-design-patterns.jpg?raw=true"
+path="[assets/](https://github.com/fmcgeough/blog_posts/blob/main/img/2024-09-design-patterns.jpg?raw=true"
 class="img-fluid rounded z-depth-1" %}
 
 A software design pattern is a description of a well-defined pattern. It is not an implementation that you can just copy/paste into your code. There are plenty of links to implementations for various languages that you can find with a simple search once you find a pattern that looks like it fits the problem you are trying to solve.
