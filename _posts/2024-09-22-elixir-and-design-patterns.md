@@ -59,7 +59,7 @@ together in their own [pattern catalog](https://hillside.net/patterns/patterns-c
 Once the idea of pattterns became widely accepted the concept of an anti-pattern arose. An anti-pattern in software engineering, project management, and business processes is a common response to a recurring problem that is usually ineffective and risks being highly counterproductive. In software the first use of the term seemed to be in 1995 by computer programmer Andrew Koenig. It seemed to get its first big public boost with the publication of the book Anti Patterns by The "Upstart Gang of Four": William Brown, Raphael Malveau, Skip McCormick, and Tom Mowbray.
 
 {% include figure.liquid loading="eager"
-path="[assets/](https://github.com/fmcgeough/blog_posts/blob/main/)img/2024-09-antipatterns_book.jpeg?raw=true"
+path="[assets/](https://github.com/fmcgeough/blog_posts/blob/main/img/2024-09-antipatterns_book.jpeg?raw=true"
 class="img-fluid rounded z-depth-1" %}
 
 All of this is great and there is a lot of material to read and videos to watch on YouTube that can make you a better engineer and help you get better at problem solving and create better solutions. However, the bulk of it (almost all) is written from an object-oriented perspective (first C+++ and then Java). Translations of the patterns to other object-oriented languages (like Ruby) are pretty straightforward. That's not the case for a functional language like Elixir. I think functional programming does eliminate or greatly simplify a number of design patterns. So, are design patterns necessary for functional programming languages?
