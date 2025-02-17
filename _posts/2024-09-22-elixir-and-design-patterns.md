@@ -16,7 +16,7 @@ Is there a name for this type of thing? That is, a problem and a well understood
 
 Some sources for design patterns are:
 
-- a design pattern that your organization has created. This tend to be large structural patterns. For example, your organziation may say "if any data needs to be stored it must be stored in a Postgres database" or "if any API is created it must adhere to the best REST API practices and include...".
+- a design pattern that your organization has created. This tend to be large structural patterns. For example, your organization may say "if any data needs to be stored it must be stored in a Postgres database" or "if any API is created it must adhere to the best REST API practices and include...".
 - a design pattern that you have used before successfully to solve other similar problems. After you solve even your first problem you start building an internal mental catalog (if not a library) of what works and what doesn't.
 - a design pattern created or influenced by the particular language, framework or tool you are using. If you are using Elixir and Phoenix (or other functional languages) then how you construct a solution is going to be different from a solution written in an object-oriented language.
 - a design pattern book or paper that you think fits the problem. You can use a tool like ChatGPT (or similar) to describe the problem that you are trying to solve and ask it to design patterns that may be appropriate.
@@ -56,7 +56,7 @@ together in their own [pattern catalog](https://hillside.net/patterns/patterns-c
 - "Head First Design Patterns" by Eric Freeman and Bert Bates
 - "The Art of Software Security Assessment" by Mark Dowd, John McDonald, and Justin Schuh
 
-Once the idea of pattterns became widely accepted the concept of an anti-pattern arose. An anti-pattern in software engineering, project management, and business processes is a common response to a recurring problem that is usually ineffective and risks being highly counterproductive. In software the first use of the term seemed to be in 1995 by computer programmer Andrew Koenig. It seemed to get its first big public boost with the publication of the book Anti Patterns by The "Upstart Gang of Four": William Brown, Raphael Malveau, Skip McCormick, and Tom Mowbray.
+Once the idea of patterns became widely accepted the concept of an anti-pattern arose. An anti-pattern in software engineering, project management, and business processes is a common response to a recurring problem that is usually ineffective and risks being highly counterproductive. In software the first use of the term seemed to be in 1995 by computer programmer Andrew Koenig. It seemed to get its first big public boost with the publication of the book Anti Patterns by The "Upstart Gang of Four": William Brown, Raphael Malveau, Skip McCormick, and Tom Mowbray.
 
 {% include figure.liquid loading="eager"
 path="[assets/](https://github.com/fmcgeough/blog_posts/blob/main/img/2024-09-antipatterns_book.jpeg?raw=true"

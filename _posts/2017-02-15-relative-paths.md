@@ -35,5 +35,5 @@ it worked fine. To do this I did :
     csv_file = "#{Path.expand("zip_codes.csv", current_dir)}"
 ```
 
-So, a very similiar technique where the Path.expand method joins the directory
+So, a very similar technique where the Path.expand method joins the directory
 to the filename to give a full path.
