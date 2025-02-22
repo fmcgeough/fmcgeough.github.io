@@ -76,7 +76,7 @@ some inspiration from Oh! Susanna.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-06-oh-susannah-open-g.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-06-oh-susannah-open-g.mp3?raw=true" controls=true %}
     </div>
 </div>
 
@@ -106,6 +106,6 @@ it that anyway since it came out of the same practice session):
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-06-oh-susanna-open-d.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-06-oh-susanna-open-d.mp3?raw=true" controls=true %}
     </div>
 </div>

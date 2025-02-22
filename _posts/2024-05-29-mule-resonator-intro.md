@@ -63,9 +63,9 @@ a slide ring you can use all your standard chord shapes.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/mule_finger_picking_and_slide.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/mule_finger_picking_and_slide.mp3?raw=true" controls=true %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-05-pick_and_slide.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-05-pick_and_slide.mp3?raw=true" controls=true %}
     </div>
 </div>

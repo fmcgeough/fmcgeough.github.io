@@ -41,7 +41,7 @@ and the song is just something else.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-06-been-too-long-at-the-fair.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-06-been-too-long-at-the-fair.mp3?raw=true" controls=true %}
     </div>
 </div>
 

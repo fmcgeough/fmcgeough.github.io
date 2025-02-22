@@ -63,7 +63,7 @@ with that.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-07-26-lowden-open-g.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-07-26-lowden-open-g.mp3?raw=true" controls=true %}
     </div>
 </div>
 

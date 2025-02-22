@@ -70,7 +70,7 @@ feet from the music - which is ideal for this type of music.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-05-09-jeff-mosier-roswell.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-05-09-jeff-mosier-roswell.mp3?raw=true" controls=true %}
     </div>
 </div>
 <div class="caption">
@@ -95,7 +95,7 @@ one has something special to touch our hearts and teach us.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-09-13-randall-collins.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-09-13-randall-collins.mp3?raw=true" controls=true %}
     </div>
 </div>
 <div class="caption">

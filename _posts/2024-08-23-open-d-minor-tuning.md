@@ -27,9 +27,9 @@ it is a fun tuning to try out.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-08-23-Resonator-Open-D-Minor-Tuning1.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-08-23-Resonator-Open-D-Minor-Tuning1.mp3?raw=true" controls=true %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="assets/audio/2024-08-23-Resonator-Open-D-Minor-Tuning2.mp3" controls=true %}
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2024-08-23-Resonator-Open-D-Minor-Tuning2.mp3?raw=true" controls=true %}
     </div>
 </div>
