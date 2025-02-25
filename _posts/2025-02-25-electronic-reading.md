@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Recent Books
+title: Library Resources
 date: 2025-02-25
 description: Your Library and Its Resources
 tags: reading
