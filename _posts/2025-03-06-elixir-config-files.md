@@ -18,7 +18,7 @@ There are 5 config files generated when you create a new Elixir Phoenix applicat
 
 ## When is Evaluation Done
 
-The config.exs, dev.exs, prod.exs and test.exs files are evaluated at build time - before we compile our application and before we even load our dependencies. Its important to understand this. If you attempt to do something like this in your prod.exs file:
+The config.exs, dev.exs, prod.exs and test.exs files are evaluated at build time - before the application is compiled and before dependencies are loaded. Its important to understand this. If you attempt to do something like this in your prod.exs file:
 
 ```
 config :bureau, Bureau.SecretHolder,
@@ -27,9 +27,9 @@ config :bureau, Bureau.SecretHolder,
 
 Then secret1 will be set to whatever you have set in your compile environment (probably nothing).
 
-If you want to use the system environment to configure how your production app works then you use the runtime.exs file. This file is read after our application and dependencies are compiled and therefore it can configure how our application works at runtime. If the config above was in runtime.exs then secret1 is set to whatever the environment variable SECRET_CONFIG_THING1 stores on the machine you run your app.
+If you want to use the system environment to configure how your production app works then you use the runtime.exs file. This file is read after our application and dependencies are compiled and therefore it can configure how our application works at runtime. If the config above was in runtime.exs then secret1 is set to whatever the environment variable SECRET_CONFIG_THING1 stores on the machine on which you run your app.
 
-Be aware that runtime.exs is evaluated at runtime for all the Mix environments. When you are running unit tests locally your runtime.exs file is evaluated. Its not just for what is built when you do a mix release.
+Be aware that runtime.exs is evaluated at runtime for all the Mix environments. When you are running unit tests locally your runtime.exs file is evaluated.
 
 Because this is the case you'll find code like this in a lot of runtime.exs files:
 
@@ -50,7 +50,7 @@ We're protecting setting up the database_url to when the config environment is `
 
 ## What Config Files am I using?
 
-The config.exs file is evaluated all the time. The dev, test, and prod config files are evaluated based on the environment being compiled. This is because of the line at the end of the config.exs file:
+The config.exs file is evaluated (at compile time) for all environments. The dev, test, and prod config files are evaluated based on the environment being compiled. This is because of the line at the end of the config.exs file:
 
 ```
 import_config "#{config_env()}.exs"
@@ -101,10 +101,18 @@ Not in any of the config files evaluated at build time. This is because those fi
 
 Yes. Keep in mind that the runtime.exs file is not available to whatever code you are calling. In general, it's not a great idea and I'd avoid it.
 
-If you think you absolutely must then I'd keep José Valim's PR notes when introducing runtime.exs:
+If you think you absolutely must then I'd keep José Valim's PR notes when introducing runtime.exs in mind:
 
 ```
-Since "config/runtime.exs" is used by both Mix and releases, it cannot configure :kernel, :stdlib, :elixir, and :mix themselves. Attempting to configure those will emit an error. For those rare scenarios, you will need to use "config/releases.exs" - but "config/releases.exs" will remain simple, which will reduce the odds of syntax errors.
+Since "config/runtime.exs" is used by both Mix and releases,
+it cannot configure :kernel, :stdlib, :elixir, and :mix
+themselves. Attempting to configure those will emit an error.
+For those rare scenarios, you will need to use
+"config/releases.exs" - but "config/releases.exs" will remain
+simple, which will reduce the odds of syntax errors.
 
-Since "config/runtime.exs" is used by both Mix and releases, it cannot invoke "Mix" directly. Therefore, for conditional environment compilation, we will add a env/2 macro to Config that will be available for all config files. For example, someone could do:
+Since "config/runtime.exs" is used by both Mix and releases,
+it cannot invoke "Mix" directly. Therefore, for conditional
+environment compilation, we will add a env/2 macro to
+Config that will be available for all config files.
 ```
