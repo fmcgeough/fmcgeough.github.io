@@ -1,6 +1,6 @@
 ---
 layout: post
-title: phx_new-1.7.20
+title: Staying up to date in Elixir
 date: 2025-03-02 16:04:00
 description: Latest Phoenix and mix phx.new
 tags:

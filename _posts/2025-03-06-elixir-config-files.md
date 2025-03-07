@@ -104,15 +104,18 @@ Yes. Keep in mind that the runtime.exs file is not available to whatever code yo
 If you think you absolutely must then I'd keep José Valim's PR notes when introducing runtime.exs in mind:
 
 ```
-Since "config/runtime.exs" is used by both Mix and releases,
-it cannot configure :kernel, :stdlib, :elixir, and :mix
-themselves. Attempting to configure those will emit an error.
+Since "config/runtime.exs" is used by both
+Mix and releases, it cannot configure :kernel,
+:stdlib, :elixir, and :mix themselves.
+Attempting to configure those will emit an error.
 For those rare scenarios, you will need to use
-"config/releases.exs" - but "config/releases.exs" will remain
-simple, which will reduce the odds of syntax errors.
+"config/releases.exs" - but "config/releases.exs"
+will remain simple, which will reduce the odds
+of syntax errors.
 
-Since "config/runtime.exs" is used by both Mix and releases,
-it cannot invoke "Mix" directly. Therefore, for conditional
-environment compilation, we will add a env/2 macro to
-Config that will be available for all config files.
+Since "config/runtime.exs" is used by both Mix
+and releases, it cannot invoke "Mix" directly.
+Therefore, for conditional environment compilation,
+we will add a env/2 macro to Config that will be
+available for all config files.
 ```
