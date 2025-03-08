@@ -265,6 +265,8 @@ A second GenServer is commented out:
 
 This used a module in the telemetry library to report the metrics returned by the `metrics/0` function to the console.
 
+See the post (Ecto Telemetry)[2024-09-02-ecto-telemetry.md] for more information.
+
 ## bandit
 
 If you've programmed with Phoenix for a while then you are used to seeing the cowboy library in the list of dependencies. Bandit's HTTP/1.x engine is up to 4x faster than Cowboy depending on the number of concurrent requests. When comparing HTTP/2 performance, Bandit is up to 1.5x faster than Cowboy. Work was done to make the bandit library a drop-in replacement for cowboy. For a period of time you had to specify you wanted to use bandit when generating a Phoenix app. At this point bandit is the default.
