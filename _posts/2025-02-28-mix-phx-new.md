@@ -265,7 +265,7 @@ A second GenServer is commented out:
 
 This used a module in the telemetry library to report the metrics returned by the `metrics/0` function to the console.
 
-See the [Elixir and Ecto's Telemetry Events](https://fmcgeough.github.io/blog/2024/ecto-telemetry/) for more information.
+See the post on [Elixir and Ecto's Telemetry Events](https://fmcgeough.github.io/blog/2024/ecto-telemetry/) for more information.
 
 ## bandit
 

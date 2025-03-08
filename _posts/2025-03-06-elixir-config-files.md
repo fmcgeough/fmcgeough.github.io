@@ -110,6 +110,7 @@ If you think you absolutely must then I'd keep José Valim's PR notes when intro
 > "config/releases.exs" - but "config/releases.exs"
 > will remain simple, which will reduce the odds
 > of syntax errors.
+>
 > Since "config/runtime.exs" is used by both Mix
 > and releases, it cannot invoke "Mix" directly.
 > Therefore, for conditional environment compilation,
