@@ -20,5 +20,5 @@ I encourage anyone who practices any instrument to do some sort of recording so 
     </div>
 </div>
 <div class="caption">
-  Mavis Mule Resonator in Open - C
+  Mavis Mule Resonator in Open - D
 </div>
