@@ -10,9 +10,9 @@ giscus_comments: true
 
 I keep working on my slide. Love old blues tunes and after listening to them I'm always thinking I should play more.
 
-This is using my Mavis Mule Resonator in Open D through a Wooly Coats amp. It's recorded on my phone so quality is what it is.
+This is using my Mavis Mule Resonator in Open D through a Wooly Coats amp. I used a ceramic slide from Rocky Mountain Slides (who I'd highly recommend). It's recorded on my phone so quality is what it is.
 
-I encourage anyone who practices any instrument to do some sort of recording so you can hear yourself later.
+I encourage anyone who practices any instrument to do some sort of recording of your practice. If you have a smartphone there's a Voice Memo app you can use. On Mac OS X there's the same Voice Memo app so you could record on the computer if that works. The important thing is to record so you can hear what you actually sound like later. It helps as a means of jotting down little song ideas as well.
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
