@@ -29,6 +29,9 @@ I encourage anyone who practices any instrument to do some sort of recording of 
     <div class="col-sm mt-3 mt-md-0">
         {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2025-03-12a-resonator-slide.mp3?raw=true" controls=true %}
     </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2025-03-12b-resonator-slide.mp3?raw=true" controls=true %}
+    </div>
 </div>
 <div class="caption">
   Mavis Mule Resonator in Open - D
