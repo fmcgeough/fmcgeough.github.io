@@ -10,7 +10,7 @@ giscus_comments: true
 
 On Christmas Eve I had a proximal fracture of my right humerus. This means the break was in the upper part of the humerus. It was just below the head of the humerus that fits into the shoulder socket. This was both frustrating and painful.
 
-I broke it by slipping on some ice that was on the sidewalk just next door to our house. I had been out for about a 2 mile walk. It was a coldish day. The temperature was below freezing. However, the skies were clear. It hadn't rained recently. As a result I wasn't paying close enough attention to the sidewalk when I got back from my walk.
+I broke it by slipping on some ice that was on the sidewalk just next door to our house. I had been out for about a 2 mile walk. It was a coldish day. The temperature was below freezing. However, the skies were clear. It hadn't rained recently. As a result I wasn't paying close enough attention to the sidewalk when I got back from my walk. There was a sprinkler system leak onto the sidewalk. It froze into a thin smooth ice surface. Then I went down like Charlie Brown trying to kick the football with Lucy as the holder.
 
 Falls are the most common reason for a proximal fracture. Since its a large bone there is significant pain. I lay for a few seconds figuring out how to get myself back up since my right arm was useless at this point. I managed to get back up and got back home. My wife took me over to the hospital for an x-ray to confirm that it was broken. Thankfully, the bone wasn't displaced so no surgery was needed.
 
