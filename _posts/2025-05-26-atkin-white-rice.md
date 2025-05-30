@@ -55,6 +55,21 @@ Atkin Guitars decided to name their replica the "White Rice" model as an homage 
 
 It's only been recently that I've been able to play the new guitar for more than a couple minutes. It's amazing and easily the best acoustic I own. I'd like to get another Atkin Guitars model at some point. Maybe their homage to the Gibson J-45.
 
+The Atkin White Rice I purchased has:
+
+- Madagascar Rosewood Back & Sides
+- Torrefied Adirondack Spruce Top
+- Ebony Bridge and Fingerboard
+- Nickel Gotoh Tuners
+- Scalloped Forward Shifted Bracing
+- Aged Nitrocellulose Lacquer
+- Nut Width is 1 11/16"
+- Neck carve is Medium C
+- Scale length 25 1/2"
+- String spacing 2 3/16"
+
+There are no inlays on the guitar. There were none on the original Tony Rice D-28.
+
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2025-05-26-front-atkin-white-rice.png?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
