@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Simple Ecto query pipelines
-date: 2025-03-31
+date: 2025-05-31
 description: How to use Ecto pipelines to allow flexibility in queries
 tags:
 categories: elixir
