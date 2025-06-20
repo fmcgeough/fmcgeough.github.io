@@ -25,15 +25,6 @@ I record the session on my phone and then break it up into snippets (if I'm feel
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/2025-06-20-exercise.mp3?raw=true" controls=true %}
-    </div>
-</div>
-<div class="caption">
-    Open-D, Mule Mavis, working on technique
-</div>
-
-<div class="row mt-3">
-    <div class="col-sm mt-3 mt-md-0">
         {% include audio.liquid path="https://github.com/fmcgeough/blog_posts/blob/main/audio/AngelFromMontgomery.mp3?raw=true" controls=true %}
     </div>
 </div>
