@@ -94,3 +94,12 @@ I fiddled around with the effects for a while to ensure that they all seemed to 
 All in all it's a nice tool. It's got a good sound and the effects are fine. The 4 to 5 hour battery life when unplugged is convenient. You can bring it to a friend's house and not worry about power cables. The Line 6 transmitter, sold separately, is essential I think. It gets rid of the need for a guitar cable and increases the odds that you'll use the amp more often.
 
 The amp is good looking and small enough to leave out in your living room. It has a nice orange tube-like glow when turned on.
+
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2025-07-25-yamaha-thr30-in-living-room.jpg?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
+    </div>
+</div>
+<div class="caption">
+  Yamaha THR30 II In Living Room
+</div>
