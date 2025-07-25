@@ -14,7 +14,7 @@ Yamaha was one of the first companies to introduce a desktop amp. It's meant to 
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/025-07-25-yamaha_thr30.png?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
+        {% include figure.liquid loading="eager" path="https://github.com/fmcgeough/blog_posts/blob/main/img/2025-07-25-yamaha_thr30.png?raw=true" class="img-fluid rounded z-depth-1"  zoomable=true %}
     </div>
 </div>
 <div class="caption">
