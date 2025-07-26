@@ -105,9 +105,7 @@ organization could be published to hex.pm and only be available for developers
 that are in your organization.
 
 Since Hex is open-source Cloudsmith created their own private hex repository in
-February 2014. See the [Cloudsmith blog
-post](https://cloudsmith.com/blog/worlds-first-private-hex-repository-with-cloudsmith)
-for more information on this.
+February 2014. Their blog announcement read "With Cloudsmith, you can manage, develop and distribute your Hex packages in your own private Hex registry using familiar tooling, ensuring seamless integration into your existing workflow". You can read more about it at the Cloudsmith website.
 
 ## Specifying Library Dependencies in mix.exs
 
