@@ -31,12 +31,12 @@ Elixir algorithm for determining whether an integer is self descriptive for base
 
 ```
 defmodule IntegerAnalyzer do
-    def self_descriptive?(n) when is_integer(n) do
+    def self_descriptive?(n) when is_integer(n) and n >= 0 do
         {val_with_index, freq} = analyze(n)
         self_descriptive_check(val_with_index, freq)
     end
 
-    defp analyze(n) when is_integer(n) do
+    defp analyze(n) do
         val = n |> Integer.to_charlist() |> Enum.map(fn x -> x - 48 end)
         {Enum.with_index(val), Enum.frequencies(val)}
     end
