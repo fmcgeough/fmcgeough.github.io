@@ -52,7 +52,7 @@ defmodule IntegerAnalyzer do
 end
 ```
 
-This is not particularly fast but for a few million values it's okay.
+This is not particularly fast but for a few million values it's okay. On my Macbook Pro it takes about a second and a half.
 
 ```
 iex> 1..10_000_000 |> Enum.filter(&IntegerAnalyzer.self_descriptive?(&1))
