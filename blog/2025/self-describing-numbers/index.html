@@ -18,7 +18,7 @@
         end
     end
 end
-</code></pre></div></div> <p>This is not particularly fast but for a few million values it’s okay.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; 1..10_000_000 |&gt; Enum.filter(&amp;IntegerAnalyzer.self_descriptive?(&amp;1))
+</code></pre></div></div> <p>This is not particularly fast but for a few million values it’s okay. On my Macbook Pro it takes about a second and a half.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; 1..10_000_000 |&gt; Enum.filter(&amp;IntegerAnalyzer.self_descriptive?(&amp;1))
 [1210, 2020, 21200, 3211000]
 </code></pre></div></div> <p>The self_descriptive? function takes the integer and builds a charlist. It then maps that list to values by subtracting the ASCII value for zero (48). The next line builds a tuple consisting of the list with the number of occurrences and the value along with the frequencies for the charlist. The frequencies shows how many times an element occurs in a list. Here’s a short demonstration of what the code does:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; val = 24234900 |&gt; Integer.to_charlist() |&gt; Enum.map(fn x -&gt; x - 48 end)
 [2, 4, 2, 3, 4, 9, 0, 0]
