@@ -89,7 +89,7 @@ original          7.65      130.68 ms     ±0.71%      130.68 ms      133.01 ms
     val = digits_from_integer(n)
     val |&gt; sum_exceeds_len?() |&gt; case do
       true -&gt; false
-      false -&gt; detailed_check(val)
+      false -&gt; self_descriptive_algorithm(val)
     end
   end
 </code></pre></div></div> <h2 id="using-benchee-to-compare">Using benchee to compare</h2> <p>The final step is to modify our IntegerAnalyzerTester:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule IntegerAnalyzerTester do
@@ -187,12 +187,12 @@ original          7.99      125.08 ms     ±0.65%      125.11 ms      127.08 ms
 Comparison:
 new              38.88
 original          7.99 - 4.86x slower +99.36 ms
-</code></pre></div></div> <p>It’s easy to see the new approach gets much better performance. Close to 5x.</p> <h2 id="now-what">Now what?</h2> <p>Well everything seems good. The improved code allows the function to run in 25 milliseconds vs 125 milliseconds in the original.</p> <p>One useful thing to do when you see an improvement (especially a big one) is to work out why it’s so much faster. In this case it’d be interesting to determine how many numbers we’re actually rejected by the <code class="language-plaintext highlighter-rouge">sum_exceeds_len?/1</code> change. It’s not too difficult to do with the reworked code.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; 1_000_000_000..1_000_500_000 |&gt;
+</code></pre></div></div> <p>It’s easy to see the new approach gets much better performance. Close to 5x.</p> <h2 id="now-what">Now what?</h2> <p>Well everything seems good. The improved code allows the function to run in 25 milliseconds vs 125 milliseconds in the original.</p> <p>One useful thing to do when you see an improvement (especially a big one) is to work out why it’s so much faster. In this case it’d be interesting to determine how many numbers we’re actually rejected by the <code class="language-plaintext highlighter-rouge">sum_exceeds_len?/1</code> change. It’s not too difficult to do with the reworked code. Out of the 500,000 integer values let’s see how many have a sum of digits that exceeds the length of the list.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex&gt; 1_000_000_000..1_000_500_000 |&gt;
   Enum.map(&amp;IntegerAnalyzer.improved_digits_from_integer/1) |&gt;
   Enum.map(&amp;IntegerAnalyzer.sum_exceeds_len?/1) |&gt;
   Enum.filter(&amp;(&amp;1 == true)) |&gt; Enum.count()
 495205
-</code></pre></div></div> <p>So, nearly half the numbers submitted were rejected.</p> <p>The performance improvement looks okay. It’s improved because its doing much less work.</p> <h2 id="what-about-digits-from-integer">What about digits from integer?</h2> <p>How much speed improvement (or slowdown!) did we get by using the system solution <code class="language-plaintext highlighter-rouge">Integer.digits/1</code>?</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Name               ips        average  deviation         median         99th %
+</code></pre></div></div> <p>That’s a lot of numbers being rejected before running the more expensive algorithm. There’s a cost with performing the sum and length. But it’s not nearly as high as creating the frequency map and then looking up a value in the map.</p> <p>The performance improvement looks okay. It’s improved because its doing much less work.</p> <h2 id="what-about-digits-from-integer">What about digits from integer?</h2> <p>How much speed improvement (or slowdown!) did we get by using the system solution <code class="language-plaintext highlighter-rouge">Integer.digits/1</code>?</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Name               ips        average  deviation         median         99th %
 new              87.89       11.38 ms     ±4.25%       11.25 ms       12.55 ms
 original         53.81       18.58 ms     ±0.80%       18.58 ms       19.15 ms
 
