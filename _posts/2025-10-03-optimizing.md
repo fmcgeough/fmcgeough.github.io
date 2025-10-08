@@ -211,7 +211,7 @@ We'll need a IntegerAnalyzer function to pass into benchee to test our (hopefull
     val = digits_from_integer(n)
     val |> sum_exceeds_len?() |> case do
       true -> false
-      false -> detailed_check(val)
+      false -> self_descriptive_algorithm(val)
     end
   end
 ```
@@ -336,7 +336,8 @@ It's easy to see the new approach gets much better performance. Close to 5x.
 
 Well everything seems good. The improved code allows the function to run in 25 milliseconds vs 125 milliseconds in the original.
 
-One useful thing to do when you see an improvement (especially a big one) is to work out why it's so much faster. In this case it'd be interesting to determine how many numbers we're actually rejected by the `sum_exceeds_len?/1` change. It's not too difficult to do with the reworked code.
+One useful thing to do when you see an improvement (especially a big one) is to work out why it's so much faster. In this case it'd be interesting to determine how many numbers we're actually rejected by the `sum_exceeds_len?/1` change. It's not too difficult to do with the reworked code. Out of the 500,000 integer
+values let's see how many have a sum of digits that exceeds the length of the list.
 
 ```
 iex> 1_000_000_000..1_000_500_000 |>
@@ -346,7 +347,7 @@ iex> 1_000_000_000..1_000_500_000 |>
 495205
 ```
 
-So, nearly half the numbers submitted were rejected.
+That's a lot of numbers being rejected before running the more expensive algorithm. There's a cost with performing the sum and length. But it's not nearly as high as creating the frequency map and then looking up a value in the map.
 
 The performance improvement looks okay. It's improved because its doing much less work.
 
