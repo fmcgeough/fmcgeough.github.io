@@ -9,7 +9,7 @@ giscus_comments: true
 pretty_table: true
 ---
 
-For my birthday (which was in July) my spouse got me a lovely gift. It was a Roland FP-30X digital piano. I've wanted to get one just to have another cool thing to make music with. I started from no piano (not even childhood lessons to call back to). I signed up with Skoove (and online piano learning app) for a year's worth of lessons.
+For my birthday (which was in July) my spouse got me a lovely gift. It was a Roland FP-30X digital piano. I've wanted to get one just to have another cool thing to make music with. I started from no piano (not even childhood lessons to call back to). I signed up with Skoove (an online piano learning app) for a year's worth of lessons.
 
 I've had no problems with the Roland. It sounds good. It has a headphone jack so I don't have to annoy others while practicing. The keys feel like the "right" weight. The keyboard is in a room that I have easy access to and I do tend to play most days (at least for a few minutes).
 

@@ -13,7 +13,7 @@ Elixir is a dynamic, functional language for building scalable and maintainable 
 - https://hexdocs.pm/mix/1.1.1/Mix.Tasks.Deps.html
 - https://hexdocs.pm/hex/Mix.Tasks.Hex.Outdated.html
 - https://hexdocs.pm/hex/Mix.Tasks.Hex.Audit.html
-- https://hexdocs.pm/elixir/dependencies-and-umbrella-projects.html
+- https://hexdocs.pm/elixir/main/dependencies-and-umbrella-projects.html
 
 ## Where Do Dependencies Come From?
 
