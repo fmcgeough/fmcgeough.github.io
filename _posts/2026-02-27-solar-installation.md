@@ -27,7 +27,7 @@ Enphase provides a web and iOS/Android app called Enlighten that shows current p
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" 
-        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2026-02-20-solar.jpgraw=true" 
+        path="https://github.com/fmcgeough/blog_posts/blob/main/img/2026-02-20-solar.jpg?raw=true" 
         class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
